@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase";
+import { useAuth } from "@/components/auth/auth-provider";
+import { getAuthErrorMessage } from "@/lib/auth-errors";
 
 export function SignupForm() {
+  const router = useRouter();
+  const { signUp, isLoading: isAuthLoading } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,28 +23,18 @@ export function SignupForm() {
     setIsLoading(true);
 
     try {
-      const supabase = createClient();
-      const { error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name,
-          },
-        },
-      });
+      const data = await signUp(name, email, password);
 
-      if (signUpError) {
-        setError(signUpError.message);
+      if (data.session) {
+        router.push("/dashboard");
+        router.refresh();
         return;
       }
 
       setMessage("Cadastro criado. Verifique seu e-mail para confirmar a conta.");
     } catch (clientError) {
       setError(
-        clientError instanceof Error
-          ? clientError.message
-          : "Não foi possível cadastrar agora.",
+        getAuthErrorMessage(clientError, "Não foi possível cadastrar agora."),
       );
     } finally {
       setIsLoading(false);
@@ -94,7 +88,7 @@ export function SignupForm() {
         </p>
       ) : null}
       <button
-        disabled={isLoading}
+        disabled={isLoading || isAuthLoading}
         className="w-full rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
       >
         {isLoading ? "Criando conta..." : "Criar conta"}

@@ -1,55 +1,67 @@
-import { MessageCircle, Plus, Share2, ThumbsUp } from "lucide-react";
+import { GraduationCap, MessageCircle } from "lucide-react";
+import { CreatePost } from "@/components/feed/create-post";
+import { PostCard } from "@/components/feed/post-card";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
-import { feedPosts } from "@/lib/mock-data";
+import { getFeedData } from "@/lib/feed";
 
-export default function FeedPage() {
+export default async function FeedPage() {
+  const { posts, error } = await getFeedData();
+
   return (
     <AppShell>
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
         <PageHeader
           eyebrow="Comunidade"
           title="Feed"
-          description="Acompanhe materiais, dúvidas e recomendações compartilhadas por outros vestibulandos."
+          description="Publique dúvidas, compartilhe estratégias e anexe materiais úteis para outros vestibulandos de Medicina."
         />
-        <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white">
-          <Plus size={18} />
-          Nova publicação
-        </button>
+        <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-800 shadow-sm">
+          <GraduationCap size={17} />
+          Rede de estudos
+        </div>
       </div>
 
-      <div className="space-y-4">
-        {feedPosts.map((post) => (
-          <article
-            key={post.author}
-            className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-          >
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="font-semibold text-slate-950">{post.author}</p>
-                <p className="text-sm text-slate-500">{post.time}</p>
-              </div>
-              <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800">
-                {post.badge}
-              </span>
+      <div className="grid gap-6 lg:grid-cols-[0.78fr_0.22fr]">
+        <section className="space-y-5">
+          <CreatePost />
+
+          {error ? (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+              {error}
             </div>
-            <p className="mt-5 leading-7 text-slate-700">{post.content}</p>
-            <div className="mt-5 flex gap-2 border-t border-slate-100 pt-4">
-              <button className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
-                <ThumbsUp size={17} />
-                Curtir
-              </button>
-              <button className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
-                <MessageCircle size={17} />
-                Comentar
-              </button>
-              <button className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">
-                <Share2 size={17} />
-                Salvar
-              </button>
+          ) : null}
+
+          {posts.length > 0 ? (
+            <div className="space-y-4">
+              {posts.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
             </div>
-          </article>
-        ))}
+          ) : (
+            <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
+              <MessageCircle className="mx-auto text-sky-700" size={32} />
+              <h2 className="mt-3 text-lg font-semibold text-slate-950">
+                Nenhuma publicação ainda
+              </h2>
+              <p className="mt-2 text-slate-600">
+                Seja a primeira pessoa a compartilhar uma dica, dúvida ou
+                material com a comunidade.
+              </p>
+            </div>
+          )}
+        </section>
+
+        <aside className="h-fit rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-950">
+            Boas práticas
+          </h2>
+          <div className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+            <p>Use tags para facilitar buscas por matéria, banca e fase.</p>
+            <p>Anexe materiais aprovados quando a publicação depender deles.</p>
+            <p>Mantenha comentários focados em estudo e revisão.</p>
+          </div>
+        </aside>
       </div>
     </AppShell>
   );

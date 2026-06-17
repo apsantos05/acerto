@@ -1,46 +1,82 @@
-import { Medal, Trophy } from "lucide-react";
+import { Info } from "lucide-react";
+import { RankingFilters } from "@/components/ranking/ranking-filters";
+import { RankingSection } from "@/components/ranking/ranking-section";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
-import { ranking } from "@/lib/mock-data";
+import { getRankingPageData, type RankingFilters as Filters } from "@/lib/ranking";
 
-export default function RankingPage() {
+type RankingPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function getParam(
+  searchParams: Record<string, string | string[] | undefined>,
+  key: keyof Filters,
+) {
+  const value = searchParams[key];
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function RankingPage({ searchParams }: RankingPageProps) {
+  const params = (await searchParams) ?? {};
+  const data = await getRankingPageData({
+    subject: getParam(params, "subject"),
+    vestibular: getParam(params, "vestibular"),
+  });
+
   return (
     <AppShell>
       <PageHeader
-        eyebrow="Desempenho"
+        eyebrow="Reputação"
         title="Ranking"
-        description="Veja os estudantes com maior pontuação por contribuição, simulados e constância."
+        description="Acompanhe quem mais contribui com materiais, posts, comentários e ajuda prática para a comunidade."
       />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="mb-5 flex items-center gap-2">
-          <Trophy className="text-amber-500" />
-          <h2 className="text-xl font-semibold text-slate-950">
-            Ranking geral
-          </h2>
+      {data.isMock ? (
+        <div className="mb-5 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+          <Info size={18} className="shrink-0" />
+          Exibindo dados temporários. Execute o schema do Supabase para usar o
+          cálculo real de reputação.
         </div>
-        <div className="space-y-3">
-          {ranking.map((student, index) => (
-            <div
-              key={student.name}
-              className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 p-4"
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-950 text-white">
-                  {index < 3 ? <Medal size={18} /> : index + 1}
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-950">{student.name}</p>
-                  <p className="text-sm text-slate-500">{student.city}</p>
-                </div>
-              </div>
-              <p className="font-semibold text-emerald-600">
-                {student.points.toLocaleString("pt-BR")} pts
-              </p>
-            </div>
-          ))}
+      ) : null}
+
+      <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 className="text-lg font-semibold text-slate-950">
+          Como os pontos são calculados
+        </h2>
+        <div className="mt-4 grid gap-3 text-sm text-slate-600 md:grid-cols-5">
+          <p className="rounded-lg bg-slate-50 p-3">Material aprovado: +20</p>
+          <p className="rounded-lg bg-slate-50 p-3">Curtida em material: +2</p>
+          <p className="rounded-lg bg-slate-50 p-3">Salvamento recebido: +5</p>
+          <p className="rounded-lg bg-slate-50 p-3">Comentário ajudando: +3</p>
+          <p className="rounded-lg bg-slate-50 p-3">Post publicado: +5</p>
         </div>
       </section>
+
+      <RankingFilters
+        subjects={data.options.subjects}
+        vestibulares={data.options.vestibulares}
+        activeSubject={data.activeSubject}
+        activeVestibular={data.activeVestibular}
+      />
+
+      <div className="space-y-6">
+        <RankingSection
+          title="Ranking geral"
+          description="Pontuação total considerando todas as contribuições."
+          entries={data.general}
+        />
+        <RankingSection
+          title={`Ranking por matéria: ${data.activeSubject}`}
+          description="Pontuação relacionada a materiais, posts e comentários conectados à matéria selecionada."
+          entries={data.subjectRanking}
+        />
+        <RankingSection
+          title={`Ranking por vestibular: ${data.activeVestibular}`}
+          description="Pontuação relacionada a materiais, posts e comentários conectados ao vestibular selecionado."
+          entries={data.vestibularRanking}
+        />
+      </div>
     </AppShell>
   );
 }
