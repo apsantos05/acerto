@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { AdminPanel } from "@/components/admin/admin-panel";
 import {
   getAdminMaterials,
+  getAdminSimulados,
   getRecentPosts,
   isCurrentUserAdmin,
 } from "@/lib/admin";
@@ -16,9 +17,10 @@ export default async function AdminPage() {
     notFound();
   }
 
-  const [materials, posts] = await Promise.all([
+  const [materials, posts, simulados] = await Promise.all([
     getAdminMaterials(),
     getRecentPosts(),
+    getAdminSimulados(),
   ]);
 
   const pendingCount = materials.filter(
@@ -40,7 +42,7 @@ export default async function AdminPage() {
       </div>
 
       <div className="mt-2">
-        <AdminPanel materials={materials} posts={posts} />
+        <AdminPanel materials={materials} posts={posts} simulados={simulados} />
       </div>
     </AppShell>
   );

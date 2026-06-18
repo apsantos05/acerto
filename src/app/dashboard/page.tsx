@@ -7,10 +7,12 @@ import { WeeklyPlan } from "@/components/dashboard/weekly-plan";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
 import { getDashboardData } from "@/lib/dashboard";
 import { getStudyPlanner } from "@/lib/study-planner";
+import { getSimuladoStats } from "@/lib/simulados";
 
 export default async function DashboardPage() {
   const { stats, recentMaterials } = await getDashboardData();
   const { tasks, goal } = await getStudyPlanner();
+  const simStats = await getSimuladoStats();
 
   const statCards = [
     { label: "Materiais disponíveis", value: stats.materialsAvailable },
@@ -36,6 +38,42 @@ export default async function DashboardPage() {
           />
         ))}
       </div>
+
+      <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-slate-950">Simulados</h2>
+          <Link
+            href="/simulados"
+            className="text-sm font-semibold text-sky-700 hover:text-sky-900"
+          >
+            Ver simulados
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-lg bg-slate-50 p-4">
+            <p className="text-2xl font-semibold text-slate-950">
+              {simStats.attempts}
+            </p>
+            <p className="mt-1 text-sm text-slate-500">Simulados feitos</p>
+          </div>
+          <div className="rounded-lg bg-slate-50 p-4">
+            <p className="text-2xl font-semibold text-emerald-600">
+              {simStats.bestPercent}%
+            </p>
+            <p className="mt-1 text-sm text-slate-500">Melhor pontuação</p>
+          </div>
+          <div className="rounded-lg bg-slate-50 p-4">
+            <p className="truncate text-sm font-semibold text-slate-950">
+              {simStats.last ? simStats.last.title : "—"}
+            </p>
+            <p className="mt-1 text-sm text-slate-500">
+              {simStats.last
+                ? `${simStats.last.score}/${simStats.last.total} no último`
+                : "Nenhum simulado realizado"}
+            </p>
+          </div>
+        </div>
+      </section>
 
       <div className="mt-8 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-950">

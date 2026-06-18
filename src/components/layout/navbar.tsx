@@ -10,6 +10,7 @@ import { ProfileAvatar } from "@/components/profile/profile-avatar";
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/simulados", label: "Simulados" },
   { href: "/meus-materiais", label: "Meus materiais" },
   { href: "/feed", label: "Feed" },
   { href: "/ranking", label: "Ranking" },
@@ -19,6 +20,7 @@ const navItems = [
 const mobileNavItems = [
   { href: "/", label: "Início" },
   { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/simulados", label: "Simulados" },
   { href: "/feed", label: "Feed" },
   { href: "/ranking", label: "Ranking" },
 ];

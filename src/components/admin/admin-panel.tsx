@@ -3,16 +3,18 @@
 import { useState } from "react";
 import { ModerationCard } from "@/components/admin/moderation-card";
 import { PostModerationCard } from "@/components/admin/post-moderation-card";
-import type { AdminMaterial, AdminPost } from "@/lib/admin";
+import { SimuladoAdminCard } from "@/components/admin/simulado-admin-card";
+import type { AdminMaterial, AdminPost, AdminSimulado } from "@/lib/admin";
 
 type AdminPanelProps = {
   materials: AdminMaterial[];
   posts: AdminPost[];
+  simulados: AdminSimulado[];
 };
 
-type Tab = "pending" | "all" | "posts";
+type Tab = "pending" | "all" | "posts" | "simulados";
 
-export function AdminPanel({ materials, posts }: AdminPanelProps) {
+export function AdminPanel({ materials, posts, simulados }: AdminPanelProps) {
   const pending = materials.filter((material) => material.status === "pending");
   const [tab, setTab] = useState<Tab>("pending");
 
@@ -20,6 +22,7 @@ export function AdminPanel({ materials, posts }: AdminPanelProps) {
     { id: "pending", label: "Materiais pendentes", count: pending.length },
     { id: "all", label: "Todos os materiais", count: materials.length },
     { id: "posts", label: "Posts recentes", count: posts.length },
+    { id: "simulados", label: "Simulados", count: simulados.length },
   ];
 
   return (
@@ -74,6 +77,17 @@ export function AdminPanel({ materials, posts }: AdminPanelProps) {
           >
             {posts.map((post) => (
               <PostModerationCard key={post.id} post={post} />
+            ))}
+          </SectionList>
+        ) : null}
+
+        {tab === "simulados" ? (
+          <SectionList
+            isEmpty={simulados.length === 0}
+            emptyText="Nenhum simulado cadastrado ainda."
+          >
+            {simulados.map((simulado) => (
+              <SimuladoAdminCard key={simulado.id} simulado={simulado} />
             ))}
           </SectionList>
         ) : null}

@@ -145,6 +145,49 @@ type PostRow = {
   comments: { count: number }[] | null;
 };
 
+export type AdminSimulado = {
+  id: string;
+  title: string;
+  vestibular: string;
+  faculty: string;
+  questionCount: number;
+  status: "draft" | "published";
+};
+
+export async function getAdminSimulados(): Promise<AdminSimulado[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("simulados")
+      .select("id,title,vestibular,faculty,question_count,status")
+      .order("created_at", { ascending: true });
+    if (error) {
+      console.error("[admin] simulados falharam:", error);
+      return [];
+    }
+    return (
+      (data ?? []) as Array<{
+        id: string;
+        title: string;
+        vestibular: string | null;
+        faculty: string | null;
+        question_count: number | null;
+        status: string | null;
+      }>
+    ).map((row) => ({
+      id: row.id,
+      title: row.title,
+      vestibular: row.vestibular ?? "Geral",
+      faculty: row.faculty ?? "Medicina",
+      questionCount: row.question_count ?? 0,
+      status: row.status === "draft" ? "draft" : "published",
+    }));
+  } catch (simError) {
+    console.error("[admin] simulados exceção:", simError);
+    return [];
+  }
+}
+
 export async function getRecentPosts(): Promise<AdminPost[]> {
   try {
     const supabase = await createClient();
