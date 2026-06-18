@@ -4,6 +4,8 @@ import type { FeedAuthor, FeedComment, FeedMaterial, FeedPost } from "@/lib/feed
 type ProfileRow = {
   id: string;
   full_name: string | null;
+  username: string | null;
+  avatar_url: string | null;
   email: string | null;
   city: string | null;
 };
@@ -54,6 +56,8 @@ function normalizeAuthor(profile: ProfileRow | ProfileRow[] | null): FeedAuthor 
   return {
     id: author?.id ?? "",
     name,
+    username: author?.username ?? null,
+    avatarUrl: author?.avatar_url ?? null,
     email: author?.email ?? null,
     city: author?.city ?? null,
   };
@@ -134,7 +138,7 @@ export async function getFeedData() {
           content,
           tags,
           created_at,
-          author:profiles!posts_author_id_fkey(id, full_name, email, city),
+          author:profiles!posts_author_id_fkey(id, full_name, username, avatar_url, email, city),
           material:materials!posts_material_id_fkey(id, title, subject, material_type)
         `,
       )
@@ -164,7 +168,7 @@ export async function getFeedData() {
             post_id,
             content,
             created_at,
-            author:profiles!comments_author_id_fkey(id, full_name, email, city)
+            author:profiles!comments_author_id_fkey(id, full_name, username, avatar_url, email, city)
           `,
         )
         .in("post_id", postIds)

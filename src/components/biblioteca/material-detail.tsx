@@ -8,12 +8,13 @@ import {
   GraduationCap,
   LinkIcon,
   School,
-  Star,
 } from "lucide-react";
 import type { LibraryMaterial } from "@/lib/materials";
 import { LikeMaterialButton } from "@/components/biblioteca/like-material-button";
 import { SaveMaterialButton } from "@/components/biblioteca/save-material-button";
 import { MaterialStatusBadge } from "@/components/biblioteca/material-status-badge";
+import { MaterialRating } from "@/components/biblioteca/material-rating";
+import { ProfileAvatar } from "@/components/profile/profile-avatar";
 
 type MaterialDetailProps = {
   material: LibraryMaterial;
@@ -104,16 +105,42 @@ export function MaterialDetail({ material }: MaterialDetailProps) {
           />
         </div>
 
-        <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-5">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-            <Star size={17} className="text-amber-500" fill="currentColor" />
-            Avaliação da comunidade: {material.rating.toFixed(1)}
+        {material.author ? (
+          <div className="mt-6 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <ProfileAvatar
+              name={material.author.fullName}
+              avatarUrl={material.author.avatarUrl}
+              size="md"
+            />
+            <div>
+              <p className="text-xs font-semibold uppercase text-slate-500">
+                Enviado por
+              </p>
+              {material.author.username ? (
+                <Link
+                  href={`/perfil/${material.author.username}`}
+                  className="font-semibold text-slate-950 hover:text-sky-800"
+                >
+                  {material.author.fullName}
+                  <span className="ml-1 text-sm font-normal text-slate-500">
+                    @{material.author.username}
+                  </span>
+                </Link>
+              ) : (
+                <p className="font-semibold text-slate-950">
+                  {material.author.fullName}
+                </p>
+              )}
+            </div>
           </div>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            Use este material como ponto de revisão e combine com simulados para
-            medir evolução por assunto.
-          </p>
-        </div>
+        ) : null}
+
+        <MaterialRating
+          materialId={material.id}
+          average={material.rating}
+          count={material.ratingsCount}
+          isMock={material.isMock}
+        />
 
         {material.tags.length > 0 ? (
           <div className="mt-6 flex flex-wrap gap-2">

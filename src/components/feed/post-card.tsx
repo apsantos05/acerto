@@ -10,20 +10,12 @@ import {
   SendHorizonal,
 } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { ProfileAvatar } from "@/components/profile/profile-avatar";
 import type { FeedComment, FeedPost } from "@/lib/feed-types";
 
 type PostCardProps = {
   post: FeedPost;
 };
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
 
 function currentUserName(email?: string, name?: string) {
   return name || email?.split("@")[0] || "Você";
@@ -154,6 +146,10 @@ export function PostCard({ post }: PostCardProps) {
               user.email,
               user.user_metadata?.full_name as string | undefined,
             ),
+            username:
+              (user.user_metadata?.username as string | undefined) ?? null,
+            avatarUrl:
+              (user.user_metadata?.avatar_url as string | undefined) ?? null,
             email: user.email ?? null,
             city: null,
           },
@@ -174,14 +170,38 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex items-start gap-4">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-sm font-semibold text-cyan-800">
-          {initials(post.author.name)}
-        </div>
+        {post.author.username ? (
+          <Link href={`/perfil/${post.author.username}`} className="shrink-0">
+            <ProfileAvatar
+              name={post.author.name}
+              avatarUrl={post.author.avatarUrl}
+              size="md"
+            />
+          </Link>
+        ) : (
+          <ProfileAvatar
+            name={post.author.name}
+            avatarUrl={post.author.avatarUrl}
+            size="md"
+          />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="font-semibold text-slate-950">{post.author.name}</p>
+              {post.author.username ? (
+                <Link
+                  href={`/perfil/${post.author.username}`}
+                  className="font-semibold text-slate-950 hover:text-sky-800"
+                >
+                  {post.author.name}
+                </Link>
+              ) : (
+                <p className="font-semibold text-slate-950">
+                  {post.author.name}
+                </p>
+              )}
               <p className="text-sm text-slate-500">
+                {post.author.username ? `@${post.author.username} · ` : ""}
                 {post.publishedAt}
                 {post.author.city ? ` · ${post.author.city}` : ""}
               </p>

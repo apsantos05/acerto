@@ -5,6 +5,13 @@ import {
   type MaterialType,
 } from "@/lib/material-options";
 
+export type MaterialAuthor = {
+  id: string;
+  username: string | null;
+  fullName: string;
+  avatarUrl: string | null;
+};
+
 export type LibraryMaterial = {
   id: string;
   title: string;
@@ -21,7 +28,9 @@ export type LibraryMaterial = {
   tags: string[];
   status: MaterialStatus;
   rating: number;
+  ratingsCount: number;
   viewsCount: number;
+  author: MaterialAuthor | null;
   createdAt: string;
   isMock?: boolean;
 };
@@ -62,6 +71,8 @@ const mockLibraryMaterials: LibraryMaterial[] = [
     status: "approved",
     rating: 4.9,
     viewsCount: 1280,
+    ratingsCount: 0,
+    author: null,
     createdAt: "2026-05-15T12:00:00.000Z",
     isMock: true,
   },
@@ -83,6 +94,8 @@ const mockLibraryMaterials: LibraryMaterial[] = [
     status: "approved",
     rating: 4.8,
     viewsCount: 934,
+    ratingsCount: 0,
+    author: null,
     createdAt: "2026-05-08T12:00:00.000Z",
     isMock: true,
   },
@@ -104,6 +117,8 @@ const mockLibraryMaterials: LibraryMaterial[] = [
     status: "approved",
     rating: 4.7,
     viewsCount: 721,
+    ratingsCount: 0,
+    author: null,
     createdAt: "2026-05-01T12:00:00.000Z",
     isMock: true,
   },
@@ -125,6 +140,8 @@ const mockLibraryMaterials: LibraryMaterial[] = [
     status: "approved",
     rating: 4.9,
     viewsCount: 1532,
+    ratingsCount: 0,
+    author: null,
     createdAt: "2026-04-20T12:00:00.000Z",
     isMock: true,
   },
@@ -146,6 +163,8 @@ const mockLibraryMaterials: LibraryMaterial[] = [
     status: "approved",
     rating: 4.6,
     viewsCount: 812,
+    ratingsCount: 0,
+    author: null,
     createdAt: "2026-04-12T12:00:00.000Z",
     isMock: true,
   },
@@ -167,10 +186,19 @@ const mockLibraryMaterials: LibraryMaterial[] = [
     status: "approved",
     rating: 4.8,
     viewsCount: 1044,
+    ratingsCount: 0,
+    author: null,
     createdAt: "2026-04-03T12:00:00.000Z",
     isMock: true,
   },
 ];
+
+type OwnerRow = {
+  id: string;
+  username: string | null;
+  full_name: string | null;
+  avatar_url: string | null;
+};
 
 type MaterialRow = {
   id: string;
@@ -188,9 +216,37 @@ type MaterialRow = {
   tags: string[] | null;
   status: string | null;
   rating: number | string | null;
+  ratings_count: number | null;
   views_count: number | null;
+  owner: OwnerRow | OwnerRow[] | null;
   created_at: string;
 };
+
+const materialSelect =
+  "id,title,description,vestibular,faculdade,year,subject,material_type,file_url,external_url,storage_path,upload_kind,tags,status,rating,ratings_count,views_count,created_at,owner:profiles!materials_owner_id_fkey(id,username,full_name,avatar_url)";
+
+function firstRelation<T>(value: T | T[] | null): T | null {
+  if (Array.isArray(value)) {
+    return value[0] ?? null;
+  }
+
+  return value;
+}
+
+function normalizeOwner(value: OwnerRow | OwnerRow[] | null): MaterialAuthor | null {
+  const owner = firstRelation(value);
+
+  if (!owner?.id) {
+    return null;
+  }
+
+  return {
+    id: owner.id,
+    username: owner.username,
+    fullName: owner.full_name || "Estudante Acerte",
+    avatarUrl: owner.avatar_url,
+  };
+}
 
 function normalizeMaterial(row: MaterialRow): LibraryMaterial {
   const type = materialTypes.includes(row.material_type as MaterialType)
@@ -216,7 +272,9 @@ function normalizeMaterial(row: MaterialRow): LibraryMaterial {
         ? row.status
         : "pending",
     rating: Number(row.rating ?? 0),
+    ratingsCount: row.ratings_count ?? 0,
     viewsCount: row.views_count ?? 0,
+    author: normalizeOwner(row.owner),
     createdAt: row.created_at,
   };
 }
@@ -277,7 +335,7 @@ async function getSupabaseMaterials() {
   const { data, error } = await supabase
     .from("materials")
     .select(
-      "id,title,description,vestibular,faculdade,year,subject,material_type,file_url,external_url,storage_path,upload_kind,tags,status,rating,views_count,created_at",
+      materialSelect,
     )
     .eq("status", "approved")
     .order("created_at", { ascending: false });
@@ -318,7 +376,7 @@ export async function getMaterialById(id: string) {
     const { data, error } = await supabase
       .from("materials")
       .select(
-        "id,title,description,vestibular,faculdade,year,subject,material_type,file_url,external_url,storage_path,upload_kind,tags,status,rating,views_count,created_at",
+        materialSelect,
       )
       .eq("id", id)
       .maybeSingle();
@@ -351,7 +409,7 @@ export async function getMyMaterials() {
     const { data, error } = await supabase
       .from("materials")
       .select(
-        "id,title,description,vestibular,faculdade,year,subject,material_type,file_url,external_url,storage_path,upload_kind,tags,status,rating,views_count,created_at",
+        materialSelect,
       )
       .eq("owner_id", user.id)
       .order("created_at", { ascending: false });

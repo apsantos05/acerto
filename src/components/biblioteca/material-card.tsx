@@ -5,10 +5,12 @@ import {
   FileText,
   GraduationCap,
   School,
+  Star,
 } from "lucide-react";
 import type { LibraryMaterial } from "@/lib/materials";
 import { LikeMaterialButton } from "@/components/biblioteca/like-material-button";
 import { SaveMaterialButton } from "@/components/biblioteca/save-material-button";
+import { ProfileAvatar } from "@/components/profile/profile-avatar";
 
 type MaterialCardProps = {
   material: LibraryMaterial;
@@ -23,10 +25,19 @@ export function MaterialCard({ material }: MaterialCardProps) {
             <FileText size={14} />
             {material.materialType}
           </span>
-          <span className="inline-flex items-center gap-1 text-sm font-medium text-slate-500">
-            <Eye size={16} />
-            {material.viewsCount.toLocaleString("pt-BR")}
-          </span>
+          <div className="flex items-center gap-3">
+            {material.ratingsCount > 0 ? (
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-amber-600">
+                <Star size={15} fill="currentColor" />
+                {material.rating.toFixed(1)}
+                <span className="text-slate-400">({material.ratingsCount})</span>
+              </span>
+            ) : null}
+            <span className="inline-flex items-center gap-1 text-sm font-medium text-slate-500">
+              <Eye size={16} />
+              {material.viewsCount.toLocaleString("pt-BR")}
+            </span>
+          </div>
         </div>
 
         <Link href={`/biblioteca/${material.id}`}>
@@ -66,6 +77,33 @@ export function MaterialCard({ material }: MaterialCardProps) {
           </div>
         ) : null}
       </div>
+
+      {material.author ? (
+        <div className="mt-4 flex items-center gap-2 text-sm text-slate-600">
+          {material.author.username ? (
+            <Link
+              href={`/perfil/${material.author.username}`}
+              className="inline-flex items-center gap-2 hover:text-sky-800"
+            >
+              <ProfileAvatar
+                name={material.author.fullName}
+                avatarUrl={material.author.avatarUrl}
+                size="sm"
+              />
+              <span className="font-medium">{material.author.fullName}</span>
+            </Link>
+          ) : (
+            <span className="inline-flex items-center gap-2">
+              <ProfileAvatar
+                name={material.author.fullName}
+                avatarUrl={material.author.avatarUrl}
+                size="sm"
+              />
+              <span className="font-medium">{material.author.fullName}</span>
+            </span>
+          )}
+        </div>
+      ) : null}
 
       <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
         <Link
