@@ -23,7 +23,7 @@ export type RankingFilters = {
 };
 
 type RankingRow = {
-  position: number;
+  rank_position: number;
   profile_id: string;
   username: string | null;
   full_name: string | null;
@@ -41,7 +41,7 @@ type RankingRow = {
 
 function normalizeRanking(row: RankingRow): RankingEntry {
   return {
-    position: Number(row.position),
+    position: Number(row.rank_position),
     profileId: row.profile_id,
     username: row.username ?? row.profile_id,
     fullName: row.full_name || "Estudante Acerte",
@@ -140,11 +140,11 @@ export async function getProfileRankingSnapshot(profileId: string) {
     }
 
     const row = (data ?? [])[0] as
-      | { total_points: number | null; position: number | null }
+      | { total_points: number | null; rank_position: number | null }
       | undefined;
 
     return {
-      position: row?.position != null ? Number(row.position) : null,
+      position: row?.rank_position != null ? Number(row.rank_position) : null,
       totalPoints: row?.total_points != null ? Number(row.total_points) : 0,
     };
   } catch (snapshotError) {

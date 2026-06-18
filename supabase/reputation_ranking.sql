@@ -34,7 +34,7 @@ create or replace function public.get_reputation_ranking(
   limit_count integer default 20
 )
 returns table (
-  position bigint,
+  rank_position bigint,
   profile_id uuid,
   username text,
   full_name text,
@@ -122,7 +122,7 @@ as $$
     left join comment_counts cc on cc.author_id = p.id
   )
   select
-    row_number() over (order by total_points desc, full_name asc) as position,
+    row_number() over (order by total_points desc, full_name asc) as rank_position,
     profile_id, username, full_name, avatar_url, city, state, dream_faculty,
     total_points, approved_materials, material_likes_received,
     material_saves_received, comments_made, posts_created
@@ -134,13 +134,13 @@ $$;
 
 -- Reputação + posição de um perfil específico (reaproveita o ranking geral)
 create or replace function public.get_profile_reputation(p_profile_id uuid)
-returns table (total_points bigint, position bigint)
+returns table (total_points bigint, rank_position bigint)
 language sql
 stable
 security definer
 set search_path = public
 as $$
-  select r.total_points, r.position
+  select r.total_points, r.rank_position
   from public.get_reputation_ranking(null, null, 1000000) r
   where r.profile_id = p_profile_id;
 $$;
