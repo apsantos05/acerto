@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { BookOpenCheck, Menu, UserCircle } from "lucide-react";
+import { BookOpenCheck, Menu, UserCircle, X } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuth } from "@/components/auth/auth-provider";
 
@@ -14,9 +15,19 @@ const navItems = [
   { href: "/perfil", label: "Perfil" },
 ];
 
+const mobileNavItems = [
+  { href: "/", label: "Início" },
+  { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/feed", label: "Feed" },
+  { href: "/ranking", label: "Ranking" },
+];
+
 export function Navbar() {
   const { user, isLoading } = useAuth();
   const isAuthenticated = Boolean(user);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -71,12 +82,80 @@ export function Navbar() {
         </div>
 
         <button
+          type="button"
+          onClick={() => setIsMenuOpen((open) => !open)}
           className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 md:hidden"
-          aria-label={isLoading ? "Carregando sessão" : "Abrir menu"}
+          aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
         >
-          <Menu size={20} />
+          {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
+
+      {isMenuOpen ? (
+        <div
+          id="mobile-menu"
+          className="border-t border-slate-200 bg-white md:hidden"
+        >
+          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-6 py-4">
+            {mobileNavItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={closeMenu}
+                className="rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition hover:bg-slate-100"
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            <div className="mt-3 flex flex-col gap-2 border-t border-slate-200 pt-4">
+              {isLoading ? (
+                <span className="px-3 py-2 text-sm text-slate-400">
+                  Carregando sessão...
+                </span>
+              ) : isAuthenticated ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    onClick={closeMenu}
+                    className="rounded-lg px-3 py-3 text-base font-semibold text-slate-700 transition hover:bg-slate-100"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/perfil"
+                    onClick={closeMenu}
+                    className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-base font-semibold text-slate-700 transition hover:bg-slate-100"
+                  >
+                    <UserCircle size={18} />
+                    Perfil
+                  </Link>
+                  <LogoutButton />
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={closeMenu}
+                    className="rounded-lg px-3 py-3 text-center text-base font-semibold text-slate-700 transition hover:bg-slate-100"
+                  >
+                    Entrar
+                  </Link>
+                  <Link
+                    href="/cadastro"
+                    onClick={closeMenu}
+                    className="rounded-lg bg-slate-950 px-3 py-3 text-center text-base font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    Cadastrar
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }
