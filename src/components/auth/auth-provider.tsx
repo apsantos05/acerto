@@ -125,26 +125,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = useCallback(
     async (name: string, email: string, password: string) => {
       const client = getClient();
-      const { data, error: signUpError } = await client.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name,
+
+      try {
+        const { data, error: signUpError } = await client.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              full_name: name,
+            },
           },
-        },
-      });
+        });
 
-      if (signUpError) {
-        throw signUpError;
+        if (signUpError) {
+          // Erro retornado pela API do Supabase (ex.: e-mail já cadastrado).
+          console.error("[auth] signUp retornou erro da API:", signUpError);
+          throw signUpError;
+        }
+
+        if (data.session) {
+          setSession(data.session);
+          setUser(data.session.user);
+        }
+
+        return data;
+      } catch (signUpException) {
+        // Erro de rede/transporte (ex.: "Failed to fetch" por URL errada).
+        console.error("[auth] signUp falhou (rede/exceção):", signUpException);
+        throw signUpException;
       }
-
-      if (data.session) {
-        setSession(data.session);
-        setUser(data.session.user);
-      }
-
-      return data;
     },
     [getClient],
   );

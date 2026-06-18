@@ -73,7 +73,7 @@ export function CreatePost() {
     setIsSubmitting(true);
 
     try {
-      const { error: insertError } = await supabase.from("feed_posts").insert({
+      const { error: insertError } = await supabase.from("posts").insert({
         author_id: user.id,
         content: content.trim(),
         material_id: materialId || null,

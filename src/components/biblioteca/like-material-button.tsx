@@ -26,10 +26,11 @@ export function LikeMaterialButton({
     let isMounted = true;
 
     supabase
-      .from("material_likes")
-      .select("material_id")
+      .from("likes")
+      .select("target_id")
+      .eq("target_type", "material")
       .eq("user_id", user.id)
-      .eq("material_id", materialId)
+      .eq("target_id", materialId)
       .maybeSingle()
       .then(({ data }) => {
         if (isMounted) {
@@ -60,10 +61,11 @@ export function LikeMaterialButton({
     try {
       if (isLiked) {
         const { error: deleteError } = await supabase
-          .from("material_likes")
+          .from("likes")
           .delete()
+          .eq("target_type", "material")
           .eq("user_id", user.id)
-          .eq("material_id", materialId);
+          .eq("target_id", materialId);
 
         if (deleteError) {
           throw deleteError;
@@ -74,14 +76,15 @@ export function LikeMaterialButton({
       }
 
       const { error: insertError } = await supabase
-        .from("material_likes")
+        .from("likes")
         .upsert(
           {
+            target_type: "material",
+            target_id: materialId,
             user_id: user.id,
-            material_id: materialId,
           },
           {
-            onConflict: "user_id,material_id",
+            onConflict: "target_type,target_id,user_id",
           },
         );
 

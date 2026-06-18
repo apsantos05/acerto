@@ -153,7 +153,7 @@ export async function getPublicProfile(username: string) {
         .order("created_at", { ascending: false })
         .limit(6),
       supabase
-        .from("feed_posts")
+        .from("posts")
         .select("id,content,tags,created_at")
         .eq("author_id", profile.id)
         .order("created_at", { ascending: false })
@@ -164,7 +164,7 @@ export async function getPublicProfile(username: string) {
         .eq("owner_id", profile.id)
         .eq("status", "approved"),
       supabase
-        .from("feed_posts")
+        .from("posts")
         .select("*", { count: "exact", head: true })
         .eq("author_id", profile.id),
     ]);
@@ -173,10 +173,20 @@ export async function getPublicProfile(username: string) {
       normalizeMaterial,
     );
     const posts = ((postsResult.data ?? []) as PostRow[]).map(normalizePost);
-    const { data: allPostIds } = await supabase
-      .from("feed_posts")
-      .select("id")
-      .eq("author_id", profile.id);
+    const [{ data: allMaterialIds }, { data: allPostIds }] = await Promise.all([
+      supabase
+        .from("materials")
+        .select("id")
+        .eq("owner_id", profile.id)
+        .eq("status", "approved"),
+      supabase
+        .from("posts")
+        .select("id")
+        .eq("author_id", profile.id),
+    ]);
+    const materialIds = ((allMaterialIds ?? []) as Array<{ id: string }>).map(
+      (material) => material.id,
+    );
     const postIds = ((allPostIds ?? []) as Array<{ id: string }>).map(
       (post) => post.id,
     );
@@ -184,11 +194,22 @@ export async function getPublicProfile(username: string) {
 
     if (postIds.length > 0) {
       const { count } = await supabase
-        .from("post_likes")
+        .from("likes")
         .select("*", { count: "exact", head: true })
-        .in("post_id", postIds);
+        .eq("target_type", "post")
+        .in("target_id", postIds);
 
-      likesReceived = count ?? 0;
+      likesReceived += count ?? 0;
+    }
+
+    if (materialIds.length > 0) {
+      const { count } = await supabase
+        .from("likes")
+        .select("*", { count: "exact", head: true })
+        .eq("target_type", "material")
+        .in("target_id", materialIds);
+
+      likesReceived += count ?? 0;
     }
 
     const rankingSnapshot = await getProfileRankingSnapshot(profile.id);

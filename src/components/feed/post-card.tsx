@@ -53,17 +53,19 @@ export function PostCard({ post }: PostCardProps) {
 
     const result = previousLiked
       ? await supabase
-          .from("post_likes")
+          .from("likes")
           .delete()
-          .eq("post_id", post.id)
+          .eq("target_type", "post")
+          .eq("target_id", post.id)
           .eq("user_id", user.id)
-      : await supabase.from("post_likes").upsert(
+      : await supabase.from("likes").upsert(
           {
-            post_id: post.id,
+            target_type: "post",
+            target_id: post.id,
             user_id: user.id,
           },
           {
-            onConflict: "post_id,user_id",
+            onConflict: "target_type,target_id,user_id",
           },
         );
 
@@ -126,7 +128,7 @@ export function PostCard({ post }: PostCardProps) {
 
     try {
       const { data, error: insertError } = await supabase
-        .from("post_comments")
+        .from("comments")
         .insert({
           post_id: post.id,
           author_id: user.id,

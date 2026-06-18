@@ -51,6 +51,56 @@ function validateExternalUrl(value: string) {
   return url.toString();
 }
 
+async function findOrCreateLookup(
+  supabase: ReturnType<typeof useAuth>["supabase"],
+  table: "vestibulares" | "faculties",
+  name: string,
+) {
+  if (!supabase) {
+    throw new Error("Cliente Supabase indisponivel.");
+  }
+
+  const { data: existing, error: selectError } = await supabase
+    .from(table)
+    .select("id")
+    .eq("name", name)
+    .maybeSingle();
+
+  if (selectError) {
+    throw selectError;
+  }
+
+  if (existing?.id) {
+    return existing.id as string;
+  }
+
+  const { data: created, error: insertError } = await supabase
+    .from(table)
+    .insert({ name })
+    .select("id")
+    .single();
+
+  if (!insertError && created?.id) {
+    return created.id as string;
+  }
+
+  if (insertError?.code === "23505") {
+    const { data: duplicate, error: duplicateError } = await supabase
+      .from(table)
+      .select("id")
+      .eq("name", name)
+      .single();
+
+    if (duplicateError) {
+      throw duplicateError;
+    }
+
+    return duplicate.id as string;
+  }
+
+  throw insertError ?? new Error("Nao foi possivel preparar os filtros.");
+}
+
 export function UploadMaterialForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const { supabase, user, isLoading, error: authError } = useAuth();
@@ -134,10 +184,17 @@ export function UploadMaterialForm() {
         externalUrl = validateExternalUrl(readText(formData, "externalUrl"));
       }
 
+      const [vestibularId, facultyId] = await Promise.all([
+        findOrCreateLookup(supabase, "vestibulares", vestibular),
+        findOrCreateLookup(supabase, "faculties", faculdade),
+      ]);
+
       const { data, error: insertError } = await supabase
         .from("materials")
         .insert({
           owner_id: user.id,
+          vestibular_id: vestibularId,
+          faculty_id: facultyId,
           title,
           description,
           vestibular,

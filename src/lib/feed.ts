@@ -33,7 +33,8 @@ type CommentRow = {
 };
 
 type IdRow = {
-  post_id: string;
+  post_id?: string;
+  target_id?: string;
   user_id?: string;
 };
 
@@ -99,7 +100,13 @@ function groupComments(comments: CommentRow[]) {
 
 function countByPost(rows: IdRow[]) {
   return rows.reduce<Record<string, number>>((acc, row) => {
-    acc[row.post_id] = (acc[row.post_id] ?? 0) + 1;
+    const postId = row.post_id ?? row.target_id;
+
+    if (!postId) {
+      return acc;
+    }
+
+    acc[postId] = (acc[postId] ?? 0) + 1;
     return acc;
   }, {});
 }
@@ -120,15 +127,15 @@ export async function getFeedData() {
     }
 
     const { data: postsData, error: postsError } = await supabase
-      .from("feed_posts")
+      .from("posts")
       .select(
         `
           id,
           content,
           tags,
           created_at,
-          author:profiles!feed_posts_author_id_fkey(id, full_name, email, city),
-          material:materials!feed_posts_material_id_fkey(id, title, subject, material_type)
+          author:profiles!posts_author_id_fkey(id, full_name, email, city),
+          material:materials!posts_material_id_fkey(id, title, subject, material_type)
         `,
       )
       .order("created_at", { ascending: false })
@@ -150,22 +157,23 @@ export async function getFeedData() {
 
     const [commentsResult, likesResult, savedResult] = await Promise.all([
       supabase
-        .from("post_comments")
+        .from("comments")
         .select(
           `
             id,
             post_id,
             content,
             created_at,
-            author:profiles!post_comments_author_id_fkey(id, full_name, email, city)
+            author:profiles!comments_author_id_fkey(id, full_name, email, city)
           `,
         )
         .in("post_id", postIds)
         .order("created_at", { ascending: true }),
       supabase
-        .from("post_likes")
-        .select("post_id,user_id")
-        .in("post_id", postIds),
+        .from("likes")
+        .select("target_id,user_id")
+        .eq("target_type", "post")
+        .in("target_id", postIds),
       supabase
         .from("saved_posts")
         .select("post_id,user_id")
@@ -193,7 +201,8 @@ export async function getFeedData() {
     const likedIds = new Set(
       likes
         .filter((row) => row.user_id === user.id)
-        .map((row) => row.post_id),
+        .map((row) => row.target_id)
+        .filter(Boolean),
     );
 
     const posts: FeedPost[] = rows.map((post) => {

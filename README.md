@@ -36,6 +36,8 @@ automaticamente após o cadastro.
 
 O schema também cria a estrutura da Biblioteca:
 
+- `vestibulares`: lista de vestibulares usada para organizar os materiais
+- `faculties`: lista de faculdades usada para organizar os materiais
 - `materials`: materiais com vestibular, faculdade, ano, matéria, tipo,
   arquivo/link, tags, status de aprovação e contador de visualizações
 - `saved_materials`: materiais salvos por usuário
@@ -45,9 +47,9 @@ O schema também cria a estrutura da Biblioteca:
 
 O feed da comunidade usa:
 
-- `feed_posts`: publicações com texto, tags e material anexado
-- `post_likes`: curtidas por usuário
-- `post_comments`: comentários dos posts
+- `posts`: publicações com texto, tags e material anexado
+- `likes`: curtidas de posts e materiais por usuário
+- `comments`: comentários dos posts
 - `saved_posts`: posts salvos por usuário
 
 O perfil público usa campos adicionais em `profiles`, incluindo `username`,
@@ -56,7 +58,7 @@ O perfil público usa campos adicionais em `profiles`, incluindo `username`,
 
 O ranking usa:
 
-- `material_likes`: curtidas recebidas em materiais
+- `likes`: curtidas recebidas em materiais
 - `calculate_reputation`: função que calcula reputação por usuário
 - `get_reputation_ranking`: função que retorna ranking geral ou filtrado
 

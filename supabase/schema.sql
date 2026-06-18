@@ -47,9 +47,29 @@ set username =
   ) || '-' || left(id::text, 8)
 where username is null;
 
+create table if not exists public.vestibulares (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  slug text generated always as (
+    lower(regexp_replace(name, '[^a-zA-Z0-9_]+', '-', 'g'))
+  ) stored,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.faculties (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  slug text generated always as (
+    lower(regexp_replace(name, '[^a-zA-Z0-9_]+', '-', 'g'))
+  ) stored,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists public.materials (
   id uuid primary key default gen_random_uuid(),
   owner_id uuid not null references public.profiles(id) on delete cascade,
+  vestibular_id uuid references public.vestibulares(id) on delete set null,
+  faculty_id uuid references public.faculties(id) on delete set null,
   title text not null,
   description text,
   vestibular text not null default 'Todos',
@@ -69,6 +89,8 @@ create table if not exists public.materials (
 );
 
 alter table public.materials
+  add column if not exists vestibular_id uuid references public.vestibulares(id) on delete set null,
+  add column if not exists faculty_id uuid references public.faculties(id) on delete set null,
   add column if not exists vestibular text not null default 'Todos',
   add column if not exists faculdade text not null default 'Medicina',
   add column if not exists year integer not null default extract(year from now())::integer,
@@ -82,9 +104,7 @@ alter table public.materials
 do $$
 begin
   if not exists (
-    select 1
-    from pg_constraint
-    where conname = 'materials_material_type_check'
+    select 1 from pg_constraint where conname = 'materials_material_type_check'
   ) then
     alter table public.materials
       add constraint materials_material_type_check
@@ -94,6 +114,7 @@ begin
           'Gabarito',
           'Simulado',
           'Resumo',
+          'Lista de exercicios',
           'Lista de exercícios',
           'Mapa mental'
         )
@@ -105,9 +126,7 @@ $$;
 do $$
 begin
   if not exists (
-    select 1
-    from pg_constraint
-    where conname = 'materials_status_check'
+    select 1 from pg_constraint where conname = 'materials_status_check'
   ) then
     alter table public.materials
       add constraint materials_status_check
@@ -119,9 +138,7 @@ $$;
 do $$
 begin
   if not exists (
-    select 1
-    from pg_constraint
-    where conname = 'materials_upload_kind_check'
+    select 1 from pg_constraint where conname = 'materials_upload_kind_check'
   ) then
     alter table public.materials
       add constraint materials_upload_kind_check
@@ -137,201 +154,265 @@ create table if not exists public.saved_materials (
   primary key (user_id, material_id)
 );
 
-create table if not exists public.material_likes (
-  user_id uuid not null references public.profiles(id) on delete cascade,
-  material_id uuid not null references public.materials(id) on delete cascade,
-  created_at timestamptz not null default now(),
-  primary key (user_id, material_id)
-);
-
-create table if not exists public.feed_posts (
+create table if not exists public.posts (
   id uuid primary key default gen_random_uuid(),
   author_id uuid not null references public.profiles(id) on delete cascade,
-  material_id uuid,
+  material_id uuid references public.materials(id) on delete set null,
   content text not null,
   tags text[] not null default '{}',
   created_at timestamptz not null default now()
 );
 
-alter table public.feed_posts
-  add column if not exists material_id uuid,
-  add column if not exists tags text[] not null default '{}';
-
-do $$
-begin
-  if not exists (
-    select 1
-    from pg_constraint
-    where conname = 'feed_posts_material_id_fkey'
-  ) then
-    alter table public.feed_posts
-      add constraint feed_posts_material_id_fkey
-      foreign key (material_id)
-      references public.materials(id)
-      on delete set null;
-  end if;
-end;
-$$;
-
-create table if not exists public.post_likes (
-  post_id uuid not null references public.feed_posts(id) on delete cascade,
-  user_id uuid not null references public.profiles(id) on delete cascade,
-  created_at timestamptz not null default now(),
-  primary key (post_id, user_id)
-);
-
-create table if not exists public.post_comments (
+create table if not exists public.comments (
   id uuid primary key default gen_random_uuid(),
-  post_id uuid not null references public.feed_posts(id) on delete cascade,
+  post_id uuid not null references public.posts(id) on delete cascade,
   author_id uuid not null references public.profiles(id) on delete cascade,
   content text not null,
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.likes (
+  target_type text not null,
+  target_id uuid not null,
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (target_type, target_id, user_id),
+  constraint likes_target_type_check check (target_type in ('post', 'material'))
+);
+
 create table if not exists public.saved_posts (
-  post_id uuid not null references public.feed_posts(id) on delete cascade,
+  post_id uuid not null references public.posts(id) on delete cascade,
   user_id uuid not null references public.profiles(id) on delete cascade,
   created_at timestamptz not null default now(),
   primary key (post_id, user_id)
 );
 
+do $$
+begin
+  if exists (
+    select 1
+    from pg_constraint
+    where conrelid = 'public.saved_posts'::regclass
+      and conname = 'saved_posts_post_id_fkey'
+  ) then
+    alter table public.saved_posts
+      drop constraint saved_posts_post_id_fkey;
+  end if;
+
+  if not exists (
+    select 1
+    from pg_constraint
+    where conrelid = 'public.saved_posts'::regclass
+      and conname = 'saved_posts_post_id_posts_fkey'
+  ) then
+    alter table public.saved_posts
+      add constraint saved_posts_post_id_posts_fkey
+      foreign key (post_id)
+      references public.posts(id)
+      on delete cascade
+      not valid;
+  end if;
+end;
+$$;
+
+do $$
+begin
+  if to_regclass('public.feed_posts') is not null then
+    insert into public.posts (id, author_id, material_id, content, tags, created_at)
+    select id, author_id, material_id, content, coalesce(tags, '{}'), created_at
+    from public.feed_posts
+    on conflict (id) do nothing;
+  end if;
+
+  if to_regclass('public.post_comments') is not null then
+    insert into public.comments (id, post_id, author_id, content, created_at)
+    select id, post_id, author_id, content, created_at
+    from public.post_comments
+    on conflict (id) do nothing;
+  end if;
+
+  if to_regclass('public.post_likes') is not null then
+    insert into public.likes (target_type, target_id, user_id, created_at)
+    select 'post', post_id, user_id, created_at
+    from public.post_likes
+    on conflict (target_type, target_id, user_id) do nothing;
+  end if;
+
+  if to_regclass('public.material_likes') is not null then
+    insert into public.likes (target_type, target_id, user_id, created_at)
+    select 'material', material_id, user_id, created_at
+    from public.material_likes
+    on conflict (target_type, target_id, user_id) do nothing;
+  end if;
+end;
+$$;
+
+insert into public.vestibulares (name)
+select distinct vestibular
+from public.materials
+where vestibular is not null and trim(vestibular) <> ''
+on conflict (name) do nothing;
+
+insert into public.faculties (name)
+select distinct faculdade
+from public.materials
+where faculdade is not null and trim(faculdade) <> ''
+on conflict (name) do nothing;
+
+update public.materials m
+set vestibular_id = v.id
+from public.vestibulares v
+where m.vestibular_id is null and v.name = m.vestibular;
+
+update public.materials m
+set faculty_id = f.id
+from public.faculties f
+where m.faculty_id is null and f.name = m.faculdade;
+
 alter table public.profiles enable row level security;
+alter table public.vestibulares enable row level security;
+alter table public.faculties enable row level security;
 alter table public.materials enable row level security;
 alter table public.saved_materials enable row level security;
-alter table public.material_likes enable row level security;
-alter table public.feed_posts enable row level security;
-alter table public.post_likes enable row level security;
-alter table public.post_comments enable row level security;
+alter table public.posts enable row level security;
+alter table public.comments enable row level security;
+alter table public.likes enable row level security;
 alter table public.saved_posts enable row level security;
 
-drop policy if exists "Perfis publicos para leitura" on public.profiles;
-create policy "Perfis publicos para leitura"
+drop policy if exists profiles_select_public on public.profiles;
+create policy profiles_select_public
   on public.profiles for select
   using (true);
 
-drop policy if exists "Usuario cria o proprio perfil" on public.profiles;
-create policy "Usuario cria o proprio perfil"
+drop policy if exists profiles_insert_own on public.profiles;
+create policy profiles_insert_own
   on public.profiles for insert
   with check (auth.uid() = id);
 
-drop policy if exists "Usuario atualiza o proprio perfil" on public.profiles;
-create policy "Usuario atualiza o proprio perfil"
+drop policy if exists profiles_update_own on public.profiles;
+create policy profiles_update_own
   on public.profiles for update
   using (auth.uid() = id);
 
-drop policy if exists "Materiais publicos para leitura" on public.materials;
-drop policy if exists "Materiais aprovados ou do autor para leitura" on public.materials;
-create policy "Materiais aprovados ou do autor para leitura"
+drop policy if exists vestibulares_select_public on public.vestibulares;
+create policy vestibulares_select_public
+  on public.vestibulares for select
+  using (true);
+
+drop policy if exists vestibulares_insert_auth on public.vestibulares;
+create policy vestibulares_insert_auth
+  on public.vestibulares for insert
+  to authenticated
+  with check (true);
+
+drop policy if exists faculties_select_public on public.faculties;
+create policy faculties_select_public
+  on public.faculties for select
+  using (true);
+
+drop policy if exists faculties_insert_auth on public.faculties;
+create policy faculties_insert_auth
+  on public.faculties for insert
+  to authenticated
+  with check (true);
+
+drop policy if exists materials_select_approved_or_owner on public.materials;
+create policy materials_select_approved_or_owner
   on public.materials for select
   using (status = 'approved' or auth.uid() = owner_id);
 
-drop policy if exists "Usuario cria materiais" on public.materials;
-create policy "Usuario cria materiais"
+drop policy if exists materials_insert_own_pending on public.materials;
+create policy materials_insert_own_pending
   on public.materials for insert
   with check (auth.uid() = owner_id and status = 'pending');
 
-drop policy if exists "Autor atualiza materiais" on public.materials;
-create policy "Autor atualiza materiais"
+drop policy if exists materials_update_own on public.materials;
+create policy materials_update_own
   on public.materials for update
   using (auth.uid() = owner_id);
 
-drop policy if exists "Usuario le materiais salvos" on public.saved_materials;
-create policy "Usuario le materiais salvos"
+drop policy if exists saved_materials_select_own on public.saved_materials;
+create policy saved_materials_select_own
   on public.saved_materials for select
   using (auth.uid() = user_id);
 
-drop policy if exists "Usuario salva materiais" on public.saved_materials;
-create policy "Usuario salva materiais"
+drop policy if exists saved_materials_insert_own on public.saved_materials;
+create policy saved_materials_insert_own
   on public.saved_materials for insert
   with check (auth.uid() = user_id);
 
-drop policy if exists "Usuario remove materiais salvos" on public.saved_materials;
-create policy "Usuario remove materiais salvos"
+drop policy if exists saved_materials_delete_own on public.saved_materials;
+create policy saved_materials_delete_own
   on public.saved_materials for delete
   using (auth.uid() = user_id);
 
-drop policy if exists "Curtidas de materiais publicas para leitura" on public.material_likes;
-create policy "Curtidas de materiais publicas para leitura"
-  on public.material_likes for select
+drop policy if exists posts_select_public on public.posts;
+create policy posts_select_public
+  on public.posts for select
   using (true);
 
-drop policy if exists "Usuario curte materiais" on public.material_likes;
-create policy "Usuario curte materiais"
-  on public.material_likes for insert
-  with check (auth.uid() = user_id);
-
-drop policy if exists "Usuario remove propria curtida de material" on public.material_likes;
-create policy "Usuario remove propria curtida de material"
-  on public.material_likes for delete
-  using (auth.uid() = user_id);
-
-drop policy if exists "Feed publico para leitura" on public.feed_posts;
-create policy "Feed publico para leitura"
-  on public.feed_posts for select
-  using (true);
-
-drop policy if exists "Usuario cria posts" on public.feed_posts;
-create policy "Usuario cria posts"
-  on public.feed_posts for insert
+drop policy if exists posts_insert_own on public.posts;
+create policy posts_insert_own
+  on public.posts for insert
   with check (auth.uid() = author_id);
 
-drop policy if exists "Autor atualiza posts" on public.feed_posts;
-create policy "Autor atualiza posts"
-  on public.feed_posts for update
+drop policy if exists posts_update_own on public.posts;
+create policy posts_update_own
+  on public.posts for update
   using (auth.uid() = author_id);
 
-drop policy if exists "Autor remove posts" on public.feed_posts;
-create policy "Autor remove posts"
-  on public.feed_posts for delete
+drop policy if exists posts_delete_own on public.posts;
+create policy posts_delete_own
+  on public.posts for delete
   using (auth.uid() = author_id);
 
-drop policy if exists "Curtidas publicas para leitura" on public.post_likes;
-create policy "Curtidas publicas para leitura"
-  on public.post_likes for select
+drop policy if exists comments_select_public on public.comments;
+create policy comments_select_public
+  on public.comments for select
   using (true);
 
-drop policy if exists "Usuario curte posts" on public.post_likes;
-create policy "Usuario curte posts"
-  on public.post_likes for insert
-  with check (auth.uid() = user_id);
-
-drop policy if exists "Usuario remove propria curtida" on public.post_likes;
-create policy "Usuario remove propria curtida"
-  on public.post_likes for delete
-  using (auth.uid() = user_id);
-
-drop policy if exists "Comentarios publicos para leitura" on public.post_comments;
-create policy "Comentarios publicos para leitura"
-  on public.post_comments for select
-  using (true);
-
-drop policy if exists "Usuario comenta posts" on public.post_comments;
-create policy "Usuario comenta posts"
-  on public.post_comments for insert
+drop policy if exists comments_insert_own on public.comments;
+create policy comments_insert_own
+  on public.comments for insert
   with check (auth.uid() = author_id);
 
-drop policy if exists "Autor atualiza comentario" on public.post_comments;
-create policy "Autor atualiza comentario"
-  on public.post_comments for update
+drop policy if exists comments_update_own on public.comments;
+create policy comments_update_own
+  on public.comments for update
   using (auth.uid() = author_id);
 
-drop policy if exists "Autor remove comentario" on public.post_comments;
-create policy "Autor remove comentario"
-  on public.post_comments for delete
+drop policy if exists comments_delete_own on public.comments;
+create policy comments_delete_own
+  on public.comments for delete
   using (auth.uid() = author_id);
 
-drop policy if exists "Usuario le posts salvos" on public.saved_posts;
-create policy "Usuario le posts salvos"
+drop policy if exists likes_select_public on public.likes;
+create policy likes_select_public
+  on public.likes for select
+  using (true);
+
+drop policy if exists likes_insert_own on public.likes;
+create policy likes_insert_own
+  on public.likes for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists likes_delete_own on public.likes;
+create policy likes_delete_own
+  on public.likes for delete
+  using (auth.uid() = user_id);
+
+drop policy if exists saved_posts_select_own on public.saved_posts;
+create policy saved_posts_select_own
   on public.saved_posts for select
   using (auth.uid() = user_id);
 
-drop policy if exists "Usuario salva posts" on public.saved_posts;
-create policy "Usuario salva posts"
+drop policy if exists saved_posts_insert_own on public.saved_posts;
+create policy saved_posts_insert_own
   on public.saved_posts for insert
   with check (auth.uid() = user_id);
 
-drop policy if exists "Usuario remove posts salvos" on public.saved_posts;
-create policy "Usuario remove posts salvos"
+drop policy if exists saved_posts_delete_own on public.saved_posts;
+create policy saved_posts_delete_own
   on public.saved_posts for delete
   using (auth.uid() = user_id);
 
@@ -406,8 +487,9 @@ as $$
   ),
   material_like_points as (
     select count(*)::integer * 2 as points
-    from public.material_likes ml
-    join approved_materials am on am.id = ml.material_id
+    from public.likes l
+    join approved_materials am on am.id = l.target_id
+    where l.target_type = 'material'
   ),
   material_save_points as (
     select count(*)::integer * 5 as points
@@ -415,18 +497,12 @@ as $$
     join approved_materials am on am.id = sm.material_id
   ),
   authored_posts as (
-    select fp.id
-    from public.feed_posts fp
-    left join public.materials m on m.id = fp.material_id
-    where fp.author_id = profile_id
-      and (
-        filter_subject is null
-        or m.subject = filter_subject
-      )
-      and (
-        filter_vestibular is null
-        or m.vestibular = filter_vestibular
-      )
+    select p.id
+    from public.posts p
+    left join public.materials m on m.id = p.material_id
+    where p.author_id = profile_id
+      and (filter_subject is null or m.subject = filter_subject)
+      and (filter_vestibular is null or m.vestibular = filter_vestibular)
   ),
   post_points as (
     select count(*)::integer * 5 as points
@@ -434,18 +510,12 @@ as $$
   ),
   comment_points as (
     select count(*)::integer * 3 as points
-    from public.post_comments pc
-    join public.feed_posts fp on fp.id = pc.post_id
-    left join public.materials m on m.id = fp.material_id
-    where pc.author_id = profile_id
-      and (
-        filter_subject is null
-        or m.subject = filter_subject
-      )
-      and (
-        filter_vestibular is null
-        or m.vestibular = filter_vestibular
-      )
+    from public.comments c
+    join public.posts p on p.id = c.post_id
+    left join public.materials m on m.id = p.material_id
+    where c.author_id = profile_id
+      and (filter_subject is null or m.subject = filter_subject)
+      and (filter_vestibular is null or m.vestibular = filter_vestibular)
   )
   select
     coalesce((select points from material_points), 0)
@@ -501,9 +571,10 @@ as $$
       ) as approved_materials,
       (
         select count(*)::integer
-        from public.material_likes ml
-        join public.materials m on m.id = ml.material_id
-        where m.owner_id = p.id
+        from public.likes l
+        join public.materials m on m.id = l.target_id
+        where l.target_type = 'material'
+          and m.owner_id = p.id
           and m.status = 'approved'
           and (filter_subject is null or m.subject = filter_subject)
           and (filter_vestibular is null or m.vestibular = filter_vestibular)
@@ -519,18 +590,18 @@ as $$
       ) as material_saves_received,
       (
         select count(*)::integer
-        from public.post_comments pc
-        join public.feed_posts fp on fp.id = pc.post_id
-        left join public.materials m on m.id = fp.material_id
-        where pc.author_id = p.id
+        from public.comments c
+        join public.posts po on po.id = c.post_id
+        left join public.materials m on m.id = po.material_id
+        where c.author_id = p.id
           and (filter_subject is null or m.subject = filter_subject)
           and (filter_vestibular is null or m.vestibular = filter_vestibular)
       ) as comments_made,
       (
         select count(*)::integer
-        from public.feed_posts fp
-        left join public.materials m on m.id = fp.material_id
-        where fp.author_id = p.id
+        from public.posts po
+        left join public.materials m on m.id = po.material_id
+        where po.author_id = p.id
           and (filter_subject is null or m.subject = filter_subject)
           and (filter_vestibular is null or m.vestibular = filter_vestibular)
       ) as posts_created
@@ -590,13 +661,13 @@ set
   file_size_limit = excluded.file_size_limit,
   allowed_mime_types = excluded.allowed_mime_types;
 
-drop policy if exists "Arquivos de materiais publicos" on storage.objects;
-create policy "Arquivos de materiais publicos"
+drop policy if exists storage_materials_select_public on storage.objects;
+create policy storage_materials_select_public
   on storage.objects for select
   using (bucket_id = 'materials');
 
-drop policy if exists "Usuarios autenticados enviam materiais" on storage.objects;
-create policy "Usuarios autenticados enviam materiais"
+drop policy if exists storage_materials_insert_own on storage.objects;
+create policy storage_materials_insert_own
   on storage.objects for insert
   to authenticated
   with check (
@@ -604,8 +675,8 @@ create policy "Usuarios autenticados enviam materiais"
     and (storage.foldername(name))[1] = auth.uid()::text
   );
 
-drop policy if exists "Usuarios atualizam seus arquivos" on storage.objects;
-create policy "Usuarios atualizam seus arquivos"
+drop policy if exists storage_materials_update_own on storage.objects;
+create policy storage_materials_update_own
   on storage.objects for update
   to authenticated
   using (
@@ -613,8 +684,8 @@ create policy "Usuarios atualizam seus arquivos"
     and (storage.foldername(name))[1] = auth.uid()::text
   );
 
-drop policy if exists "Usuarios removem seus arquivos" on storage.objects;
-create policy "Usuarios removem seus arquivos"
+drop policy if exists storage_materials_delete_own on storage.objects;
+create policy storage_materials_delete_own
   on storage.objects for delete
   to authenticated
   using (
