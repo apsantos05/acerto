@@ -2,9 +2,18 @@ import { CalendarDays, FileUp, Target, TrendingUp } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/ui/stat-card";
-import { materials, stats } from "@/lib/mock-data";
+import { getDashboardData } from "@/lib/dashboard";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const { stats, recentMaterials } = await getDashboardData();
+
+  const statCards = [
+    { label: "Materiais disponíveis", value: stats.materialsAvailable },
+    { label: "Provas e simulados", value: stats.examsAndSimulados },
+    { label: "Estudantes cadastrados", value: stats.studentsRegistered },
+    { label: "Materiais aprovados", value: stats.materialsApproved },
+  ];
+
   return (
     <AppShell>
       <PageHeader
@@ -14,8 +23,12 @@ export default function DashboardPage() {
       />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <StatCard key={stat.label} label={stat.label} value={stat.value} />
+        {statCards.map((stat) => (
+          <StatCard
+            key={stat.label}
+            label={stat.label}
+            value={stat.value.toLocaleString("pt-BR")}
+          />
         ))}
       </div>
 
@@ -70,17 +83,23 @@ export default function DashboardPage() {
           </h2>
         </div>
         <div className="mt-5 grid gap-3 md:grid-cols-2">
-          {materials.map((material) => (
-            <div
-              key={material.title}
-              className="rounded-lg border border-slate-100 bg-slate-50 p-4"
-            >
-              <p className="font-semibold text-slate-950">{material.title}</p>
-              <p className="mt-1 text-sm text-slate-500">
-                {material.type} · {material.subject}
-              </p>
-            </div>
-          ))}
+          {recentMaterials.length > 0 ? (
+            recentMaterials.map((material) => (
+              <div
+                key={material.id}
+                className="rounded-lg border border-slate-100 bg-slate-50 p-4"
+              >
+                <p className="font-semibold text-slate-950">{material.title}</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {material.materialType} · {material.subject}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-slate-500">
+              Nenhum material aprovado ainda.
+            </p>
+          )}
         </div>
       </section>
     </AppShell>
