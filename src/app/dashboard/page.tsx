@@ -1,11 +1,15 @@
-import { CalendarDays, FileUp, Target, TrendingUp } from "lucide-react";
+import { FileUp } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/ui/stat-card";
+import { WeeklyPlan } from "@/components/dashboard/weekly-plan";
+import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
 import { getDashboardData } from "@/lib/dashboard";
+import { getStudyPlanner } from "@/lib/study-planner";
 
 export default async function DashboardPage() {
   const { stats, recentMaterials } = await getDashboardData();
+  const { tasks, goal } = await getStudyPlanner();
 
   const statCards = [
     { label: "Materiais disponíveis", value: stats.materialsAvailable },
@@ -33,46 +37,8 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-950">
-              Plano da semana
-            </h2>
-            <CalendarDays className="text-sky-700" />
-          </div>
-          <div className="mt-6 space-y-4">
-            {["Biologia celular", "Física mecânica", "Redação ENEM"].map(
-              (task, index) => (
-                <div key={task} className="flex items-center gap-4">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-100 text-sm font-semibold text-cyan-800">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-slate-950">{task}</p>
-                    <div className="mt-2 h-2 rounded-full bg-slate-100">
-                      <div
-                        className="h-2 rounded-full bg-cyan-400"
-                        style={{ width: `${72 - index * 14}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ),
-            )}
-          </div>
-        </section>
-
-        <section className="rounded-xl border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
-          <Target className="text-cyan-300" />
-          <h2 className="mt-5 text-xl font-semibold">Meta atual</h2>
-          <p className="mt-2 text-slate-300">
-            Resolver 240 questões e publicar 2 resumos até domingo.
-          </p>
-          <div className="mt-6 flex items-center gap-3 text-cyan-300">
-            <TrendingUp />
-            <span className="font-semibold">64% concluído</span>
-          </div>
-        </section>
+        <WeeklyPlan tasks={tasks} />
+        <WeeklyGoalCard goal={goal} />
       </div>
 
       <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
