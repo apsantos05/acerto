@@ -6,6 +6,7 @@ import { CheckCircle2, LinkIcon, UploadCloud } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { materialTypes } from "@/lib/material-options";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
+import { slugify } from "@/lib/slug";
 
 const allowedMimeTypes = [
   "application/pdf",
@@ -77,7 +78,7 @@ async function findOrCreateLookup(
 
   const { data: created, error: insertError } = await supabase
     .from(table)
-    .insert({ name })
+    .insert({ name, slug: slugify(name) })
     .select("id")
     .single();
 
