@@ -4,23 +4,22 @@
 -- Requer: supabase/admin_role.sql (função is_admin()) já aplicado.
 -- =====================================================================
 
--- Exclui um material e tudo relacionado (likes polimórficos, salvos,
--- avaliações e o registro de storage). Só admin pode executar.
+-- Exclui um material e tudo relacionado nas TABELAS (likes polimórficos,
+-- salvos e avaliações). Só admin pode executar.
+-- IMPORTANTE: não toca em storage.objects — a remoção direta das tabelas de
+-- storage é proibida pelo Supabase (use a Storage API). O arquivo físico é
+-- apagado pelo cliente com supabase.storage.from('materials').remove([path]).
 create or replace function public.admin_delete_material(p_material_id uuid)
 returns void
 language plpgsql
 security definer
 set search_path = public
 as $$
-declare
-  v_path text;
 begin
   if not public.is_admin() then
     raise exception 'Apenas administradores podem excluir materiais.'
       using errcode = '42501';
   end if;
-
-  select storage_path into v_path from public.materials where id = p_material_id;
 
   -- Curtidas são polimórficas (sem FK) -> remover manualmente
   delete from public.likes where target_type = 'material' and target_id = p_material_id;
@@ -28,12 +27,6 @@ begin
 
   if to_regclass('public.material_ratings') is not null then
     execute 'delete from public.material_ratings where material_id = $1' using p_material_id;
-  end if;
-
-  -- Remove o registro do arquivo no Storage (o arquivo físico é removido
-  -- pelo cliente via storage.remove; isto limpa metadados remanescentes)
-  if v_path is not null then
-    delete from storage.objects where bucket_id = 'materials' and name = v_path;
   end if;
 
   -- Posts que referenciam o material ficam com material_id nulo (FK set null)

@@ -89,16 +89,32 @@ export function ModerationCard({ material }: ModerationCardProps) {
     }
     setIsSaving(true);
     try {
+      // 1. Arquivo: usar SEMPRE a Storage API (nunca deletar storage.objects
+      //    direto). Pular quando for link externo (sem storage_path).
       if (material.storagePath) {
         const { error: removeError } = await supabase.storage
           .from("materials")
           .remove([material.storagePath]);
         if (removeError) {
-          // Não bloqueia a exclusão do registro — apenas registra.
-          console.warn("[admin] storage remove:", removeError.message);
+          // Best-effort: não bloqueia a exclusão do registro.
+          console.warn(
+            "[admin] falha ao remover arquivo do storage (seguindo):",
+            removeError.message,
+          );
+        } else {
+          console.info(
+            "[admin] arquivo removido do storage:",
+            material.storagePath,
+          );
         }
+      } else {
+        console.info(
+          "[admin] material sem storage_path (link externo) — sem remoção de arquivo",
+        );
       }
 
+      // 2-5. RPC remove likes, saved_materials, material_ratings e, por fim,
+      //      o registro em materials.
       const { error: rpcError } = await supabase.rpc("admin_delete_material", {
         p_material_id: material.id,
       });
@@ -106,6 +122,7 @@ export function ModerationCard({ material }: ModerationCardProps) {
         throw rpcError;
       }
 
+      console.info("[admin] material excluído:", material.id);
       setDone("deleted");
       router.refresh();
     } catch (deleteError) {
