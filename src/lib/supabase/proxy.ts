@@ -8,6 +8,7 @@ const exactPrivateRoutes = [
 ];
 
 const privateRoutes = [
+  "/admin",
   "/dashboard",
   "/biblioteca/enviar",
   "/feed",
