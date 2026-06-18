@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, FileQuestion, Trash2 } from "lucide-react";
+import { Eye, EyeOff, FileQuestion, Pencil, Save, Trash2 } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
 import type { AdminSimulado } from "@/lib/admin";
@@ -14,7 +14,32 @@ export function SimuladoAdminCard({ simulado }: { simulado: AdminSimulado }) {
   const [busy, setBusy] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [removed, setRemoved] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [duration, setDuration] = useState(String(simulado.durationMinutes));
+  const [rules, setRules] = useState(simulado.rules);
   const [error, setError] = useState("");
+
+  async function saveEdit() {
+    setError("");
+    if (!supabase || !user) return;
+    setBusy(true);
+    try {
+      const minutes = Math.max(1, Math.min(600, Math.round(Number(duration)) || 1));
+      const { error: updateError } = await supabase
+        .from("simulados")
+        .update({ duration_minutes: minutes, rules: rules.trim() })
+        .eq("id", simulado.id);
+      if (updateError) throw updateError;
+      setDuration(String(minutes));
+      setEditing(false);
+      router.refresh();
+    } catch (saveError) {
+      console.error("[admin] editar simulado:", saveError);
+      setError(getSupabaseErrorMessage(saveError, "Não foi possível salvar."));
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function toggleStatus() {
     setError("");
@@ -93,6 +118,15 @@ export function SimuladoAdminCard({ simulado }: { simulado: AdminSimulado }) {
         <div className="flex shrink-0 gap-2">
           <button
             type="button"
+            onClick={() => setEditing((e) => !e)}
+            disabled={busy}
+            className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-70"
+          >
+            <Pencil size={15} />
+            Editar
+          </button>
+          <button
+            type="button"
             onClick={toggleStatus}
             disabled={busy}
             className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-70"
@@ -131,6 +165,44 @@ export function SimuladoAdminCard({ simulado }: { simulado: AdminSimulado }) {
           )}
         </div>
       </div>
+      {editing ? (
+        <div className="mt-4 space-y-3 border-t border-slate-100 pt-4">
+          <label className="block">
+            <span className="text-sm font-medium text-slate-700">
+              Tempo do simulado (minutos)
+            </span>
+            <input
+              type="number"
+              min={1}
+              max={600}
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="mt-1 w-32 rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-sky-400"
+            />
+          </label>
+          <label className="block">
+            <span className="text-sm font-medium text-slate-700">
+              Regras exibidas
+            </span>
+            <textarea
+              value={rules}
+              onChange={(e) => setRules(e.target.value)}
+              rows={4}
+              className="mt-1 w-full resize-none rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-sky-400"
+            />
+          </label>
+          <button
+            type="button"
+            onClick={saveEdit}
+            disabled={busy}
+            className="inline-flex items-center gap-2 rounded-lg bg-sky-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800 disabled:opacity-70"
+          >
+            <Save size={15} />
+            Salvar alterações
+          </button>
+        </div>
+      ) : null}
+
       {error ? (
         <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}

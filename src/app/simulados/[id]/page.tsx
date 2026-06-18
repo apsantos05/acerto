@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, FileQuestion } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { SimuladoRunner } from "@/components/simulados/simulado-runner";
-import { getSimulado, getSimuladoQuestions } from "@/lib/simulados";
+import {
+  getActiveAttempt,
+  getSimulado,
+  getSimuladoQuestions,
+} from "@/lib/simulados";
 
 type SimuladoPageProps = {
   params: Promise<{ id: string }>;
@@ -17,7 +21,10 @@ export default async function SimuladoPage({ params }: SimuladoPageProps) {
     notFound();
   }
 
-  const questions = await getSimuladoQuestions(id);
+  const [questions, activeAttempt] = await Promise.all([
+    getSimuladoQuestions(id),
+    getActiveAttempt(id),
+  ]);
 
   return (
     <AppShell>
@@ -46,7 +53,11 @@ export default async function SimuladoPage({ params }: SimuladoPageProps) {
         </div>
       </div>
 
-      <SimuladoRunner simulado={simulado} questions={questions} />
+      <SimuladoRunner
+        simulado={simulado}
+        questions={questions}
+        activeAttempt={activeAttempt}
+      />
     </AppShell>
   );
 }

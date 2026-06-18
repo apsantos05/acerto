@@ -151,6 +151,8 @@ export type AdminSimulado = {
   vestibular: string;
   faculty: string;
   questionCount: number;
+  durationMinutes: number;
+  rules: string;
   status: "draft" | "published";
 };
 
@@ -159,7 +161,7 @@ export async function getAdminSimulados(): Promise<AdminSimulado[]> {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("simulados")
-      .select("id,title,vestibular,faculty,question_count,status")
+      .select("id,title,vestibular,faculty,question_count,duration_minutes,rules,status")
       .order("created_at", { ascending: true });
     if (error) {
       console.error("[admin] simulados falharam:", error);
@@ -172,6 +174,8 @@ export async function getAdminSimulados(): Promise<AdminSimulado[]> {
         vestibular: string | null;
         faculty: string | null;
         question_count: number | null;
+        duration_minutes: number | null;
+        rules: string | null;
         status: string | null;
       }>
     ).map((row) => ({
@@ -180,6 +184,8 @@ export async function getAdminSimulados(): Promise<AdminSimulado[]> {
       vestibular: row.vestibular ?? "Geral",
       faculty: row.faculty ?? "Medicina",
       questionCount: row.question_count ?? 0,
+      durationMinutes: row.duration_minutes ?? 60,
+      rules: row.rules ?? "",
       status: row.status === "draft" ? "draft" : "published",
     }));
   } catch (simError) {

@@ -2,102 +2,38 @@
   "simulados": [
     {
       "title": "Simulado FUVEST Medicina",
-      "description": "Simulado autoral no estilo FUVEST: questões conteudistas e interdisciplinares de Biologia, Química, Física e Matemática. Questões originais, não copiadas de provas oficiais.",
+      "description": "Simulado autoral no estilo FUVEST (1ª fase): questões conteudistas e interdisciplinares de Biologia, Química, Física e Matemática. Questões originais, não copiadas de provas oficiais.",
       "vestibular": "FUVEST",
       "faculty": "USP",
-      "durationMinutes": 60,
+      "durationMinutes": 20,
+      "officialMinutes": 300,
+      "officialQuestions": 90,
       "difficulty": "médio",
+      "rules": "FUVEST (USP) — processo em 2 fases. 1ª fase: 90 questões objetivas de múltipla escolha, com 5 alternativas (A–E), aplicadas em 5 horas; é classificatória. 2ª fase: provas discursivas em 2 dias (Português e Redação + questões específicas por área). Este simulado é uma amostra autoral no estilo da 1ª fase.",
       "questions": [
-        {
-          "subject": "Biologia",
-          "questionText": "Em células eucarióticas, a maior parte do ATP produzido por fosforilação oxidativa é gerada em qual organela?",
-          "alternatives": { "A": "Ribossomo", "B": "Complexo golgiense", "C": "Mitocôndria", "D": "Lisossomo", "E": "Retículo endoplasmático rugoso" },
-          "correctAnswer": "C",
-          "explanation": "A fosforilação oxidativa ocorre na membrana interna das mitocôndrias, onde a cadeia transportadora de elétrons gera a maior parte do ATP celular.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Química",
-          "questionText": "Na combustão completa do metano (CH4), quantos mols de O2 são consumidos por mol de metano? (CH4 + 2 O2 → CO2 + 2 H2O)",
-          "alternatives": { "A": "0,5", "B": "1", "C": "2", "D": "3", "E": "4" },
-          "correctAnswer": "C",
-          "explanation": "Pela equação balanceada, 1 mol de CH4 reage com 2 mols de O2, produzindo 1 mol de CO2 e 2 mols de H2O.",
-          "difficulty": "médio"
-        },
-        {
-          "subject": "Física",
-          "questionText": "Um corpo parte do repouso com aceleração constante de 2 m/s². Qual é sua velocidade após 5 s?",
-          "alternatives": { "A": "2 m/s", "B": "5 m/s", "C": "7 m/s", "D": "10 m/s", "E": "25 m/s" },
-          "correctAnswer": "D",
-          "explanation": "Como parte do repouso, v = a·t = 2 · 5 = 10 m/s.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Matemática",
-          "questionText": "Seja a função f(x) = 2x + 3. Qual é o valor de f(4)?",
-          "alternatives": { "A": "8", "B": "9", "C": "10", "D": "11", "E": "14" },
-          "correctAnswer": "D",
-          "explanation": "f(4) = 2·4 + 3 = 8 + 3 = 11.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Biologia",
-          "questionText": "No cruzamento entre dois indivíduos heterozigotos (Aa × Aa), para um gene com dominância completa, qual é a proporção fenotípica esperada na descendência?",
-          "alternatives": { "A": "1 : 1", "B": "3 : 1", "C": "1 : 2 : 1", "D": "9 : 3 : 3 : 1", "E": "1 : 3 inverso" },
-          "correctAnswer": "B",
-          "explanation": "Aa × Aa gera 1 AA : 2 Aa : 1 aa. Com dominância completa, AA e Aa têm o mesmo fenótipo, resultando em 3 dominantes : 1 recessivo.",
-          "difficulty": "médio"
-        }
+        { "subject": "Biologia", "questionText": "Em células eucarióticas, a maior parte do ATP produzido por fosforilação oxidativa é gerada em qual organela?", "alternatives": { "A": "Ribossomo", "B": "Complexo golgiense", "C": "Mitocôndria", "D": "Lisossomo", "E": "Retículo endoplasmático rugoso" }, "correctAnswer": "C", "explanation": "A fosforilação oxidativa ocorre na membrana interna das mitocôndrias, onde a cadeia transportadora de elétrons gera a maior parte do ATP celular.", "difficulty": "fácil" },
+        { "subject": "Química", "questionText": "Na combustão completa do metano (CH4), quantos mols de O2 são consumidos por mol de metano? (CH4 + 2 O2 → CO2 + 2 H2O)", "alternatives": { "A": "0,5", "B": "1", "C": "2", "D": "3", "E": "4" }, "correctAnswer": "C", "explanation": "Pela equação balanceada, 1 mol de CH4 reage com 2 mols de O2, produzindo 1 mol de CO2 e 2 mols de H2O.", "difficulty": "médio" },
+        { "subject": "Física", "questionText": "Um corpo parte do repouso com aceleração constante de 2 m/s². Qual é sua velocidade após 5 s?", "alternatives": { "A": "2 m/s", "B": "5 m/s", "C": "7 m/s", "D": "10 m/s", "E": "25 m/s" }, "correctAnswer": "D", "explanation": "Como parte do repouso, v = a·t = 2 · 5 = 10 m/s.", "difficulty": "fácil" },
+        { "subject": "Matemática", "questionText": "Seja a função f(x) = 2x + 3. Qual é o valor de f(4)?", "alternatives": { "A": "8", "B": "9", "C": "10", "D": "11", "E": "14" }, "correctAnswer": "D", "explanation": "f(4) = 2·4 + 3 = 8 + 3 = 11.", "difficulty": "fácil" },
+        { "subject": "Biologia", "questionText": "No cruzamento entre dois indivíduos heterozigotos (Aa × Aa), para um gene com dominância completa, qual é a proporção fenotípica esperada na descendência?", "alternatives": { "A": "1 : 1", "B": "3 : 1", "C": "1 : 2 : 1", "D": "9 : 3 : 3 : 1", "E": "1 : 3 inverso" }, "correctAnswer": "B", "explanation": "Aa × Aa gera 1 AA : 2 Aa : 1 aa. Com dominância completa, AA e Aa têm o mesmo fenótipo, resultando em 3 dominantes : 1 recessivo.", "difficulty": "médio" }
       ]
     },
     {
       "title": "Simulado UNICAMP Medicina",
-      "description": "Simulado autoral no estilo UNICAMP: questões contextualizadas com foco em interpretação, aplicação e raciocínio. Questões originais.",
+      "description": "Simulado autoral no estilo UNICAMP (1ª fase): questões contextualizadas com foco em interpretação, aplicação e raciocínio. Questões originais.",
       "vestibular": "UNICAMP",
       "faculty": "UNICAMP",
-      "durationMinutes": 60,
+      "durationMinutes": 20,
+      "officialMinutes": 300,
+      "officialQuestions": 72,
       "difficulty": "médio",
+      "rules": "UNICAMP (Comvest) — processo em 2 fases. 1ª fase: 72 questões objetivas de múltipla escolha, com 5 alternativas (A–E), em 5 horas, distribuídas entre Português e Literatura (12), Matemática (12), História (7), Geografia (7), Filosofia (3), Sociologia (3), Física (7), Química (7), Biologia (7) e Inglês (7); enunciados contextualizados e interdisciplinares. 2ª fase: provas discursivas em 2 dias. Amostra autoral no estilo da 1ª fase.",
       "questions": [
-        {
-          "subject": "Biologia",
-          "questionText": "Em uma cadeia alimentar, considere que apenas cerca de 10% da energia é transferida de um nível trófico ao seguinte. Se os produtores fixam 10.000 kcal, aproximadamente quanta energia chega aos consumidores secundários?",
-          "alternatives": { "A": "9.000 kcal", "B": "5.000 kcal", "C": "1.000 kcal", "D": "100 kcal", "E": "10 kcal" },
-          "correctAnswer": "D",
-          "explanation": "Produtores 10.000 → consumidores primários ~1.000 (10%) → consumidores secundários ~100 (10% de 1.000).",
-          "difficulty": "médio"
-        },
-        {
-          "subject": "Química",
-          "questionText": "Uma solução aquosa apresenta concentração de íons H+ igual a 1 × 10⁻³ mol/L. Qual é o pH dessa solução?",
-          "alternatives": { "A": "1", "B": "2", "C": "3", "D": "7", "E": "11" },
-          "correctAnswer": "C",
-          "explanation": "pH = -log[H+] = -log(10⁻³) = 3.",
-          "difficulty": "médio"
-        },
-        {
-          "subject": "Física",
-          "questionText": "Um objeto de 2 kg está a 5 m de altura em relação ao solo. Considerando g = 10 m/s², qual é sua energia potencial gravitacional?",
-          "alternatives": { "A": "10 J", "B": "25 J", "C": "50 J", "D": "100 J", "E": "1000 J" },
-          "correctAnswer": "D",
-          "explanation": "Ep = m·g·h = 2 · 10 · 5 = 100 J.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Matemática",
-          "questionText": "Em um município, foram registrados 2.000 casos de uma doença, dos quais 40% ocorreram em jovens. Quantos casos ocorreram em jovens?",
-          "alternatives": { "A": "400", "B": "600", "C": "800", "D": "1.200", "E": "40" },
-          "correctAnswer": "C",
-          "explanation": "40% de 2.000 = 0,40 · 2.000 = 800 casos.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Biologia",
-          "questionText": "Durante um exercício físico intenso, a frequência respiratória aumenta. O principal estímulo para esse aumento é a elevação da concentração sanguínea de qual gás?",
-          "alternatives": { "A": "Oxigênio (O2)", "B": "Gás carbônico (CO2)", "C": "Nitrogênio (N2)", "D": "Hidrogênio (H2)", "E": "Hélio (He)" },
-          "correctAnswer": "B",
-          "explanation": "O aumento de CO2 (e a consequente queda do pH sanguíneo) é detectado por quimiorreceptores, que estimulam o centro respiratório a aumentar a ventilação.",
-          "difficulty": "médio"
-        }
+        { "subject": "Biologia", "questionText": "Em uma cadeia alimentar, considere que apenas cerca de 10% da energia é transferida de um nível trófico ao seguinte. Se os produtores fixam 10.000 kcal, aproximadamente quanta energia chega aos consumidores secundários?", "alternatives": { "A": "9.000 kcal", "B": "5.000 kcal", "C": "1.000 kcal", "D": "100 kcal", "E": "10 kcal" }, "correctAnswer": "D", "explanation": "Produtores 10.000 → consumidores primários ~1.000 (10%) → consumidores secundários ~100 (10% de 1.000).", "difficulty": "médio" },
+        { "subject": "Química", "questionText": "Uma solução aquosa apresenta concentração de íons H+ igual a 1 × 10⁻³ mol/L. Qual é o pH dessa solução?", "alternatives": { "A": "1", "B": "2", "C": "3", "D": "7", "E": "11" }, "correctAnswer": "C", "explanation": "pH = -log[H+] = -log(10⁻³) = 3.", "difficulty": "médio" },
+        { "subject": "Física", "questionText": "Um objeto de 2 kg está a 5 m de altura em relação ao solo. Considerando g = 10 m/s², qual é sua energia potencial gravitacional?", "alternatives": { "A": "10 J", "B": "25 J", "C": "50 J", "D": "100 J", "E": "1000 J" }, "correctAnswer": "D", "explanation": "Ep = m·g·h = 2 · 10 · 5 = 100 J.", "difficulty": "fácil" },
+        { "subject": "Matemática", "questionText": "Em um município, foram registrados 2.000 casos de uma doença, dos quais 40% ocorreram em jovens. Quantos casos ocorreram em jovens?", "alternatives": { "A": "400", "B": "600", "C": "800", "D": "1.200", "E": "40" }, "correctAnswer": "C", "explanation": "40% de 2.000 = 0,40 · 2.000 = 800 casos.", "difficulty": "fácil" },
+        { "subject": "Biologia", "questionText": "Durante um exercício físico intenso, a frequência respiratória aumenta. O principal estímulo para esse aumento é a elevação da concentração sanguínea de qual gás?", "alternatives": { "A": "Oxigênio (O2)", "B": "Gás carbônico (CO2)", "C": "Nitrogênio (N2)", "D": "Hidrogênio (H2)", "E": "Hélio (He)" }, "correctAnswer": "B", "explanation": "O aumento de CO2 (e a consequente queda do pH sanguíneo) é detectado por quimiorreceptores, que estimulam o centro respiratório a aumentar a ventilação.", "difficulty": "médio" }
       ]
     },
     {
@@ -105,117 +41,49 @@
       "description": "Simulado autoral no estilo ENEM: questões contextualizadas por competências e habilidades, com foco em Ciências da Natureza, Matemática e Linguagens. Questões originais.",
       "vestibular": "ENEM",
       "faculty": "ENEM / SISU",
-      "durationMinutes": 60,
+      "durationMinutes": 20,
+      "officialMinutes": 330,
+      "officialQuestions": 90,
       "difficulty": "fácil",
+      "rules": "ENEM (Inep) — exame único, sem fases, aplicado em 2 dias. 180 questões objetivas de múltipla escolha, com 5 alternativas (A–E), sendo 45 por área: Linguagens, Ciências Humanas, Ciências da Natureza e Matemática, além da redação. 1º dia: Linguagens + Humanas + Redação (5h30, 90 questões). 2º dia: Natureza + Matemática (5h, 90 questões). Correção das objetivas por TRI. Amostra autoral contextualizada.",
       "questions": [
-        {
-          "subject": "Biologia",
-          "questionText": "As campanhas de vacinação são essenciais para a saúde pública. Do ponto de vista imunológico, as vacinas atuam principalmente estimulando o organismo a produzir:",
-          "alternatives": { "A": "antígenos patogênicos", "B": "anticorpos e células de memória", "C": "hemácias", "D": "plaquetas", "E": "insulina" },
-          "correctAnswer": "B",
-          "explanation": "A vacina apresenta antígenos atenuados/inativados que induzem a produção de anticorpos e a formação de células de memória, garantindo resposta rápida em futuras exposições.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Química",
-          "questionText": "O aumento da concentração de gás carbônico (CO2) na atmosfera, decorrente da queima de combustíveis fósseis, está associado principalmente a qual fenômeno ambiental?",
-          "alternatives": { "A": "Chuva ácida", "B": "Destruição da camada de ozônio", "C": "Intensificação do efeito estufa", "D": "Eutrofização das águas", "E": "Inversão térmica" },
-          "correctAnswer": "C",
-          "explanation": "O CO2 é um gás de efeito estufa; seu acúmulo intensifica a retenção de calor na atmosfera, contribuindo para o aquecimento global.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Física",
-          "questionText": "Um aparelho elétrico de potência 100 W permanece ligado por 10 horas. Qual é a energia elétrica consumida nesse período?",
-          "alternatives": { "A": "10 Wh", "B": "100 Wh", "C": "1 kWh", "D": "10 kWh", "E": "100 kWh" },
-          "correctAnswer": "C",
-          "explanation": "E = P · t = 100 W · 10 h = 1.000 Wh = 1 kWh.",
-          "difficulty": "médio"
-        },
-        {
-          "subject": "Matemática",
-          "questionText": "Um estudante obteve as notas 6, 7, 8 e 9 em quatro avaliações. Qual é a média aritmética dessas notas?",
-          "alternatives": { "A": "6,0", "B": "7,0", "C": "7,5", "D": "8,0", "E": "30,0" },
-          "correctAnswer": "C",
-          "explanation": "Média = (6 + 7 + 8 + 9) / 4 = 30 / 4 = 7,5.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Linguagens",
-          "questionText": "Leia o trecho: \"A leitura amplia horizontes, desenvolve o senso crítico e forma cidadãos mais conscientes.\" A ideia central defendida no texto é que a leitura:",
-          "alternatives": { "A": "é uma atividade dispensável", "B": "contribui para a formação crítica e cidadã", "C": "substitui completamente a escola", "D": "serve apenas como entretenimento", "E": "prejudica o raciocínio" },
-          "correctAnswer": "B",
-          "explanation": "O trecho associa a leitura ao desenvolvimento do senso crítico e à formação de cidadãos conscientes, o que corresponde diretamente à alternativa B.",
-          "difficulty": "fácil"
-        }
+        { "subject": "Biologia", "questionText": "As campanhas de vacinação são essenciais para a saúde pública. Do ponto de vista imunológico, as vacinas atuam principalmente estimulando o organismo a produzir:", "alternatives": { "A": "antígenos patogênicos", "B": "anticorpos e células de memória", "C": "hemácias", "D": "plaquetas", "E": "insulina" }, "correctAnswer": "B", "explanation": "A vacina apresenta antígenos atenuados/inativados que induzem a produção de anticorpos e a formação de células de memória, garantindo resposta rápida em futuras exposições.", "difficulty": "fácil" },
+        { "subject": "Química", "questionText": "O aumento da concentração de gás carbônico (CO2) na atmosfera, decorrente da queima de combustíveis fósseis, está associado principalmente a qual fenômeno ambiental?", "alternatives": { "A": "Chuva ácida", "B": "Destruição da camada de ozônio", "C": "Intensificação do efeito estufa", "D": "Eutrofização das águas", "E": "Inversão térmica" }, "correctAnswer": "C", "explanation": "O CO2 é um gás de efeito estufa; seu acúmulo intensifica a retenção de calor na atmosfera, contribuindo para o aquecimento global.", "difficulty": "fácil" },
+        { "subject": "Física", "questionText": "Um aparelho elétrico de potência 100 W permanece ligado por 10 horas. Qual é a energia elétrica consumida nesse período?", "alternatives": { "A": "10 Wh", "B": "100 Wh", "C": "1 kWh", "D": "10 kWh", "E": "100 kWh" }, "correctAnswer": "C", "explanation": "E = P · t = 100 W · 10 h = 1.000 Wh = 1 kWh.", "difficulty": "médio" },
+        { "subject": "Matemática", "questionText": "Um estudante obteve as notas 6, 7, 8 e 9 em quatro avaliações. Qual é a média aritmética dessas notas?", "alternatives": { "A": "6,0", "B": "7,0", "C": "7,5", "D": "8,0", "E": "30,0" }, "correctAnswer": "C", "explanation": "Média = (6 + 7 + 8 + 9) / 4 = 30 / 4 = 7,5.", "difficulty": "fácil" },
+        { "subject": "Linguagens", "questionText": "Leia o trecho: \"A leitura amplia horizontes, desenvolve o senso crítico e forma cidadãos mais conscientes.\" A ideia central defendida no texto é que a leitura:", "alternatives": { "A": "é uma atividade dispensável", "B": "contribui para a formação crítica e cidadã", "C": "substitui completamente a escola", "D": "serve apenas como entretenimento", "E": "prejudica o raciocínio" }, "correctAnswer": "B", "explanation": "O trecho associa a leitura ao desenvolvimento do senso crítico e à formação de cidadãos conscientes, o que corresponde diretamente à alternativa B.", "difficulty": "fácil" }
       ]
     },
     {
       "title": "Simulado UNESP Medicina",
-      "description": "Simulado autoral no estilo UNESP, com foco em Biologia e Química aplicadas à área da saúde. Questões originais.",
+      "description": "Simulado autoral no estilo UNESP (1ª fase), com foco em Biologia e Química aplicadas à área da saúde. Questões originais.",
       "vestibular": "UNESP",
       "faculty": "UNESP",
-      "durationMinutes": 30,
+      "durationMinutes": 12,
+      "officialMinutes": 300,
+      "officialQuestions": 90,
       "difficulty": "fácil",
+      "rules": "UNESP (Vunesp) — processo em 2 fases. 1ª fase: 90 questões objetivas de múltipla escolha, com 5 alternativas (A–E), em 5 horas, sendo 30 de cada área (Linguagens, Ciências Humanas e Ciências da Natureza/Matemática), podendo ser interdisciplinares. 2ª fase: prova discursiva + redação. Amostra autoral no estilo da 1ª fase.",
       "questions": [
-        {
-          "subject": "Biologia",
-          "questionText": "No corpo humano, o sistema responsável pelo transporte de oxigênio e nutrientes às células é o sistema:",
-          "alternatives": { "A": "digestório", "B": "circulatório", "C": "nervoso", "D": "urinário", "E": "esquelético" },
-          "correctAnswer": "B",
-          "explanation": "O sistema circulatório, por meio do sangue impulsionado pelo coração, transporta oxigênio, nutrientes e remove resíduos das células.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Química",
-          "questionText": "Na molécula de água (H2O), o tipo de ligação química entre os átomos de hidrogênio e oxigênio é:",
-          "alternatives": { "A": "iônica", "B": "metálica", "C": "covalente polar", "D": "covalente apolar", "E": "ponte de hidrogênio" },
-          "correctAnswer": "C",
-          "explanation": "H e O compartilham elétrons (ligação covalente). Como o oxigênio é mais eletronegativo, a ligação é covalente polar.",
-          "difficulty": "médio"
-        },
-        {
-          "subject": "Biologia",
-          "questionText": "A molécula que armazena a informação genética e é formada por unidades chamadas nucleotídeos é o:",
-          "alternatives": { "A": "aminoácido", "B": "DNA", "C": "ácido graxo", "D": "monossacarídeo", "E": "glicerol" },
-          "correctAnswer": "B",
-          "explanation": "O DNA é um ácido nucleico formado por nucleotídeos (fosfato, desoxirribose e base nitrogenada) e armazena a informação genética.",
-          "difficulty": "fácil"
-        }
+        { "subject": "Biologia", "questionText": "No corpo humano, o sistema responsável pelo transporte de oxigênio e nutrientes às células é o sistema:", "alternatives": { "A": "digestório", "B": "circulatório", "C": "nervoso", "D": "urinário", "E": "esquelético" }, "correctAnswer": "B", "explanation": "O sistema circulatório, por meio do sangue impulsionado pelo coração, transporta oxigênio, nutrientes e remove resíduos das células.", "difficulty": "fácil" },
+        { "subject": "Química", "questionText": "Na molécula de água (H2O), o tipo de ligação química entre os átomos de hidrogênio e oxigênio é:", "alternatives": { "A": "iônica", "B": "metálica", "C": "covalente polar", "D": "covalente apolar", "E": "ponte de hidrogênio" }, "correctAnswer": "C", "explanation": "H e O compartilham elétrons (ligação covalente). Como o oxigênio é mais eletronegativo, a ligação é covalente polar.", "difficulty": "médio" },
+        { "subject": "Biologia", "questionText": "A molécula que armazena a informação genética e é formada por unidades chamadas nucleotídeos é o:", "alternatives": { "A": "aminoácido", "B": "DNA", "C": "ácido graxo", "D": "monossacarídeo", "E": "glicerol" }, "correctAnswer": "B", "explanation": "O DNA é um ácido nucleico formado por nucleotídeos (fosfato, desoxirribose e base nitrogenada) e armazena a informação genética.", "difficulty": "fácil" }
       ]
     },
     {
       "title": "Simulado FAMERP Medicina",
-      "description": "Simulado autoral no estilo FAMERP, com foco em fisiologia, química e imunologia básica. Questões originais.",
+      "description": "Simulado autoral no estilo FAMERP (Conhecimentos Gerais), com foco em fisiologia, química e imunologia básica. Questões originais.",
       "vestibular": "FAMERP",
       "faculty": "FAMERP",
-      "durationMinutes": 30,
+      "durationMinutes": 10,
+      "officialMinutes": 240,
+      "officialQuestions": 80,
       "difficulty": "fácil",
+      "rules": "FAMERP (Vunesp) — fase única aplicada em 2 dias. 1º dia: 80 questões objetivas de Conhecimentos Gerais, com 5 alternativas (A–E), em 4 horas (Matemática, Biologia, Geografia, Física, História, Química, Português e Inglês). 2º dia: 20 questões discursivas de Conhecimentos Específicos (8 Biologia, 6 Química, 6 Física) + redação, em 4 horas. Amostra autoral no estilo dos Conhecimentos Gerais.",
       "questions": [
-        {
-          "subject": "Biologia",
-          "questionText": "O órgão responsável pela produção do hormônio insulina, que regula a glicemia, é o:",
-          "alternatives": { "A": "fígado", "B": "pâncreas", "C": "rim", "D": "baço", "E": "estômago" },
-          "correctAnswer": "B",
-          "explanation": "As células beta das ilhotas pancreáticas (pâncreas) produzem insulina, hormônio que reduz a glicemia favorecendo a captação de glicose pelas células.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Química",
-          "questionText": "A 25 °C, o pH de uma solução aquosa neutra é igual a:",
-          "alternatives": { "A": "0", "B": "1", "C": "7", "D": "10", "E": "14" },
-          "correctAnswer": "C",
-          "explanation": "Em solução neutra a 25 °C, [H+] = [OH-] = 10⁻⁷ mol/L, logo pH = 7.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Biologia",
-          "questionText": "As células do sistema imune especializadas na produção de anticorpos são os:",
-          "alternatives": { "A": "hemácias", "B": "plaquetas", "C": "linfócitos B", "D": "neurônios", "E": "osteócitos" },
-          "correctAnswer": "C",
-          "explanation": "Os linfócitos B, ao se diferenciarem em plasmócitos, produzem anticorpos específicos contra antígenos.",
-          "difficulty": "médio"
-        }
+        { "subject": "Biologia", "questionText": "O órgão responsável pela produção do hormônio insulina, que regula a glicemia, é o:", "alternatives": { "A": "fígado", "B": "pâncreas", "C": "rim", "D": "baço", "E": "estômago" }, "correctAnswer": "B", "explanation": "As células beta das ilhotas pancreáticas (pâncreas) produzem insulina, hormônio que reduz a glicemia favorecendo a captação de glicose pelas células.", "difficulty": "fácil" },
+        { "subject": "Química", "questionText": "A 25 °C, o pH de uma solução aquosa neutra é igual a:", "alternatives": { "A": "0", "B": "1", "C": "7", "D": "10", "E": "14" }, "correctAnswer": "C", "explanation": "Em solução neutra a 25 °C, [H+] = [OH-] = 10⁻⁷ mol/L, logo pH = 7.", "difficulty": "fácil" },
+        { "subject": "Biologia", "questionText": "As células do sistema imune especializadas na produção de anticorpos são os:", "alternatives": { "A": "hemácias", "B": "plaquetas", "C": "linfócitos B", "D": "neurônios", "E": "osteócitos" }, "correctAnswer": "C", "explanation": "Os linfócitos B, ao se diferenciarem em plasmócitos, produzem anticorpos específicos contra antígenos.", "difficulty": "médio" }
       ]
     },
     {
@@ -223,33 +91,15 @@
       "description": "Simulado autoral no estilo UFSC, com questões de Biologia, Física e Matemática. Questões originais.",
       "vestibular": "UFSC",
       "faculty": "UFSC",
-      "durationMinutes": 30,
+      "durationMinutes": 15,
+      "officialMinutes": 300,
+      "officialQuestions": 40,
       "difficulty": "fácil",
+      "rules": "UFSC (Coperve) — prova aplicada em 2 dias, com 5 horas cada. Cada dia tem 40 questões no formato de proposições (somatório) ou abertas; o 1º dia inclui 2 questões discursivas e o 2º dia a redação (nota de 0 a 10). Observação: o formato OFICIAL é de proposições/somatório, e não de 5 alternativas; este simulado usa múltipla escolha (A–E) apenas para treino do conteúdo.",
       "questions": [
-        {
-          "subject": "Biologia",
-          "questionText": "Nas células vegetais, o processo de fotossíntese ocorre principalmente em qual organela?",
-          "alternatives": { "A": "mitocôndria", "B": "cloroplasto", "C": "núcleo", "D": "ribossomo", "E": "vacúolo" },
-          "correctAnswer": "B",
-          "explanation": "A fotossíntese ocorre nos cloroplastos, que contêm clorofila, pigmento capaz de captar a energia luminosa.",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Física",
-          "questionText": "No Sistema Internacional de Unidades (SI), a unidade de força é o:",
-          "alternatives": { "A": "joule", "B": "watt", "C": "newton", "D": "pascal", "E": "volt" },
-          "correctAnswer": "C",
-          "explanation": "A força é medida em newton (N) no SI, sendo 1 N = 1 kg·m/s².",
-          "difficulty": "fácil"
-        },
-        {
-          "subject": "Matemática",
-          "questionText": "Qual é o valor da potência 2³?",
-          "alternatives": { "A": "4", "B": "6", "C": "8", "D": "9", "E": "16" },
-          "correctAnswer": "C",
-          "explanation": "2³ = 2 · 2 · 2 = 8.",
-          "difficulty": "fácil"
-        }
+        { "subject": "Biologia", "questionText": "Nas células vegetais, o processo de fotossíntese ocorre principalmente em qual organela?", "alternatives": { "A": "mitocôndria", "B": "cloroplasto", "C": "núcleo", "D": "ribossomo", "E": "vacúolo" }, "correctAnswer": "B", "explanation": "A fotossíntese ocorre nos cloroplastos, que contêm clorofila, pigmento capaz de captar a energia luminosa.", "difficulty": "fácil" },
+        { "subject": "Física", "questionText": "No Sistema Internacional de Unidades (SI), a unidade de força é o:", "alternatives": { "A": "joule", "B": "watt", "C": "newton", "D": "pascal", "E": "volt" }, "correctAnswer": "C", "explanation": "A força é medida em newton (N) no SI, sendo 1 N = 1 kg·m/s².", "difficulty": "fácil" },
+        { "subject": "Matemática", "questionText": "Qual é o valor da potência 2³?", "alternatives": { "A": "4", "B": "6", "C": "8", "D": "9", "E": "16" }, "correctAnswer": "C", "explanation": "2³ = 2 · 2 · 2 = 8.", "difficulty": "fácil" }
       ]
     }
   ]

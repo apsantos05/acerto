@@ -1,13 +1,18 @@
--- ACERTE — Seed de simulados (questões AUTORAIS). Idempotente por título.
--- Pré-requisito: supabase/simulados.sql (tabelas + RLS + RPCs).
+-- ACERTE — Seed de simulados (questões AUTORAIS + regras oficiais).
+-- Pré-requisitos: supabase/simulados.sql e supabase/simulado_timer.sql.
 
+update public.simulados set
+  description = 'Simulado autoral no estilo FUVEST (1ª fase): questões conteudistas e interdisciplinares de Biologia, Química, Física e Matemática. Questões originais, não copiadas de provas oficiais.', vestibular = 'FUVEST', faculty = 'USP',
+  duration_minutes = 20, official_minutes = 300, official_questions = 90,
+  difficulty = 'médio', subjects = ARRAY['Biologia','Química','Física','Matemática']::text[], question_count = 5, rules = 'FUVEST (USP) — processo em 2 fases. 1ª fase: 90 questões objetivas de múltipla escolha, com 5 alternativas (A–E), aplicadas em 5 horas; é classificatória. 2ª fase: provas discursivas em 2 dias (Português e Redação + questões específicas por área). Este simulado é uma amostra autoral no estilo da 1ª fase.'
+where title = 'Simulado FUVEST Medicina';
 do $$
 declare sid uuid;
 begin
   select id into sid from public.simulados where title = 'Simulado FUVEST Medicina';
   if sid is null then
-    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, difficulty, subjects, question_count, status)
-    values ('Simulado FUVEST Medicina', 'Simulado autoral no estilo FUVEST: questões conteudistas e interdisciplinares de Biologia, Química, Física e Matemática. Questões originais, não copiadas de provas oficiais.', 'FUVEST', 'USP', 60, 'médio', ARRAY['Biologia','Química','Física','Matemática']::text[], 5, 'published')
+    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions, difficulty, subjects, question_count, rules, status)
+    values ('Simulado FUVEST Medicina', 'Simulado autoral no estilo FUVEST (1ª fase): questões conteudistas e interdisciplinares de Biologia, Química, Física e Matemática. Questões originais, não copiadas de provas oficiais.', 'FUVEST', 'USP', 20, 300, 90, 'médio', ARRAY['Biologia','Química','Física','Matemática']::text[], 5, 'FUVEST (USP) — processo em 2 fases. 1ª fase: 90 questões objetivas de múltipla escolha, com 5 alternativas (A–E), aplicadas em 5 horas; é classificatória. 2ª fase: provas discursivas em 2 dias (Português e Redação + questões específicas por área). Este simulado é uma amostra autoral no estilo da 1ª fase.', 'published')
     returning id into sid;
 
     insert into public.simulado_questions (simulado_id, subject, question_text, alternatives, correct_answer, explanation, difficulty, order_index) values
@@ -20,13 +25,18 @@ begin
 end;
 $$;
 
+update public.simulados set
+  description = 'Simulado autoral no estilo UNICAMP (1ª fase): questões contextualizadas com foco em interpretação, aplicação e raciocínio. Questões originais.', vestibular = 'UNICAMP', faculty = 'UNICAMP',
+  duration_minutes = 20, official_minutes = 300, official_questions = 72,
+  difficulty = 'médio', subjects = ARRAY['Biologia','Química','Física','Matemática']::text[], question_count = 5, rules = 'UNICAMP (Comvest) — processo em 2 fases. 1ª fase: 72 questões objetivas de múltipla escolha, com 5 alternativas (A–E), em 5 horas, distribuídas entre Português e Literatura (12), Matemática (12), História (7), Geografia (7), Filosofia (3), Sociologia (3), Física (7), Química (7), Biologia (7) e Inglês (7); enunciados contextualizados e interdisciplinares. 2ª fase: provas discursivas em 2 dias. Amostra autoral no estilo da 1ª fase.'
+where title = 'Simulado UNICAMP Medicina';
 do $$
 declare sid uuid;
 begin
   select id into sid from public.simulados where title = 'Simulado UNICAMP Medicina';
   if sid is null then
-    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, difficulty, subjects, question_count, status)
-    values ('Simulado UNICAMP Medicina', 'Simulado autoral no estilo UNICAMP: questões contextualizadas com foco em interpretação, aplicação e raciocínio. Questões originais.', 'UNICAMP', 'UNICAMP', 60, 'médio', ARRAY['Biologia','Química','Física','Matemática']::text[], 5, 'published')
+    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions, difficulty, subjects, question_count, rules, status)
+    values ('Simulado UNICAMP Medicina', 'Simulado autoral no estilo UNICAMP (1ª fase): questões contextualizadas com foco em interpretação, aplicação e raciocínio. Questões originais.', 'UNICAMP', 'UNICAMP', 20, 300, 72, 'médio', ARRAY['Biologia','Química','Física','Matemática']::text[], 5, 'UNICAMP (Comvest) — processo em 2 fases. 1ª fase: 72 questões objetivas de múltipla escolha, com 5 alternativas (A–E), em 5 horas, distribuídas entre Português e Literatura (12), Matemática (12), História (7), Geografia (7), Filosofia (3), Sociologia (3), Física (7), Química (7), Biologia (7) e Inglês (7); enunciados contextualizados e interdisciplinares. 2ª fase: provas discursivas em 2 dias. Amostra autoral no estilo da 1ª fase.', 'published')
     returning id into sid;
 
     insert into public.simulado_questions (simulado_id, subject, question_text, alternatives, correct_answer, explanation, difficulty, order_index) values
@@ -39,13 +49,18 @@ begin
 end;
 $$;
 
+update public.simulados set
+  description = 'Simulado autoral no estilo ENEM: questões contextualizadas por competências e habilidades, com foco em Ciências da Natureza, Matemática e Linguagens. Questões originais.', vestibular = 'ENEM', faculty = 'ENEM / SISU',
+  duration_minutes = 20, official_minutes = 330, official_questions = 90,
+  difficulty = 'fácil', subjects = ARRAY['Biologia','Química','Física','Matemática','Linguagens']::text[], question_count = 5, rules = 'ENEM (Inep) — exame único, sem fases, aplicado em 2 dias. 180 questões objetivas de múltipla escolha, com 5 alternativas (A–E), sendo 45 por área: Linguagens, Ciências Humanas, Ciências da Natureza e Matemática, além da redação. 1º dia: Linguagens + Humanas + Redação (5h30, 90 questões). 2º dia: Natureza + Matemática (5h, 90 questões). Correção das objetivas por TRI. Amostra autoral contextualizada.'
+where title = 'Simulado ENEM Medicina';
 do $$
 declare sid uuid;
 begin
   select id into sid from public.simulados where title = 'Simulado ENEM Medicina';
   if sid is null then
-    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, difficulty, subjects, question_count, status)
-    values ('Simulado ENEM Medicina', 'Simulado autoral no estilo ENEM: questões contextualizadas por competências e habilidades, com foco em Ciências da Natureza, Matemática e Linguagens. Questões originais.', 'ENEM', 'ENEM / SISU', 60, 'fácil', ARRAY['Biologia','Química','Física','Matemática','Linguagens']::text[], 5, 'published')
+    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions, difficulty, subjects, question_count, rules, status)
+    values ('Simulado ENEM Medicina', 'Simulado autoral no estilo ENEM: questões contextualizadas por competências e habilidades, com foco em Ciências da Natureza, Matemática e Linguagens. Questões originais.', 'ENEM', 'ENEM / SISU', 20, 330, 90, 'fácil', ARRAY['Biologia','Química','Física','Matemática','Linguagens']::text[], 5, 'ENEM (Inep) — exame único, sem fases, aplicado em 2 dias. 180 questões objetivas de múltipla escolha, com 5 alternativas (A–E), sendo 45 por área: Linguagens, Ciências Humanas, Ciências da Natureza e Matemática, além da redação. 1º dia: Linguagens + Humanas + Redação (5h30, 90 questões). 2º dia: Natureza + Matemática (5h, 90 questões). Correção das objetivas por TRI. Amostra autoral contextualizada.', 'published')
     returning id into sid;
 
     insert into public.simulado_questions (simulado_id, subject, question_text, alternatives, correct_answer, explanation, difficulty, order_index) values
@@ -58,13 +73,18 @@ begin
 end;
 $$;
 
+update public.simulados set
+  description = 'Simulado autoral no estilo UNESP (1ª fase), com foco em Biologia e Química aplicadas à área da saúde. Questões originais.', vestibular = 'UNESP', faculty = 'UNESP',
+  duration_minutes = 12, official_minutes = 300, official_questions = 90,
+  difficulty = 'fácil', subjects = ARRAY['Biologia','Química']::text[], question_count = 3, rules = 'UNESP (Vunesp) — processo em 2 fases. 1ª fase: 90 questões objetivas de múltipla escolha, com 5 alternativas (A–E), em 5 horas, sendo 30 de cada área (Linguagens, Ciências Humanas e Ciências da Natureza/Matemática), podendo ser interdisciplinares. 2ª fase: prova discursiva + redação. Amostra autoral no estilo da 1ª fase.'
+where title = 'Simulado UNESP Medicina';
 do $$
 declare sid uuid;
 begin
   select id into sid from public.simulados where title = 'Simulado UNESP Medicina';
   if sid is null then
-    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, difficulty, subjects, question_count, status)
-    values ('Simulado UNESP Medicina', 'Simulado autoral no estilo UNESP, com foco em Biologia e Química aplicadas à área da saúde. Questões originais.', 'UNESP', 'UNESP', 30, 'fácil', ARRAY['Biologia','Química']::text[], 3, 'published')
+    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions, difficulty, subjects, question_count, rules, status)
+    values ('Simulado UNESP Medicina', 'Simulado autoral no estilo UNESP (1ª fase), com foco em Biologia e Química aplicadas à área da saúde. Questões originais.', 'UNESP', 'UNESP', 12, 300, 90, 'fácil', ARRAY['Biologia','Química']::text[], 3, 'UNESP (Vunesp) — processo em 2 fases. 1ª fase: 90 questões objetivas de múltipla escolha, com 5 alternativas (A–E), em 5 horas, sendo 30 de cada área (Linguagens, Ciências Humanas e Ciências da Natureza/Matemática), podendo ser interdisciplinares. 2ª fase: prova discursiva + redação. Amostra autoral no estilo da 1ª fase.', 'published')
     returning id into sid;
 
     insert into public.simulado_questions (simulado_id, subject, question_text, alternatives, correct_answer, explanation, difficulty, order_index) values
@@ -75,13 +95,18 @@ begin
 end;
 $$;
 
+update public.simulados set
+  description = 'Simulado autoral no estilo FAMERP (Conhecimentos Gerais), com foco em fisiologia, química e imunologia básica. Questões originais.', vestibular = 'FAMERP', faculty = 'FAMERP',
+  duration_minutes = 10, official_minutes = 240, official_questions = 80,
+  difficulty = 'fácil', subjects = ARRAY['Biologia','Química']::text[], question_count = 3, rules = 'FAMERP (Vunesp) — fase única aplicada em 2 dias. 1º dia: 80 questões objetivas de Conhecimentos Gerais, com 5 alternativas (A–E), em 4 horas (Matemática, Biologia, Geografia, Física, História, Química, Português e Inglês). 2º dia: 20 questões discursivas de Conhecimentos Específicos (8 Biologia, 6 Química, 6 Física) + redação, em 4 horas. Amostra autoral no estilo dos Conhecimentos Gerais.'
+where title = 'Simulado FAMERP Medicina';
 do $$
 declare sid uuid;
 begin
   select id into sid from public.simulados where title = 'Simulado FAMERP Medicina';
   if sid is null then
-    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, difficulty, subjects, question_count, status)
-    values ('Simulado FAMERP Medicina', 'Simulado autoral no estilo FAMERP, com foco em fisiologia, química e imunologia básica. Questões originais.', 'FAMERP', 'FAMERP', 30, 'fácil', ARRAY['Biologia','Química']::text[], 3, 'published')
+    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions, difficulty, subjects, question_count, rules, status)
+    values ('Simulado FAMERP Medicina', 'Simulado autoral no estilo FAMERP (Conhecimentos Gerais), com foco em fisiologia, química e imunologia básica. Questões originais.', 'FAMERP', 'FAMERP', 10, 240, 80, 'fácil', ARRAY['Biologia','Química']::text[], 3, 'FAMERP (Vunesp) — fase única aplicada em 2 dias. 1º dia: 80 questões objetivas de Conhecimentos Gerais, com 5 alternativas (A–E), em 4 horas (Matemática, Biologia, Geografia, Física, História, Química, Português e Inglês). 2º dia: 20 questões discursivas de Conhecimentos Específicos (8 Biologia, 6 Química, 6 Física) + redação, em 4 horas. Amostra autoral no estilo dos Conhecimentos Gerais.', 'published')
     returning id into sid;
 
     insert into public.simulado_questions (simulado_id, subject, question_text, alternatives, correct_answer, explanation, difficulty, order_index) values
@@ -92,13 +117,18 @@ begin
 end;
 $$;
 
+update public.simulados set
+  description = 'Simulado autoral no estilo UFSC, com questões de Biologia, Física e Matemática. Questões originais.', vestibular = 'UFSC', faculty = 'UFSC',
+  duration_minutes = 15, official_minutes = 300, official_questions = 40,
+  difficulty = 'fácil', subjects = ARRAY['Biologia','Física','Matemática']::text[], question_count = 3, rules = 'UFSC (Coperve) — prova aplicada em 2 dias, com 5 horas cada. Cada dia tem 40 questões no formato de proposições (somatório) ou abertas; o 1º dia inclui 2 questões discursivas e o 2º dia a redação (nota de 0 a 10). Observação: o formato OFICIAL é de proposições/somatório, e não de 5 alternativas; este simulado usa múltipla escolha (A–E) apenas para treino do conteúdo.'
+where title = 'Simulado UFSC Medicina';
 do $$
 declare sid uuid;
 begin
   select id into sid from public.simulados where title = 'Simulado UFSC Medicina';
   if sid is null then
-    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, difficulty, subjects, question_count, status)
-    values ('Simulado UFSC Medicina', 'Simulado autoral no estilo UFSC, com questões de Biologia, Física e Matemática. Questões originais.', 'UFSC', 'UFSC', 30, 'fácil', ARRAY['Biologia','Física','Matemática']::text[], 3, 'published')
+    insert into public.simulados (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions, difficulty, subjects, question_count, rules, status)
+    values ('Simulado UFSC Medicina', 'Simulado autoral no estilo UFSC, com questões de Biologia, Física e Matemática. Questões originais.', 'UFSC', 'UFSC', 15, 300, 40, 'fácil', ARRAY['Biologia','Física','Matemática']::text[], 3, 'UFSC (Coperve) — prova aplicada em 2 dias, com 5 horas cada. Cada dia tem 40 questões no formato de proposições (somatório) ou abertas; o 1º dia inclui 2 questões discursivas e o 2º dia a redação (nota de 0 a 10). Observação: o formato OFICIAL é de proposições/somatório, e não de 5 alternativas; este simulado usa múltipla escolha (A–E) apenas para treino do conteúdo.', 'published')
     returning id into sid;
 
     insert into public.simulado_questions (simulado_id, subject, question_text, alternatives, correct_answer, explanation, difficulty, order_index) values

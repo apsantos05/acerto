@@ -7,10 +7,20 @@ export type SimuladoSummary = {
   vestibular: string;
   faculty: string;
   durationMinutes: number;
+  officialMinutes: number;
+  officialQuestions: number;
+  rules: string;
   difficulty: string;
   subjects: string[];
   questionCount: number;
   status?: "draft" | "published";
+};
+
+export type ActiveAttempt = {
+  attemptId: string;
+  startedAt: string;
+  durationMinutes: number;
+  totalQuestions: number;
 };
 
 export type SimuladoQuestion = {
@@ -35,6 +45,9 @@ type SimuladoRow = {
   vestibular: string | null;
   faculty: string | null;
   duration_minutes: number | null;
+  official_minutes: number | null;
+  official_questions: number | null;
+  rules: string | null;
   difficulty: string | null;
   subjects: string[] | null;
   question_count: number | null;
@@ -42,7 +55,7 @@ type SimuladoRow = {
 };
 
 const SIM_COLS =
-  "id,title,description,vestibular,faculty,duration_minutes,difficulty,subjects,question_count,status";
+  "id,title,description,vestibular,faculty,duration_minutes,official_minutes,official_questions,rules,difficulty,subjects,question_count,status";
 
 function mapSimulado(row: SimuladoRow): SimuladoSummary {
   return {
@@ -52,11 +65,46 @@ function mapSimulado(row: SimuladoRow): SimuladoSummary {
     vestibular: row.vestibular ?? "Geral",
     faculty: row.faculty ?? "Medicina",
     durationMinutes: row.duration_minutes ?? 60,
+    officialMinutes: row.official_minutes ?? 0,
+    officialQuestions: row.official_questions ?? 0,
+    rules: row.rules ?? "",
     difficulty: row.difficulty ?? "médio",
     subjects: row.subjects ?? [],
     questionCount: row.question_count ?? 0,
     status: row.status === "draft" ? "draft" : "published",
   };
+}
+
+export async function getActiveAttempt(
+  simuladoId: string,
+): Promise<ActiveAttempt | null> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data, error } = await supabase
+      .from("simulado_attempts")
+      .select("id,started_at,duration_minutes,total_questions")
+      .eq("simulado_id", simuladoId)
+      .eq("user_id", user.id)
+      .eq("status", "in_progress")
+      .order("started_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) return null;
+    return {
+      attemptId: data.id as string,
+      startedAt: data.started_at as string,
+      durationMinutes: (data.duration_minutes as number) ?? 60,
+      totalQuestions: (data.total_questions as number) ?? 0,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function getSimulados(): Promise<SimuladoSummary[]> {
