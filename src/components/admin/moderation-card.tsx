@@ -9,15 +9,16 @@ import {
   GraduationCap,
   LinkIcon,
   School,
+  Trash2,
   X,
 } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
-import type { PendingMaterial } from "@/lib/admin";
+import type { AdminMaterial } from "@/lib/admin";
 
 type ModerationCardProps = {
-  material: PendingMaterial;
+  material: AdminMaterial;
 };
 
 function formatDate(date: string) {
@@ -28,33 +29,43 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
+const statusStyles: Record<AdminMaterial["status"], string> = {
+  pending: "bg-amber-100 text-amber-800",
+  approved: "bg-emerald-100 text-emerald-800",
+  rejected: "bg-red-100 text-red-700",
+};
+
+const statusLabels: Record<AdminMaterial["status"], string> = {
+  pending: "Pendente",
+  approved: "Aprovado",
+  rejected: "Rejeitado",
+};
+
 export function ModerationCard({ material }: ModerationCardProps) {
   const router = useRouter();
   const { supabase, user } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
-  const [done, setDone] = useState<"approved" | "rejected" | null>(null);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [done, setDone] = useState<"approved" | "rejected" | "deleted" | null>(
+    null,
+  );
 
   async function moderate(status: "approved" | "rejected") {
     setError("");
-
     if (!supabase || !user) {
       setError("Sessão expirada. Entre novamente.");
       return;
     }
-
     setIsSaving(true);
-
     try {
       const { error: updateError } = await supabase
         .from("materials")
         .update({ status })
         .eq("id", material.id);
-
       if (updateError) {
         throw updateError;
       }
-
       setDone(status);
       router.refresh();
     } catch (moderateError) {
@@ -70,11 +81,55 @@ export function ModerationCard({ material }: ModerationCardProps) {
     }
   }
 
+  async function deleteMaterial() {
+    setError("");
+    if (!supabase || !user) {
+      setError("Sessão expirada. Entre novamente.");
+      return;
+    }
+    setIsSaving(true);
+    try {
+      if (material.storagePath) {
+        const { error: removeError } = await supabase.storage
+          .from("materials")
+          .remove([material.storagePath]);
+        if (removeError) {
+          // Não bloqueia a exclusão do registro — apenas registra.
+          console.warn("[admin] storage remove:", removeError.message);
+        }
+      }
+
+      const { error: rpcError } = await supabase.rpc("admin_delete_material", {
+        p_material_id: material.id,
+      });
+      if (rpcError) {
+        throw rpcError;
+      }
+
+      setDone("deleted");
+      router.refresh();
+    } catch (deleteError) {
+      console.error("[admin] falha ao excluir material:", deleteError);
+      setError(
+        getSupabaseErrorMessage(
+          deleteError,
+          "Não foi possível excluir o material.",
+        ),
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   if (done) {
+    const labels = {
+      approved: "aprovado ✅",
+      rejected: "rejeitado ❌",
+      deleted: "excluído 🗑️",
+    };
     return (
       <article className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-sm font-medium text-slate-600">
-        “{material.title}” foi{" "}
-        {done === "approved" ? "aprovado ✅" : "rejeitado ❌"}.
+        “{material.title}” foi {labels[done]}.
       </article>
     );
   }
@@ -85,9 +140,16 @@ export function ModerationCard({ material }: ModerationCardProps) {
     <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
-            Pendente · {material.materialType}
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[material.status]}`}
+            >
+              {statusLabels[material.status]}
+            </span>
+            <span className="text-xs font-semibold text-slate-500">
+              {material.materialType}
+            </span>
+          </div>
           <h2 className="mt-3 text-xl font-semibold text-slate-950">
             {material.title}
           </h2>
@@ -112,7 +174,7 @@ export function ModerationCard({ material }: ModerationCardProps) {
           </div>
 
           {material.author ? (
-            <div className="mt-4 flex items-center gap-2 text-sm text-slate-600">
+            <div className="mt-4 text-sm text-slate-600">
               {material.author.username ? (
                 <Link
                   href={`/perfil/${material.author.username}`}
@@ -159,25 +221,60 @@ export function ModerationCard({ material }: ModerationCardProps) {
           ) : null}
         </div>
 
-        <div className="flex shrink-0 gap-3">
-          <button
-            type="button"
-            onClick={() => moderate("approved")}
-            disabled={isSaving}
-            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            <Check size={17} />
-            Aprovar
-          </button>
-          <button
-            type="button"
-            onClick={() => moderate("rejected")}
-            disabled={isSaving}
-            className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            <X size={17} />
-            Rejeitar
-          </button>
+        <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col">
+          {material.status === "pending" ? (
+            <>
+              <button
+                type="button"
+                onClick={() => moderate("approved")}
+                disabled={isSaving}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                <Check size={17} />
+                Aprovar
+              </button>
+              <button
+                type="button"
+                onClick={() => moderate("rejected")}
+                disabled={isSaving}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                <X size={17} />
+                Rejeitar
+              </button>
+            </>
+          ) : null}
+
+          {confirmingDelete ? (
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={deleteMaterial}
+                disabled={isSaving}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:opacity-70"
+              >
+                Confirmar
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmingDelete(false)}
+                disabled={isSaving}
+                className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              >
+                Cancelar
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setConfirmingDelete(true)}
+              disabled={isSaving}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <Trash2 size={16} />
+              Excluir material
+            </button>
+          )}
         </div>
       </div>
 
