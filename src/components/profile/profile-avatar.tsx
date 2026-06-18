@@ -1,7 +1,7 @@
 type ProfileAvatarProps = {
   name: string;
   avatarUrl?: string | null;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
 };
 
 function initials(name: string) {
@@ -13,17 +13,23 @@ function initials(name: string) {
     .toUpperCase();
 }
 
+const sizeClasses: Record<NonNullable<ProfileAvatarProps["size"]>, string> = {
+  sm: "h-9 w-9 text-sm rounded-lg",
+  md: "h-14 w-14 text-lg rounded-2xl",
+  lg: "h-24 w-24 text-3xl rounded-2xl",
+};
+
 export function ProfileAvatar({
   name,
   avatarUrl,
   size = "lg",
 }: ProfileAvatarProps) {
-  const sizeClass = size === "lg" ? "h-24 w-24 text-3xl" : "h-14 w-14 text-lg";
+  const sizeClass = sizeClasses[size];
 
   if (avatarUrl) {
     return (
       <div
-        className={`${sizeClass} shrink-0 rounded-2xl bg-cover bg-center ring-4 ring-white`}
+        className={`${sizeClass} shrink-0 bg-cover bg-center ring-4 ring-white`}
         style={{ backgroundImage: `url(${avatarUrl})` }}
         aria-label={`Foto de ${name}`}
       />
@@ -32,9 +38,9 @@ export function ProfileAvatar({
 
   return (
     <div
-      className={`${sizeClass} flex shrink-0 items-center justify-center rounded-2xl bg-slate-950 font-semibold text-cyan-300 ring-4 ring-white`}
+      className={`${sizeClass} flex shrink-0 items-center justify-center bg-slate-950 font-semibold text-cyan-300 ring-4 ring-white`}
     >
-      {initials(name)}
+      {initials(name) || "?"}
     </div>
   );
 }

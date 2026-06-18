@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookOpenCheck, Menu, UserCircle, X } from "lucide-react";
+import { BookOpenCheck, Menu, X } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { useAuth } from "@/components/auth/auth-provider";
+import { ProfileAvatar } from "@/components/profile/profile-avatar";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
@@ -28,6 +29,13 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  const avatarUrl =
+    (user?.user_metadata?.avatar_url as string | undefined) ?? null;
+  const displayName =
+    (user?.user_metadata?.full_name as string | undefined) ||
+    user?.email ||
+    "Perfil";
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -56,9 +64,13 @@ export function Navbar() {
             <>
               <Link
                 href="/perfil"
-                className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                className="inline-flex items-center gap-2 rounded-lg py-1 pl-1 pr-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
               >
-                <UserCircle size={18} />
+                <ProfileAvatar
+                  name={displayName}
+                  avatarUrl={avatarUrl}
+                  size="sm"
+                />
                 Perfil
               </Link>
               <LogoutButton />
@@ -129,7 +141,11 @@ export function Navbar() {
                     onClick={closeMenu}
                     className="inline-flex items-center gap-2 rounded-lg px-3 py-3 text-base font-semibold text-slate-700 transition hover:bg-slate-100"
                   >
-                    <UserCircle size={18} />
+                    <ProfileAvatar
+                      name={displayName}
+                      avatarUrl={avatarUrl}
+                      size="sm"
+                    />
                     Perfil
                   </Link>
                   <LogoutButton />

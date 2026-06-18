@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save } from "lucide-react";
+import { Save, UploadCloud } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
+import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
 import type { StudentProfile } from "@/lib/profile";
+
+const avatarMimeTypes = ["image/jpeg", "image/png", "image/webp"];
+const maxAvatarSize = 5 * 1024 * 1024;
 
 type EditProfileFormProps = {
   profile: StudentProfile;
@@ -44,6 +48,65 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleAvatarChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    const file = event.target.files?.[0];
+    event.target.value = ""; // permite reenviar o mesmo arquivo
+    setError("");
+    setSuccess("");
+
+    if (!file) {
+      return;
+    }
+
+    if (!supabase || !user) {
+      setError("Entre para enviar uma foto.");
+      return;
+    }
+
+    if (!avatarMimeTypes.includes(file.type)) {
+      setError("Envie uma imagem JPG, PNG ou WebP.");
+      return;
+    }
+
+    if (file.size > maxAvatarSize) {
+      setError("A imagem deve ter até 5 MB.");
+      return;
+    }
+
+    setIsUploadingAvatar(true);
+
+    try {
+      const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+      const path = `${user.id}/avatar-${crypto.randomUUID()}.${extension}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, { cacheControl: "3600", upsert: true });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+      setAvatarUrl(data.publicUrl);
+      setSuccess("Foto carregada. Clique em Salvar perfil para confirmar.");
+    } catch (uploadError) {
+      console.error("[perfil] falha no upload do avatar:", uploadError);
+      setError(
+        getSupabaseErrorMessage(
+          uploadError,
+          "Não foi possível enviar a foto.",
+        ),
+      );
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -85,14 +148,25 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
         throw updateError;
       }
 
+      // Sincroniza nome/foto no metadata do usuário para a navbar refletir
+      // sem precisar consultar a tabela profiles a cada página.
+      await supabase.auth.updateUser({
+        data: {
+          full_name: fullName.trim(),
+          avatar_url: avatarUrl.trim() || null,
+        },
+      });
+
       setUsername(normalizedUsername);
       setSuccess("Perfil atualizado.");
       router.refresh();
     } catch (submitError) {
+      console.error("[perfil] falha ao salvar perfil:", submitError);
       setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Não foi possível salvar o perfil.",
+        getSupabaseErrorMessage(
+          submitError,
+          "Não foi possível salvar o perfil.",
+        ),
       );
     } finally {
       setIsSubmitting(false);
@@ -113,6 +187,27 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
           <p className="mt-1 text-sm leading-6 text-slate-600">
             Essas informações aparecem em `/perfil/{username || "username"}`.
           </p>
+          <div className="mt-3">
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleAvatarChange}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              disabled={isUploadingAvatar}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              <UploadCloud size={16} />
+              {isUploadingAvatar ? "Enviando..." : "Enviar foto"}
+            </button>
+            <span className="ml-3 text-xs text-slate-500">
+              JPG, PNG ou WebP até 5 MB
+            </span>
+          </div>
         </div>
       </div>
 
@@ -137,12 +232,12 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
 
         <label className="block md:col-span-2">
           <span className="text-sm font-medium text-slate-700">
-            URL da foto
+            URL da foto (opcional)
           </span>
           <input
             value={avatarUrl}
             onChange={(event) => setAvatarUrl(event.target.value)}
-            placeholder="https://..."
+            placeholder="https://... ou use o botão Enviar foto"
             className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           />
         </label>
@@ -244,7 +339,7 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
           Ver perfil público
         </Link>
         <button
-          disabled={isSubmitting}
+          disabled={isSubmitting || isUploadingAvatar}
           className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
         >
           <Save size={18} />
