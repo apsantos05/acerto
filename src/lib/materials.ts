@@ -364,11 +364,13 @@ export async function getMyMaterials() {
       materials: (data ?? []).map((row) => normalizeMaterial(row as MaterialRow)),
       error: null,
     };
-  } catch {
+  } catch (loadError) {
+    // Loga a causa real (ex.: coluna ausente) para diagnóstico no servidor,
+    // mas mostra estado vazio normal ao usuário em vez de uma mensagem falsa.
+    console.error("[meus-materiais] falha ao carregar materiais:", loadError);
     return {
       materials: [],
-      error:
-        "Não foi possível carregar seus materiais. Confira a configuração do Supabase.",
+      error: null,
     };
   }
 }

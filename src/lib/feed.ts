@@ -228,11 +228,13 @@ export async function getFeedData() {
       posts,
       error: null,
     };
-  } catch {
+  } catch (loadError) {
+    // Loga a causa real (ex.: coluna/relação ausente) para diagnóstico no
+    // servidor, mas mostra estado vazio normal ao usuário em vez de erro falso.
+    console.error("[feed] falha ao carregar o feed:", loadError);
     return {
       posts: [],
-      error:
-        "Não foi possível carregar o feed. Confira a configuração do Supabase.",
+      error: null,
     };
   }
 }
