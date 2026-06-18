@@ -31,9 +31,7 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
       setError("Entre para criar tarefas.");
       return;
     }
-    if (!title.trim()) {
-      return;
-    }
+    if (!title.trim()) return;
     setBusy(true);
     try {
       const { data, error: insertError } = await supabase
@@ -43,9 +41,9 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
           title: title.trim(),
           subject: subject.trim() || null,
           progress: 0,
-          status: "pending",
+          status: "active",
         })
-        .select("id,title,subject,progress,status")
+        .select("id,title,subject,progress,status,completed_at")
         .single();
       if (insertError) throw insertError;
       setTasks((prev) => [
@@ -55,7 +53,8 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
           title: data.title as string,
           subject: (data.subject as string) ?? "",
           progress: (data.progress as number) ?? 0,
-          status: data.status === "done" ? "done" : "pending",
+          status: "active",
+          completedAt: null,
         },
       ]);
       setTitle("");
@@ -69,29 +68,43 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
     }
   }
 
-  async function patchTask(id: string, changes: Partial<StudyTask>) {
+  async function setProgress(id: string, progress: number) {
     setError("");
-    if (!supabase || !user) {
-      setError("Sessão expirada. Entre novamente.");
-      return;
-    }
+    if (!supabase || !user) return;
     const previous = tasks;
-    setTasks((prev) =>
-      prev.map((task) => (task.id === id ? { ...task, ...changes } : task)),
-    );
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, progress } : t)));
     try {
-      const payload: Record<string, unknown> = {};
-      if (changes.progress !== undefined) payload.progress = changes.progress;
-      if (changes.status !== undefined) payload.status = changes.status;
       const { error: updateError } = await supabase
         .from("study_tasks")
-        .update(payload)
+        .update({ progress })
         .eq("id", id);
       if (updateError) throw updateError;
     } catch (updateError) {
       setTasks(previous);
-      console.error("[weekly-plan] atualizar tarefa:", updateError);
+      console.error("[weekly-plan] progresso:", updateError);
       setError(getSupabaseErrorMessage(updateError, "Não foi possível atualizar."));
+    }
+  }
+
+  async function completeTask(id: string) {
+    setError("");
+    if (!supabase || !user) return;
+    const previous = tasks;
+    setTasks((prev) => prev.filter((t) => t.id !== id)); // sai da lista ativa -> histórico
+    try {
+      const { error: updateError } = await supabase
+        .from("study_tasks")
+        .update({
+          status: "completed",
+          progress: 100,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+      if (updateError) throw updateError;
+    } catch (completeError) {
+      setTasks(previous);
+      console.error("[weekly-plan] concluir:", completeError);
+      setError(getSupabaseErrorMessage(completeError, "Não foi possível concluir."));
     }
   }
 
@@ -99,7 +112,7 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
     setError("");
     if (!supabase || !user) return;
     const previous = tasks;
-    setTasks((prev) => prev.filter((task) => task.id !== id));
+    setTasks((prev) => prev.filter((t) => t.id !== id));
     try {
       const { error: deleteError } = await supabase
         .from("study_tasks")
@@ -108,7 +121,7 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
       if (deleteError) throw deleteError;
     } catch (deleteError) {
       setTasks(previous);
-      console.error("[weekly-plan] excluir tarefa:", deleteError);
+      console.error("[weekly-plan] excluir:", deleteError);
       setError(getSupabaseErrorMessage(deleteError, "Não foi possível excluir."));
     }
   }
@@ -167,15 +180,15 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
             <TaskRow
               key={task.id}
               task={task}
-              onProgress={(p) => patchTask(task.id, { progress: p })}
-              onDone={() => patchTask(task.id, { progress: 100, status: "done" })}
+              onProgress={(p) => setProgress(task.id, p)}
+              onDone={() => completeTask(task.id)}
               onDelete={() => deleteTask(task.id)}
             />
           ))
         ) : (
           <div className="rounded-lg border border-dashed border-slate-300 p-6 text-center">
             <p className="text-sm text-slate-600">
-              Você ainda não tem tarefas nesta semana.
+              Você ainda não tem tarefas ativas nesta semana.
             </p>
             <button
               type="button"
@@ -204,35 +217,26 @@ function TaskRow({
   onDelete: () => void;
 }) {
   const [draft, setDraft] = useState(String(task.progress));
-  const isDone = task.status === "done";
 
   return (
     <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className={`font-medium ${isDone ? "text-slate-400 line-through" : "text-slate-950"}`}>
-            {task.title}
-          </p>
+          <p className="font-medium text-slate-950">{task.title}</p>
           {task.subject ? (
             <p className="text-xs text-slate-500">{task.subject}</p>
           ) : null}
         </div>
         <div className="flex shrink-0 gap-2">
-          {!isDone ? (
-            <button
-              type="button"
-              onClick={onDone}
-              title="Concluir"
-              className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 px-2 py-1 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50"
-            >
-              <Check size={14} />
-              Concluir
-            </button>
-          ) : (
-            <span className="rounded-lg bg-emerald-100 px-2 py-1 text-xs font-semibold text-emerald-800">
-              Concluída
-            </span>
-          )}
+          <button
+            type="button"
+            onClick={onDone}
+            title="Concluir"
+            className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 px-2 py-1 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50"
+          >
+            <Check size={14} />
+            Concluir
+          </button>
           <button
             type="button"
             onClick={onDelete}

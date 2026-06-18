@@ -48,40 +48,59 @@ export function WeeklyGoalCard({ goal: initialGoal }: WeeklyGoalCardProps) {
         id: data.id as string,
         description: data.description as string,
         progress: (data.progress as number) ?? 0,
-        status: data.status === "done" ? "done" : "active",
+        status: "active",
+        completedAt: null,
       });
       setDraft("0");
       setDescription("");
     } catch (createError) {
-      console.error("[weekly-goal] criar meta:", createError);
+      console.error("[weekly-goal] criar:", createError);
       setError(getSupabaseErrorMessage(createError, "Não foi possível criar a meta."));
     } finally {
       setBusy(false);
     }
   }
 
-  async function patchGoal(changes: Partial<WeeklyGoal>) {
+  async function updateProgress(progress: number) {
     setError("");
     if (!supabase || !user || !goal) return;
     const previous = goal;
-    setGoal({ ...goal, ...changes });
+    setGoal({ ...goal, progress });
     try {
-      const payload: Record<string, unknown> = {};
-      if (changes.progress !== undefined) payload.progress = changes.progress;
-      if (changes.status !== undefined) payload.status = changes.status;
       const { error: updateError } = await supabase
         .from("weekly_goals")
-        .update(payload)
+        .update({ progress })
         .eq("id", goal.id);
       if (updateError) throw updateError;
     } catch (updateError) {
       setGoal(previous);
-      console.error("[weekly-goal] atualizar meta:", updateError);
+      console.error("[weekly-goal] progresso:", updateError);
       setError(getSupabaseErrorMessage(updateError, "Não foi possível atualizar a meta."));
     }
   }
 
-  // Estado vazio: criar meta
+  async function completeGoal() {
+    setError("");
+    if (!supabase || !user || !goal) return;
+    const previous = goal;
+    setGoal(null); // sai da meta ativa -> histórico
+    try {
+      const { error: updateError } = await supabase
+        .from("weekly_goals")
+        .update({
+          status: "completed",
+          progress: 100,
+          completed_at: new Date().toISOString(),
+        })
+        .eq("id", previous.id);
+      if (updateError) throw updateError;
+    } catch (completeError) {
+      setGoal(previous);
+      console.error("[weekly-goal] concluir:", completeError);
+      setError(getSupabaseErrorMessage(completeError, "Não foi possível concluir a meta."));
+    }
+  }
+
   if (!goal) {
     return (
       <section className="rounded-xl border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
@@ -112,8 +131,6 @@ export function WeeklyGoalCard({ goal: initialGoal }: WeeklyGoalCardProps) {
     );
   }
 
-  const isDone = goal.status === "done";
-
   return (
     <section className="rounded-xl border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
       <Target className="text-cyan-300" />
@@ -128,39 +145,35 @@ export function WeeklyGoalCard({ goal: initialGoal }: WeeklyGoalCardProps) {
       </div>
       <div className="mt-3 flex items-center gap-3 text-cyan-300">
         <TrendingUp size={18} />
-        <span className="font-semibold">
-          {goal.progress}% concluído{isDone ? " · meta concluída ✅" : ""}
-        </span>
+        <span className="font-semibold">{goal.progress}% concluído</span>
       </div>
 
-      {!isDone ? (
-        <div className="mt-5 flex flex-wrap items-center gap-2">
-          <input
-            type="number"
-            min={0}
-            max={100}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            className="w-20 rounded-lg border border-slate-700 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-cyan-400"
-          />
-          <button
-            type="button"
-            onClick={() => patchGoal({ progress: clampProgress(Number(draft)) })}
-            className="inline-flex items-center gap-1 rounded-lg border border-slate-700 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
-          >
-            <Save size={13} />
-            Atualizar
-          </button>
-          <button
-            type="button"
-            onClick={() => patchGoal({ progress: 100, status: "done" })}
-            className="ml-auto inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600"
-          >
-            <Check size={13} />
-            Concluir meta
-          </button>
-        </div>
-      ) : null}
+      <div className="mt-5 flex flex-wrap items-center gap-2">
+        <input
+          type="number"
+          min={0}
+          max={100}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          className="w-20 rounded-lg border border-slate-700 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-cyan-400"
+        />
+        <button
+          type="button"
+          onClick={() => updateProgress(clampProgress(Number(draft)))}
+          className="inline-flex items-center gap-1 rounded-lg border border-slate-700 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
+        >
+          <Save size={13} />
+          Atualizar
+        </button>
+        <button
+          type="button"
+          onClick={completeGoal}
+          className="ml-auto inline-flex items-center gap-1 rounded-lg bg-emerald-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-emerald-600"
+        >
+          <Check size={13} />
+          Concluir meta
+        </button>
+      </div>
 
       {error ? <p className="mt-3 text-sm text-red-300">{error}</p> : null}
     </section>

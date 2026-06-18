@@ -1,4 +1,5 @@
-import { FileUp } from "lucide-react";
+import Link from "next/link";
+import { FileUp, History } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
 import { StatCard } from "@/components/ui/stat-card";
@@ -36,7 +37,20 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="mt-8 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-950">
+          Plano de estudos
+        </h2>
+        <Link
+          href="/dashboard/historico"
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
+          <History size={16} />
+          Ver histórico
+        </Link>
+      </div>
+
+      <div className="mt-4 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <WeeklyPlan tasks={tasks} />
         <WeeklyGoalCard goal={goal} />
       </div>
