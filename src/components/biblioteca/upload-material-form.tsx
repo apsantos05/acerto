@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { CheckCircle2, LinkIcon, UploadCloud } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { materialTypes } from "@/lib/material-options";
+import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
 
 const allowedMimeTypes = [
   "application/pdf",
@@ -221,10 +222,14 @@ export function UploadMaterialForm() {
       formRef.current?.reset();
       setUploadKind("file");
     } catch (submitError) {
+      // Loga o erro real do Supabase (message/details/hint/code) para diagnóstico
+      // e mostra ao usuário a causa concreta em vez de uma mensagem genérica.
+      console.error("[upload-material] falha ao enviar material:", submitError);
       setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Não foi possível enviar o material.",
+        getSupabaseErrorMessage(
+          submitError,
+          "Não foi possível enviar o material.",
+        ),
       );
     } finally {
       setIsSubmitting(false);
