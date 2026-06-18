@@ -1,0 +1,2914 @@
+[
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2025,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2025 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2025",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2025,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2025 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2025",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2025 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2025",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2025 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2025",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2024,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2024 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2024",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2024,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2024 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2024",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2024,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2024 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2024",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2024,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2024 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2024",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2023,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2023 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2023",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2023,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2023 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2023",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2023,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2023 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2023",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2023,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2023 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2023",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2022,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2022 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2022",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2022,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2022 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2022",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2022,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2022 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2022",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2022,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2022 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2022",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2021,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2021 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2021_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2021",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2021,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2021 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2021_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2021",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2021,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2021 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2021_GB_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2021",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2021,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2021 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2021_GB_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2021",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2020,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2020 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2020_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2020",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2020,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2020 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2020_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2020",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2020,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2020 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2020_GB_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2020",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2020,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2020 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/enem/provas_e_gabaritos/2020_GB_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2020",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2010,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2010 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2010/dia1_caderno1_azul.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2010",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2010,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2010 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2010/dia2_caderno5_amarelo.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2010",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2010,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2010 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2010/dia1_caderno1_azul_com_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2010",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2010,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2010 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2010/dia2_caderno5_amarelo_com_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2010",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2011,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2011 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2011/dia1_caderno1_azul.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2011",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2011,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2011 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2011/dia2_caderno5_amarelo.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2011",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2011,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2011 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2011/01_AZUL_GABARITO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2011",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2011,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2011 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2011/05_AMARELO_GABARITO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2011",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2012,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2012 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2012/dia1_caderno1_azul.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2012",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2012,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2012 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2012/dia2_caderno5_amarelo.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2012",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2012,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2012 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2012/dia1_azul.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2012",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2012,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2012 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2012/dia2_amarelo.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2012",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2013,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2013 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2013/dia1_caderno1_azul.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2013",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2013,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2013 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2013/dia2_caderno5_amarelo.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2013",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2013,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2013 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2013/dia1_azul.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2013",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2013,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2013 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2013/dia2_amarelo.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2013",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2014,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2014 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2014/2014_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2014",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2014,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2014 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2014/2014_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2014",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2014,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2014 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2014/CADERNO_1_AZUL_SABADO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2014",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2014,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2014 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2014/CADERNO_5_AMARELO_DOMINGO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2014",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2015,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2015 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2015/2015_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2015",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2015,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2015 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2015/2015_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2015",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2015,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2015 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2015/CADERNO_1_AZUL_SABADO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2015",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2015,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2015 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2015/CADERNO_5_AMARELO_DOMINGO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2015",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2016,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2016 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2016/2016_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2016",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2016,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2016 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2016/2016_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2016",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2016,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2016 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2016/GAB_ENEM_2016_DIA_1_01_AZUL.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2016",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2016,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2016 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2016/GAB_ENEM_2016_DIA_2_05_AMARELO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2016",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2017,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2017 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2017/2017_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2017",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2017,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2017 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2017/2017_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2017",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2017,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2017 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2017/cad_1_gabarito_azul_5112017.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2017",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2017,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2017 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2017/cad_5_gabarito_amarelo_12112017.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2017",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2018,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2018 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2018/2018_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2018",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2018,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2018 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2018/2018_PV_impresso_D2_CD6.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2018",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2018,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2018 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2018/GAB_ENEM_2018_DIA_1_AZUL.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2018",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2018,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2018 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2018/GAB_ENEM_2018_DIA_2_AMARELO.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2018",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2019,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2019 - Prova 1º dia (Caderno Azul)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2019/2019_PV_impresso_D1_CD1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2019",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2019,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "ENEM 2019 - Prova 2º dia (Caderno Amarelo)",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/provas/2019/2019_PV_impresso_D2_CD5.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2019",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2019,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2019 - Gabarito 1º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2019/gabarito_1_dia_caderno_1_azul_aplicacao_regular.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2019",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "ENEM",
+    "faculdade": "ENEM / SISU",
+    "year": 2019,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "ENEM 2019 - Gabarito 2º dia",
+    "externalUrl": "https://download.inep.gov.br/educacao_basica/enem/gabaritos/2019/gabarito_2_dia_caderno_5_amarelo_aplicacao_regular.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "enem",
+      "2019",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2025,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2025 - 1ª fase (V1)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2025_primeira_fase_prova_V1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2025",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2025 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2025_gabarito_primeira_fase.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2025",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2025,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2025 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2025_prova_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2025",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2025,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2025 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2025_prova_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2025",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2025 - Guia de respostas (2ª fase)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2025_guia_respostas.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2025",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2024,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2024 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2024_primeira_fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2024",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2024,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2024 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2024_gabarito_primeira_fase_retificado_2023-11-24.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2024",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2024,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2024 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2024_segunda_fase_prova_1dia.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2024",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2024,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2024 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2024_segunda_fase_prova_2dia.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2024",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2024,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2024 - Abordagens esperadas (2ª fase)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2024_2024.01.22_RESPOSTAS_USP_Guia.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2024",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2023,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2023 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2023_primeira_fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2023",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2023,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2023 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2023_gabarito_primeira_fase.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2023",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2023,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2023 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2023_segunda_fase_dia_1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2023",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2023,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2023 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2023_segunda_fase_dia_2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2023",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2023,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2023 - Abordagens esperadas (2ª fase)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest2023_abordagens_esperadas_2fase.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2023",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2022,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2022 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2022_primeira_fase_tipo_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2022",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2022,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2022 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2022_primeira_fase_gabarito_retificado.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2022",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2022,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2022 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2022_segunda_fase_dia_1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2022",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2022,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2022 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2022_segunda_fase_dia_2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2022",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2021,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2021 - 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2021_primeira_fase.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2021",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2021,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2021 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2021_primeira_fase_gabarito_v2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2021",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2021,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2021 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2021_2fase_dia_1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2021",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2021,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2021 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2021_2fase_dia_2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2021",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2020,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2020 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2020_primeira_fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2020",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2020,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2020 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2020_primeira_fase_gabaritos.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2020",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2020,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2020 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2020_2fase_dia_1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2020",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2020,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2020 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2020_2fase_dia_2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2020",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2019,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2019 - 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2019_primeira_fase.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2019",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2019,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2019 - Gabarito oficial",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2019.gabarito.oficial.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2019",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2019,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2019 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2019_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2019",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2019,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2019 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2019_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2019",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2010,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2010 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2010_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2010",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2010,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2010 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2010_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2010",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2010,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2010 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2010_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2010",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2010,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2010 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2010_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2010",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2010,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2010 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2010_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2010",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2011,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2011 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2011_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2011",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2011,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2011 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2011_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2011",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2011,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2011 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2011_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2011",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2011,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2011 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2011_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2011",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2011,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2011 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2011_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2011",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2012,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2012 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2012_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2012",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2012,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2012 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2012_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2012",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2012,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2012 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2012_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2012",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2012,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2012 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2012_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2012",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2012,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2012 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2012_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2012",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2013,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2013 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2013_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2013",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2013,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2013 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2013_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2013",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2013,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2013 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2013_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2013",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2013,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2013 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2013_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2013",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2013,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2013 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2013_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2013",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2014,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2014 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2014_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2014",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2014,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2014 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2014_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2014",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2014,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2014 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2014_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2014",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2014,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2014 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2014_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2014",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2014,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2014 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2014_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2014",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2015,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2015 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2015_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2015",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2015,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2015 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2015_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2015",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2015,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2015 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2015_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2015",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2015,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2015 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2015_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2015",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2015,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2015 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2015_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2015",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2016,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2016 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2016_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2016",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2016,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2016 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2016_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2016",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2016,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2016 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2016_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2016",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2016,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2016 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2016_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2016",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2016,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2016 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2016_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2016",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2017,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2017 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2017_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2017",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2017,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2017 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2017_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2017",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2017,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2017 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2017_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2017",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2017,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2017 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2017_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2017",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2017,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2017 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuvest_2017_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2017",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2018,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "FUVEST 2018 - 1ª fase (V)",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2018_1fase_prova_V.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2018",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2018,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "FUVEST 2018 - Gabarito 1ª fase",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2018_1fase_prova_gab.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2018",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2018,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2018 - 2ª fase - 1º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2018_2fase_dia1.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2018",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2018,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2018 - 2ª fase - 2º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2018_2fase_dia2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2018",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "FUVEST",
+    "faculdade": "USP",
+    "year": 2018,
+    "materialType": "Discursiva",
+    "subject": "Geral",
+    "title": "FUVEST 2018 - 2ª fase - 3º dia",
+    "externalUrl": "https://www.fuvest.br/wp-content/uploads/fuv2018_2fase_dia3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "fuvest",
+      "2018",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2025,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2025 - 1ª fase (Q e Z)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2025/F1/f12025Q_Z.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2025",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UNICAMP 2025 - Gabarito 1ª fase (Q e Z)",
+    "externalUrl": "https://www.comvest.unicamp.br/wp-content/uploads/2024/10/QZ_gabarito_2025_FINAL_site.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2025",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2025,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2025 - 2ª fase - Ciências Biológicas/Saúde",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2025/F2/provas/2025F2CB.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2025",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Biologia",
+    "title": "UNICAMP 2025 - Respostas esperadas 2ª fase (CB/S)",
+    "externalUrl": "https://www.comvest.unicamp.br/wp-content/uploads/2024/12/Respostas-Esperadas_Dia-2_CBS.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2025",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2024,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2024 - 1ª fase (Q e Y)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2024/F1/f12024Q_Y.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2024",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2024,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UNICAMP 2024 - Gabarito 1ª fase (Q e Y)",
+    "externalUrl": "https://www.comvest.unicamp.br/wp-content/uploads/2023/10/Q_Y.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2024",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2024,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2024 - 2ª fase - Ciências Biológicas/Saúde",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2024/F2/provas/2024F2CB.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2024",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2023,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2023 - 1ª fase (Q e Z)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2023/F1/f12023Q_Z.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2023",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2023,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UNICAMP 2023 - Gabarito 1ª fase",
+    "externalUrl": "https://www.comvest.unicamp.br/wp-content/uploads/2022/11/Gabarito_F1_VEST2023_V2.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2023",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2023,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2023 - 2ª fase - Ciências Biológicas/Saúde",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2023/F2/provas/2023F2CB.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2023",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2022,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2022 - 1ª fase (Q e X)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2022/F1/f12022Q_X.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2022",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2022,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UNICAMP 2022 - Gabarito 1ª fase",
+    "externalUrl": "https://www.comvest.unicamp.br/wp-content/uploads/2021/11/gabarito_2022_DIVULGA.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2022",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2022,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2022 - 2ª fase - Ciências Biológicas/Saúde",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2022/F2/provas/2022F2CB.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2022",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2021,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2021 - 1ª fase (Q e Z)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2021/F1/f12021Q_Z.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2021",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2021,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2021 - 2ª fase - Ciências Biológicas/Saúde",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2021/F2/provas/2021F2CB.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2021",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2020,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2020 - 1ª fase (Q e X)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2020/F1/f12020Q_X.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2020",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2020,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2020 - 2ª fase - Ciências Biológicas/Saúde",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2020/F2/provas/2020F2CB.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2020",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2018,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2018 - 1ª fase (Q)",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2018/F1/f12018Q.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2018",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2018,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UNICAMP 2018 - Gabarito 1ª fase",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2018/F1/gabarito2018.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2018",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2018,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2018 - 2ª fase - Física/Bio/Química",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2018/F2/provas/fisbioqui.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2018",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2010,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UNICAMP 2010 - 1ª fase - Questões",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2010/F1/f12010questoes.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2010",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UNICAMP",
+    "faculdade": "UNICAMP",
+    "year": 2010,
+    "materialType": "Discursiva",
+    "subject": "Biologia",
+    "title": "UNICAMP 2010 - 2ª fase - Português/Biologia",
+    "externalUrl": "https://www.comvest.unicamp.br/vest2010/F2/provas/portbio.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "unicamp",
+      "2010",
+      "discursiva"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2010,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2010 - Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2010-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2010",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2010,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UFSC 2010 - Gabarito Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2010-gab-3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2010",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2011,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2011 - Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2011-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2011",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2011,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UFSC 2011 - Gabarito Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2011-gab-3.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2011",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2012,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2012 - Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2012-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2012",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2013,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2013 - Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2013-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2013",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2014,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2014 - Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2014-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2014",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2015,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2015 - Prova 1 (Amarela)",
+    "externalUrl": "http://www.coperve.ufsc.br/provas_ant/2015-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2015",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2016,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2016 - Prova 1 (Amarela)",
+    "externalUrl": "https://repositorio.ufsc.br/bitstream/handle/123456789/157152/2016-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2016",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2017,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2017 - Prova 1 (Amarela)",
+    "externalUrl": "https://repositorio.ufsc.br/bitstream/handle/123456789/171426/2017-1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2017",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2018,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2018 - Prova 1 (Amarela)",
+    "externalUrl": "https://php.coperve.ufsc.br/vestibular2018/provas/2018-p1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2018",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2019,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2019 - Prova 1 (Amarela)",
+    "externalUrl": "https://repositorio.ufsc.br/bitstream/handle/123456789/192286/2019-p1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2019",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2020,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2020 - Prova 1 (Amarela)",
+    "externalUrl": "http://dados.coperve.ufsc.br/vestibular2020/gabaritos/definitivo/prova1/p1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2020",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2022,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2022 - Prova 1 (Amarela)",
+    "externalUrl": "http://dados.coperve.ufsc.br/vestibular2022/gabaritos/definitivos/prova1/p1-amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2022",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2023,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2023 - Prova 1 (Amarela)",
+    "externalUrl": "http://dados.coperve.ufsc.br/vestibular2023/gabaritos/preliminar/p1_amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2023",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2023,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UFSC 2023 - Gabarito Prova 1 (Amarela)",
+    "externalUrl": "http://dados.coperve.ufsc.br/vestibular2023/gabaritos/preliminar/gabarito_p1_amarelaPreliminar.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2023",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2024,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2024 - Prova 1 (Amarela)",
+    "externalUrl": "http://vestibular2024.paginas.ufsc.br/files/2023/12/p1_amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2024",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2024,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UFSC 2024 - Gabarito Prova 1 (Amarela)",
+    "externalUrl": "http://vestibular2024.paginas.ufsc.br/files/2023/12/novo_gabarito_p1_amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2024",
+      "gabarito"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2025,
+    "materialType": "Prova",
+    "subject": "Geral",
+    "title": "UFSC 2025 - Prova 1 (Amarela)",
+    "externalUrl": "https://dados.coperve.ufsc.br/vestibular2025/gabaritos/p1_amarela.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2025",
+      "prova"
+    ]
+  },
+  {
+    "vestibular": "UFSC",
+    "faculdade": "UFSC",
+    "year": 2025,
+    "materialType": "Gabarito",
+    "subject": "Geral",
+    "title": "UFSC 2025 - Gabarito Prova 1 (Amarela)",
+    "externalUrl": "https://dados.coperve.ufsc.br/vestibular2025/gabaritos/gabarito_p1_amarelaPreliminar.pdf",
+    "uploadKind": "link",
+    "status": "approved",
+    "tags": [
+      "ufsc",
+      "2025",
+      "gabarito"
+    ]
+  }
+]

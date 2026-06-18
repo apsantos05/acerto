@@ -1,6 +1,9 @@
 export const materialTypes = [
   "Prova",
   "Gabarito",
+  "Discursiva",
+  "Edital",
+  "Leitura",
   "Simulado",
   "Resumo",
   "Lista de exercícios",
