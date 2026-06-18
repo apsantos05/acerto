@@ -82,6 +82,32 @@ type PostRow = {
   created_at: string;
 };
 
+function computeBadges(stats: {
+  materialsPublished: number;
+  postsCreated: number;
+  reputationPoints: number;
+  rankingPosition: number | null;
+}): string[] {
+  const badges: string[] = [];
+
+  if (stats.materialsPublished > 0) {
+    badges.push("Primeiro material");
+  }
+  if (stats.postsCreated > 0) {
+    badges.push("Primeiro post");
+  }
+  if (stats.reputationPoints >= 100) {
+    badges.push("100 pontos");
+  }
+  if (stats.rankingPosition != null && stats.rankingPosition <= 3) {
+    badges.push("Top 3");
+  } else if (stats.rankingPosition != null && stats.rankingPosition <= 10) {
+    badges.push("Top 10");
+  }
+
+  return badges;
+}
+
 function normalizeProfile(row: ProfileRow): StudentProfile {
   return {
     id: row.id,
@@ -214,19 +240,24 @@ export async function getPublicProfile(username: string) {
 
     const rankingSnapshot = await getProfileRankingSnapshot(profile.id);
 
+    const stats = {
+      materialsPublished: materialsCountResult.count ?? materials.length,
+      postsCreated: postsCountResult.count ?? posts.length,
+      reputationPoints: rankingSnapshot.totalPoints,
+      likesReceived,
+      streakDays: profile.streakDays,
+      rankingPosition: rankingSnapshot.position,
+    };
+
+    // Badges detectados automaticamente a partir dos dados reais.
+    profile.badges = computeBadges(stats);
+
     return {
       profile,
       materials,
       posts,
       isCurrentUser: user?.id === profile.id,
-      stats: {
-        materialsPublished: materialsCountResult.count ?? materials.length,
-        postsCreated: postsCountResult.count ?? posts.length,
-        reputationPoints: rankingSnapshot.totalPoints || profile.points,
-        likesReceived,
-        streakDays: profile.streakDays,
-        rankingPosition: rankingSnapshot.position,
-      },
+      stats,
     } satisfies PublicProfileData;
   } catch {
     return null;

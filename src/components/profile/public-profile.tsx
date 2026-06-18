@@ -4,7 +4,6 @@ import {
   BookOpen,
   Building2,
   CalendarDays,
-  Flame,
   Heart,
   Medal,
   MapPin,
@@ -34,19 +33,14 @@ export function PublicProfile({ data }: PublicProfileProps) {
   return (
     <div>
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="h-28 bg-slate-950" />
+        <div className="h-24 bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-800" />
         <div className="px-6 pb-6">
-          <div className="-mt-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-              <ProfileAvatar name={profile.fullName} avatarUrl={profile.avatarUrl} />
-              <div className="pb-1">
-                <h1 className="text-3xl font-semibold text-slate-950">
-                  {profile.fullName}
-                </h1>
-                <p className="mt-1 text-sm font-medium text-slate-500">
-                  @{profile.username}
-                </p>
-              </div>
+          <div className="flex items-end justify-between">
+            <div className="-mt-12">
+              <ProfileAvatar
+                name={profile.fullName}
+                avatarUrl={profile.avatarUrl}
+              />
             </div>
             {data.isCurrentUser ? (
               <Link
@@ -58,7 +52,16 @@ export function PublicProfile({ data }: PublicProfileProps) {
             ) : null}
           </div>
 
-          <p className="mt-5 max-w-3xl leading-7 text-slate-600">
+          <div className="mt-4">
+            <h1 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+              {profile.fullName}
+            </h1>
+            <p className="mt-1 text-sm font-medium text-slate-500">
+              @{profile.username}
+            </p>
+          </div>
+
+          <p className="mt-4 max-w-3xl leading-7 text-slate-600">
             {profile.bio}
           </p>
 
@@ -94,7 +97,7 @@ export function PublicProfile({ data }: PublicProfileProps) {
         </div>
       </section>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-6">
+      <div className="mt-6 grid gap-4 md:grid-cols-5">
         <ProfileStat
           icon={Medal}
           label="posição"
@@ -123,11 +126,6 @@ export function PublicProfile({ data }: PublicProfileProps) {
           icon={Heart}
           label="curtidas"
           value={stats.likesReceived.toLocaleString("pt-BR")}
-        />
-        <ProfileStat
-          icon={Flame}
-          label="sequência"
-          value={`${stats.streakDays} dias`}
         />
       </div>
 

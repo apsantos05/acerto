@@ -1,4 +1,3 @@
-import { Info } from "lucide-react";
 import { RankingFilters } from "@/components/ranking/ranking-filters";
 import { RankingSection } from "@/components/ranking/ranking-section";
 import { AppShell } from "@/components/layout/app-shell";
@@ -31,14 +30,6 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
         title="Ranking"
         description="Acompanhe quem mais contribui com materiais, posts, comentários e ajuda prática para a comunidade."
       />
-
-      {data.isMock ? (
-        <div className="mb-5 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
-          <Info size={18} className="shrink-0" />
-          Exibindo dados temporários. Execute o schema do Supabase para usar o
-          cálculo real de reputação.
-        </div>
-      ) : null}
 
       <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-semibold text-slate-950">

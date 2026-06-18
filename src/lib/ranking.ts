@@ -15,7 +15,6 @@ export type RankingEntry = {
   materialSavesReceived: number;
   commentsMade: number;
   postsCreated: number;
-  isMock?: boolean;
 };
 
 export type RankingFilters = {
@@ -40,80 +39,6 @@ type RankingRow = {
   posts_created: number | null;
 };
 
-const mockRanking: RankingEntry[] = [
-  {
-    position: 1,
-    profileId: "mock-marina",
-    username: "marina-lopes",
-    fullName: "Marina Lopes",
-    avatarUrl: null,
-    city: "São Paulo",
-    state: "SP",
-    dreamFaculty: "USP",
-    totalPoints: 8420,
-    approvedMaterials: 126,
-    materialLikesReceived: 310,
-    materialSavesReceived: 244,
-    commentsMade: 188,
-    postsCreated: 92,
-    isMock: true,
-  },
-  {
-    position: 2,
-    profileId: "mock-joao",
-    username: "joao-martins",
-    fullName: "João Martins",
-    avatarUrl: null,
-    city: "Belo Horizonte",
-    state: "MG",
-    dreamFaculty: "UFMG",
-    totalPoints: 7970,
-    approvedMaterials: 111,
-    materialLikesReceived: 288,
-    materialSavesReceived: 210,
-    commentsMade: 160,
-    postsCreated: 86,
-    isMock: true,
-  },
-  {
-    position: 3,
-    profileId: "mock-clara",
-    username: "clara-nunes",
-    fullName: "Clara Nunes",
-    avatarUrl: null,
-    city: "Curitiba",
-    state: "PR",
-    dreamFaculty: "UFPR",
-    totalPoints: 7510,
-    approvedMaterials: 98,
-    materialLikesReceived: 270,
-    materialSavesReceived: 190,
-    commentsMade: 174,
-    postsCreated: 81,
-    isMock: true,
-  },
-  {
-    position: 4,
-    profileId: "mock-rafael",
-    username: "rafael-kim",
-    fullName: "Rafael Kim",
-    avatarUrl: null,
-    city: "Campinas",
-    state: "SP",
-    dreamFaculty: "Unicamp",
-    totalPoints: 7190,
-    approvedMaterials: 91,
-    materialLikesReceived: 260,
-    materialSavesReceived: 184,
-    commentsMade: 145,
-    postsCreated: 76,
-    isMock: true,
-  },
-];
-
-const fallbackSubjects = ["Biologia", "Química", "Redação"];
-const fallbackVestibulares = ["Fuvest", "ENEM", "Unicamp"];
-
 function normalizeRanking(row: RankingRow): RankingEntry {
   return {
     position: Number(row.position),
@@ -124,20 +49,13 @@ function normalizeRanking(row: RankingRow): RankingEntry {
     city: row.city ?? "",
     state: row.state ?? "",
     dreamFaculty: row.dream_faculty ?? "Medicina",
-    totalPoints: row.total_points ?? 0,
-    approvedMaterials: row.approved_materials ?? 0,
-    materialLikesReceived: row.material_likes_received ?? 0,
-    materialSavesReceived: row.material_saves_received ?? 0,
-    commentsMade: row.comments_made ?? 0,
-    postsCreated: row.posts_created ?? 0,
+    totalPoints: Number(row.total_points ?? 0),
+    approvedMaterials: Number(row.approved_materials ?? 0),
+    materialLikesReceived: Number(row.material_likes_received ?? 0),
+    materialSavesReceived: Number(row.material_saves_received ?? 0),
+    commentsMade: Number(row.comments_made ?? 0),
+    postsCreated: Number(row.posts_created ?? 0),
   };
-}
-
-function normalizeMock(entries: RankingEntry[]) {
-  return entries.map((entry, index) => ({
-    ...entry,
-    position: index + 1,
-  }));
 }
 
 async function getRanking(
@@ -152,7 +70,8 @@ async function getRanking(
   });
 
   if (error) {
-    throw error;
+    console.error("[ranking] falha no get_reputation_ranking:", error);
+    return [];
   }
 
   return ((data ?? []) as RankingRow[]).map(normalizeRanking);
@@ -166,7 +85,8 @@ async function getRankingOptions() {
     .eq("status", "approved");
 
   if (error) {
-    throw error;
+    console.error("[ranking] falha ao carregar opções:", error);
+    return { subjects: [] as string[], vestibulares: [] as string[] };
   }
 
   const rows = (data ?? []) as Array<{
@@ -181,81 +101,54 @@ async function getRankingOptions() {
     new Set(rows.map((row) => row.vestibular).filter(Boolean) as string[]),
   ).sort((a, b) => a.localeCompare(b, "pt-BR"));
 
-  return {
-    subjects,
-    vestibulares,
-  };
+  return { subjects, vestibulares };
 }
 
 export async function getRankingPageData(filters: RankingFilters) {
-  try {
-    const options = await getRankingOptions();
-    const activeSubject = filters.subject || options.subjects[0] || "";
-    const activeVestibular =
-      filters.vestibular || options.vestibulares[0] || "";
-    const [general, subjectRanking, vestibularRanking] = await Promise.all([
-      getRanking({}, 20),
-      activeSubject ? getRanking({ subject: activeSubject }, 20) : [],
-      activeVestibular ? getRanking({ vestibular: activeVestibular }, 20) : [],
-    ]);
+  const options = await getRankingOptions();
+  const activeSubject = filters.subject || options.subjects[0] || "";
+  const activeVestibular = filters.vestibular || options.vestibulares[0] || "";
 
-    return {
-      general,
-      subjectRanking,
-      vestibularRanking,
-      options,
-      activeSubject,
-      activeVestibular,
-      isMock: false,
-    };
-  } catch {
-    const activeSubject = filters.subject || fallbackSubjects[0];
-    const activeVestibular = filters.vestibular || fallbackVestibulares[0];
+  const [general, subjectRanking, vestibularRanking] = await Promise.all([
+    getRanking({}, 20),
+    activeSubject ? getRanking({ subject: activeSubject }, 20) : Promise.resolve([]),
+    activeVestibular
+      ? getRanking({ vestibular: activeVestibular }, 20)
+      : Promise.resolve([]),
+  ]);
 
-    return {
-      general: normalizeMock(mockRanking),
-      subjectRanking: normalizeMock(mockRanking.slice(0, 3)),
-      vestibularRanking: normalizeMock(mockRanking.slice(1)),
-      options: {
-        subjects: fallbackSubjects,
-        vestibulares: fallbackVestibulares,
-      },
-      activeSubject,
-      activeVestibular,
-      isMock: true,
-    };
-  }
-}
-
-export async function getProfileRankingPosition(profileId: string) {
-  try {
-    const ranking = await getRanking({}, 10000);
-    return ranking.find((entry) => entry.profileId === profileId)?.position ?? null;
-  } catch {
-    return null;
-  }
+  return {
+    general,
+    subjectRanking,
+    vestibularRanking,
+    options,
+    activeSubject,
+    activeVestibular,
+  };
 }
 
 export async function getProfileRankingSnapshot(profileId: string) {
   try {
-    const ranking = await getRanking({}, 10000);
-    const entry = ranking.find((item) => item.profileId === profileId);
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("get_profile_reputation", {
+      p_profile_id: profileId,
+    });
 
-    if (!entry) {
-      return {
-        position: null,
-        totalPoints: 0,
-      };
+    if (error) {
+      console.error("[ranking] falha no get_profile_reputation:", error);
+      return { position: null as number | null, totalPoints: 0 };
     }
 
+    const row = (data ?? [])[0] as
+      | { total_points: number | null; position: number | null }
+      | undefined;
+
     return {
-      position: entry.position,
-      totalPoints: entry.totalPoints,
+      position: row?.position != null ? Number(row.position) : null,
+      totalPoints: row?.total_points != null ? Number(row.total_points) : 0,
     };
-  } catch {
-    return {
-      position: null,
-      totalPoints: 0,
-    };
+  } catch (snapshotError) {
+    console.error("[ranking] erro inesperado no snapshot:", snapshotError);
+    return { position: null as number | null, totalPoints: 0 };
   }
 }

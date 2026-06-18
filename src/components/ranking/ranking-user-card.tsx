@@ -73,9 +73,5 @@ export function RankingUserCard({ entry }: RankingUserCardProps) {
     </article>
   );
 
-  if (entry.isMock) {
-    return content;
-  }
-
   return <Link href={`/perfil/${entry.username}`}>{content}</Link>;
 }
