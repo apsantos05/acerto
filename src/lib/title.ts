@@ -8,21 +8,90 @@
 // "998 BIOLOGIA MOLECULAR"             → "BIOLOGIA MOLECULAR"
 // "13.7 ÁREAS..."                      → "13.7 ÁREAS..." (preservado)
 // "2024 Prova ENEM"                    → "2024 Prova ENEM" (preservado)
+// Tokens que devem permanecer em CAIXA ALTA ao aplicar Title Case.
+const ACRONYMS = new Set([
+  "ENEM", "SISU", "FUVEST", "USP", "UNICAMP", "UNESP", "UFMG", "UNIFESP",
+  "UFRJ", "UFSC", "UFPR", "FAMERP", "FAMEMA", "UFSCAR", "PUC", "PUC-SP",
+  "SP", "RJ", "MG", "SC", "PR", "BR", "COC", "SAS", "II", "III", "IV", "V", "VI",
+]);
+const CONTEXT_MARKER =
+  /\b(conte[úu]do|quest[õo]es|exerc[íi]cios|gabarito|revis[ãa]o|resumo|caderno|corre[çc][ãa]o|simulado|prova|lista|teoria)\b/i;
+const SMALL_WORDS = new Set([
+  "de", "da", "do", "das", "dos", "e", "em", "para", "com", "a", "o", "na", "no", "ao", "aos",
+]);
+
+// Remove um prefixo artificial: número (1–4 dígitos, exceto ano) opcionalmente
+// seguido de uma única letra. Ex.: "999 ", "5 B ", "12 A ". Só separador por
+// espaço — assim "13.7" (ponto) é preservado. Aplica em loop (códigos de lote).
+function stripPrefixes(input: string): string {
+  let t = input;
+  for (let i = 0; i < 3; i++) {
+    const m = t.match(/^(\d{1,4})(\s+[A-Za-z])?\s+(\S[\s\S]*)$/);
+    if (!m) break;
+    const n = Number(m[1]);
+    if (n >= 1900 && n <= 2099) break; // ano: mantém
+    t = m[3].trim();
+  }
+  return t;
+}
+
+function isMostlyUpper(t: string): boolean {
+  let total = 0;
+  let upper = 0;
+  for (const ch of t) {
+    if (/[a-zà-ÿ]/i.test(ch)) {
+      total++;
+      if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) upper++;
+    }
+  }
+  return total > 0 && upper / total > 0.7;
+}
+
+function titleCase(t: string): string {
+  const words = t.split(/\s+/).map((w, idx) => {
+    if (ACRONYMS.has(w.toUpperCase())) return w.toUpperCase();
+    if (/[0-9]/.test(w)) return w; // anos, seções "13.7"
+    if (!/[a-zà-ÿ]/i.test(w)) return w; // "+", pontuação isolada
+    const lower = w.toLowerCase();
+    if (idx > 0 && SMALL_WORDS.has(lower)) return lower;
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  });
+  let out = words.join(" ");
+  // Insere " — " antes do primeiro marcador de contexto (se houver título antes).
+  const marker = out.match(CONTEXT_MARKER);
+  if (marker && marker.index && marker.index > 0) {
+    const before = out.slice(0, marker.index).trim();
+    const after = out.slice(marker.index).trim();
+    if (before && !/[—–-]$/.test(before)) out = `${before} — ${after}`;
+  }
+  return out;
+}
+
+// Normaliza o título de um material:
+//  1) remove extensão (.pdf / pdf / .PDF — inclusive colada: "ORIENTADASpdf")
+//  2) remove lixo (underscores, "(1)", "download", espaços múltiplos)
+//  3) remove prefixos artificiais ("999", "5 B", "12 A", códigos de lote)
+//  4) se estiver "cru" (CAIXA ALTA), aplica Title Case + em-dash, preservando
+//     acrônimos (ENEM/FUVEST/...) e seções com ponto ("13.7").
 export function cleanMaterialTitle(title: string | null | undefined): string {
   if (!title) return title ?? "";
-  const trimmed = title.trim();
+  const original = title.trim();
+  let t = original;
 
-  // Captura UM inteiro inicial (1–4 dígitos) seguido de espaço e mais conteúdo.
-  // O `\s+` exige espaço logo após os dígitos, então "13.7" (ponto) não casa.
-  const match = trimmed.match(/^(\d{1,4})\s+(\S[\s\S]*)$/);
-  if (!match) return trimmed;
+  t = t.replace(/\.?pdf$/i, "").trim(); // extensão (com ou sem ponto, colada)
+  t = t
+    .replace(/_+/g, " ")
+    .replace(/\bdownload\b/gi, " ")
+    .replace(/\(\d+\)\s*$/, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  t = stripPrefixes(t);
 
-  const leading = Number(match[1]);
-  if (leading >= 1900 && leading <= 2099) {
-    return trimmed; // provável ano — mantém
+  if (isMostlyUpper(t)) {
+    t = titleCase(t);
   }
 
-  return match[2].trim();
+  return (t.trim() || original).slice(0, 160);
 }
 
 const GENERIC_TITLES = new Set([

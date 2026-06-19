@@ -16,6 +16,7 @@
  */
 import { createClient } from "@supabase/supabase-js";
 import { loadEnv, log } from "../telegram/lib.mjs";
+import { normalizeTitle } from "../telegram/classify-lib.mjs";
 
 const env = { ...loadEnv(), ...process.env };
 const APPLY = process.argv.includes("--apply");
@@ -31,14 +32,7 @@ if (!url || !serviceKey) {
 
 const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
 
-function cleanTitle(title) {
-  const trimmed = (title || "").trim();
-  const m = trimmed.match(/^(\d{1,4})\s+(\S[\s\S]*)$/);
-  if (!m) return trimmed;
-  const n = Number(m[1]);
-  if (n >= 1900 && n <= 2099) return trimmed; // ano: mantém
-  return m[2].trim();
-}
+const cleanTitle = (title) => normalizeTitle(title);
 
 async function fetchAll() {
   const rows = [];

@@ -150,22 +150,74 @@ export function slugify(value) {
     .slice(0, 70);
 }
 
-// Remove um prefixo numérico artificial (ex.: "999 ") do começo do título,
-// preservando seções com ponto ("13.7") e anos (1900–2099).
+// Normalização de título — espelha src/lib/title.ts (mantenha em sincronia).
+const TITLE_ACRONYMS = new Set([
+  "ENEM", "SISU", "FUVEST", "USP", "UNICAMP", "UNESP", "UFMG", "UNIFESP",
+  "UFRJ", "UFSC", "UFPR", "FAMERP", "FAMEMA", "UFSCAR", "PUC", "PUC-SP",
+  "SP", "RJ", "MG", "SC", "PR", "BR", "COC", "SAS", "II", "III", "IV", "V", "VI",
+]);
+const TITLE_CONTEXT = /\b(conte[úu]do|quest[õo]es|exerc[íi]cios|gabarito|revis[ãa]o|resumo|caderno|corre[çc][ãa]o|simulado|prova|lista|teoria)\b/i;
+const TITLE_SMALL = new Set(["de", "da", "do", "das", "dos", "e", "em", "para", "com", "a", "o", "na", "no", "ao", "aos"]);
+
 export function stripArtificialPrefix(title) {
-  const trimmed = (title || "").trim();
-  const m = trimmed.match(/^(\d{1,4})\s+(\S[\s\S]*)$/);
-  if (!m) return trimmed;
-  const n = Number(m[1]);
-  if (n >= 1900 && n <= 2099) return trimmed;
-  return m[2].trim();
+  let t = (title || "").trim();
+  for (let i = 0; i < 3; i++) {
+    const m = t.match(/^(\d{1,4})(\s+[A-Za-z])?\s+(\S[\s\S]*)$/);
+    if (!m) break;
+    const n = Number(m[1]);
+    if (n >= 1900 && n <= 2099) break;
+    t = m[3].trim();
+  }
+  return t;
+}
+
+function titleIsMostlyUpper(t) {
+  let total = 0;
+  let upper = 0;
+  for (const ch of t) {
+    if (/[a-zà-ÿ]/i.test(ch)) {
+      total++;
+      if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) upper++;
+    }
+  }
+  return total > 0 && upper / total > 0.7;
+}
+
+function titleCaseRaw(t) {
+  const words = t.split(/\s+/).map((w, idx) => {
+    if (TITLE_ACRONYMS.has(w.toUpperCase())) return w.toUpperCase();
+    if (/[0-9]/.test(w)) return w;
+    if (!/[a-zà-ÿ]/i.test(w)) return w;
+    const lower = w.toLowerCase();
+    if (idx > 0 && TITLE_SMALL.has(lower)) return lower;
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  });
+  let out = words.join(" ");
+  const marker = out.match(TITLE_CONTEXT);
+  if (marker && marker.index && marker.index > 0) {
+    const before = out.slice(0, marker.index).trim();
+    const after = out.slice(marker.index).trim();
+    if (before && !/[—–-]$/.test(before)) out = `${before} — ${after}`;
+  }
+  return out;
+}
+
+export function normalizeTitle(raw) {
+  if (!raw) return "";
+  const original = String(raw).trim();
+  let t = original;
+  t = t.replace(/\.?pdf$/i, "").trim();
+  t = t.replace(/_+/g, " ").replace(/\bdownload\b/gi, " ").replace(/\(\d+\)\s*$/, "").replace(/\s+/g, " ").trim();
+  t = stripArtificialPrefix(t);
+  if (titleIsMostlyUpper(t)) t = titleCaseRaw(t);
+  return (t.trim() || original).slice(0, 160);
 }
 
 export function cleanTitle(fileName, caption) {
   const base = (fileName || "").replace(/\.[a-z0-9]+$/i, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
   const cap = (caption || "").split(/\r?\n/)[0]?.trim();
   const title = base.length >= 6 ? base : cap || base || "Material";
-  return stripArtificialPrefix(title).slice(0, 120);
+  return normalizeTitle(title).slice(0, 120) || "Material";
 }
 
 // Classificação completa por heurística. `hash` entra no slug para unicidade.
