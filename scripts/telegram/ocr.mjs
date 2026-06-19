@@ -21,7 +21,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
-import { loadEnv, log, writeTextCache, readTextCache } from "./lib.mjs";
+import { loadEnv, log, writeTextCache, readTextCache, cacheDir } from "./lib.mjs";
 import { classify } from "./classify-lib.mjs";
 
 const env = { ...loadEnv(), ...process.env };
@@ -30,12 +30,11 @@ const LANG = env.OCR_LANG || "por";
 const MAX_PAGES = Number(env.OCR_MAX_PAGES) || 3;
 const DPI = Number(env.OCR_DPI) || 200;
 
-const OUT_DIR = join("content", "telegram");
-const CURATED = join(OUT_DIR, "curated.json");
-const TMP = join(OUT_DIR, "cache", "ocr-tmp");
+const CURATED = process.env.CURATED_PATH || join("content", "telegram", "curated.json");
+const TMP = join(cacheDir(), "ocr-tmp");
 
 if (!existsSync(CURATED)) {
-  log("FAIL", `${CURATED} não existe. Rode antes: node scripts/telegram/normalize.mjs`);
+  log("FAIL", `${CURATED} não existe. Rode antes a etapa de classificação.`);
   process.exit(1);
 }
 

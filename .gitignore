@@ -42,6 +42,9 @@ yarn-error.log*
 /content/telegram/
 /scripts/telegram/sources.json
 
+# importação local (PDFs, manifesto e caches)
+/content/import-local/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -5,34 +5,36 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
 
-const CACHE_DIR = join("content", "telegram", "cache");
+// Base do cache. Pode ser sobrescrita por CACHE_DIR (ex.: pipeline local),
+// avaliada de forma preguiçosa para respeitar env definido antes do import.
+export function cacheDir() {
+  return process.env.CACHE_DIR || join("content", "telegram", "cache");
+}
 
 // Cache de texto extraído (pdf-parse ou OCR), por sha256.
 export function textCachePath(hash) {
-  return join(CACHE_DIR, "text", `${hash}.txt`);
+  return join(cacheDir(), "text", `${hash}.txt`);
 }
 export function readTextCache(hash) {
   const p = textCachePath(hash);
   return existsSync(p) ? readFileSync(p, "utf8") : null;
 }
 export function writeTextCache(hash, text) {
-  const p = textCachePath(hash);
-  mkdirSync(join(CACHE_DIR, "text"), { recursive: true });
-  writeFileSync(p, text ?? "");
+  mkdirSync(join(cacheDir(), "text"), { recursive: true });
+  writeFileSync(textCachePath(hash), text ?? "");
 }
 
 // Cache de resultado da IA, por sha256.
 export function aiCachePath(hash) {
-  return join(CACHE_DIR, "ai", `${hash}.json`);
+  return join(cacheDir(), "ai", `${hash}.json`);
 }
 export function readAiCache(hash) {
   const p = aiCachePath(hash);
   return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : null;
 }
 export function writeAiCache(hash, obj) {
-  const p = aiCachePath(hash);
-  mkdirSync(join(CACHE_DIR, "ai"), { recursive: true });
-  writeFileSync(p, JSON.stringify(obj, null, 2));
+  mkdirSync(join(cacheDir(), "ai"), { recursive: true });
+  writeFileSync(aiCachePath(hash), JSON.stringify(obj, null, 2));
 }
 
 export function loadEnv(path = ".env.local") {

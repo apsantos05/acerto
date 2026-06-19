@@ -49,9 +49,9 @@ if (!DRY && serviceKey.startsWith("sb_publishable_")) {
   process.exit(1);
 }
 
-const CURATED = join("content", "telegram", "curated.json");
+const CURATED = process.env.CURATED_PATH || join("content", "telegram", "curated.json");
 if (!existsSync(CURATED)) {
-  log("FAIL", `${CURATED} não existe. Rode antes: node scripts/telegram/normalize.mjs`);
+  log("FAIL", `${CURATED} não existe. Rode antes a etapa de classificação.`);
   process.exit(1);
 }
 const items = JSON.parse(readFileSync(CURATED, "utf8"));
