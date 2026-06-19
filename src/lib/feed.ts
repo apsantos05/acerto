@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { normalizePlan } from "@/lib/plan";
+import { cleanMaterialTitle } from "@/lib/title";
 import type { FeedAuthor, FeedComment, FeedMaterial, FeedPost } from "@/lib/feed-types";
 
 type ProfileRow = {
@@ -75,7 +76,7 @@ function normalizeMaterial(material: MaterialRow | MaterialRow[] | null): FeedMa
 
   return {
     id: item.id,
-    title: item.title,
+    title: cleanMaterialTitle(item.title),
     subject: item.subject ?? "Interdisciplinar",
     materialType: item.material_type ?? "Material",
   };

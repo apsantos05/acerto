@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { cleanMaterialTitle } from "@/lib/title";
 
 export type DashboardStats = {
   materialsAvailable: number;
@@ -84,7 +85,7 @@ export async function getDashboardData(): Promise<DashboardData> {
         }>
       ).map((row) => ({
         id: row.id,
-        title: row.title,
+        title: cleanMaterialTitle(row.title),
         materialType: row.material_type ?? "Material",
         subject: row.subject ?? "Geral",
       }));

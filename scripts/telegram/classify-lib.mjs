@@ -150,11 +150,22 @@ export function slugify(value) {
     .slice(0, 70);
 }
 
+// Remove um prefixo numérico artificial (ex.: "999 ") do começo do título,
+// preservando seções com ponto ("13.7") e anos (1900–2099).
+export function stripArtificialPrefix(title) {
+  const trimmed = (title || "").trim();
+  const m = trimmed.match(/^(\d{1,4})\s+(\S[\s\S]*)$/);
+  if (!m) return trimmed;
+  const n = Number(m[1]);
+  if (n >= 1900 && n <= 2099) return trimmed;
+  return m[2].trim();
+}
+
 export function cleanTitle(fileName, caption) {
   const base = (fileName || "").replace(/\.[a-z0-9]+$/i, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
   const cap = (caption || "").split(/\r?\n/)[0]?.trim();
   const title = base.length >= 6 ? base : cap || base || "Material";
-  return title.slice(0, 120);
+  return stripArtificialPrefix(title).slice(0, 120);
 }
 
 // Classificação completa por heurística. `hash` entra no slug para unicidade.

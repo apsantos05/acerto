@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { SUBJECTS } from "@/lib/catalog";
+import { cleanMaterialTitle } from "@/lib/title";
 
 export type AdminAuthor = {
   id: string;
@@ -123,7 +124,7 @@ const ADMIN_MATERIAL_COLS =
 function mapMaterial(row: MaterialRow): AdminMaterial {
   return {
     id: row.id,
-    title: row.title,
+    title: cleanMaterialTitle(row.title),
     description: row.description ?? "",
     summary: row.summary ?? "",
     vestibular: row.vestibular ?? "Todos",

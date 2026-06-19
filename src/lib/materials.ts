@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { normalizePlan, type Plan } from "@/lib/plan";
+import { cleanMaterialTitle } from "@/lib/title";
 import {
   materialTypes,
   type MaterialStatus,
@@ -259,7 +260,7 @@ function normalizeMaterial(row: MaterialRow): LibraryMaterial {
 
   return {
     id: row.id,
-    title: row.title,
+    title: cleanMaterialTitle(row.title),
     description: row.description ?? "Material compartilhado pela comunidade.",
     vestibular: row.vestibular ?? "Todos",
     faculdade: row.faculdade ?? "Medicina",

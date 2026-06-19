@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getProfileRankingSnapshot } from "@/lib/ranking";
 import { normalizePlan, type Plan } from "@/lib/plan";
+import { cleanMaterialTitle } from "@/lib/title";
 import {
   buildAchievements,
   type AchievementCategory,
@@ -145,7 +146,7 @@ function normalizeProfile(row: ProfileRow): StudentProfile {
 function normalizeMaterial(row: MaterialRow): ProfileMaterial {
   return {
     id: row.id,
-    title: row.title,
+    title: cleanMaterialTitle(row.title),
     subject: row.subject ?? "Interdisciplinar",
     materialType: row.material_type ?? "Material",
     viewsCount: row.views_count ?? 0,
@@ -224,7 +225,7 @@ async function getProfileActivity(
     items.push({
       id: `material-${row.id}`,
       type: "material",
-      title: row.title,
+      title: cleanMaterialTitle(row.title),
       detail: "Publicou um material",
       date: row.created_at,
       href: `/biblioteca/${row.id}`,
