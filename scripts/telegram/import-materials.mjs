@@ -77,14 +77,42 @@ if (!DRY) {
 const facultyCache = new Map();
 const vestibularCache = new Map();
 
+// faculties.slug e vestibulares.slug são NOT NULL no banco real — o insert
+// PRECISA enviar slug (espelha src/components/biblioteca/upload-material-form).
+function slugifyName(value) {
+  return (
+    String(value)
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "item"
+  );
+}
+
 async function getOrCreate(table, cache, name) {
   if (!name || name === "Geral" || name === "Todos") return null;
   if (cache.has(name)) return cache.get(name);
+
+  const slug = slugifyName(name);
   let { data } = await supabase.from(table).select("id").eq("name", name).maybeSingle();
+
   if (!data) {
-    const ins = await supabase.from(table).insert({ name }).select("id").maybeSingle();
-    data = ins.data;
+    const ins = await supabase
+      .from(table)
+      .insert({ name, slug })
+      .select("id")
+      .maybeSingle();
+    if (ins.error?.code === "23505") {
+      // slug já existe (corrida/duplicata): recupera pelo slug.
+      const dup = await supabase.from(table).select("id").eq("slug", slug).maybeSingle();
+      data = dup.data;
+    } else {
+      data = ins.data;
+    }
   }
+
   const id = data?.id ?? null;
   cache.set(name, id);
   return id;
