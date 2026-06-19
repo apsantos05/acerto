@@ -330,39 +330,145 @@ export function filterMaterials(
   });
 }
 
-async function getSupabaseMaterials() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("materials")
-    .select(
-      materialSelect,
-    )
-    .eq("status", "approved")
-    .order("created_at", { ascending: false });
+export const LIBRARY_PAGE_SIZE = 24;
 
-  if (error) {
-    throw error;
-  }
+export type LibraryPage = {
+  materials: LibraryMaterial[];
+  options: LibraryFilterOptions;
+  isMock: boolean;
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
 
-  return (data ?? []).map((row) => normalizeMaterial(row as MaterialRow));
+// Remove caracteres que quebrariam a sintaxe do .or()/ilike do PostgREST.
+function sanitizeTerm(term?: string) {
+  return (term ?? "").replace(/[,()%*]/g, " ").trim();
 }
 
-export async function getLibraryData(filters: LibraryFilters) {
-  try {
-    const materials = await getSupabaseMaterials();
-    const sourceMaterials = materials.length > 0 ? materials : mockLibraryMaterials;
+// Consulta paginada e filtrada DIRETO no banco — escala para milhares de
+// materiais (nada de baixar tudo e filtrar no cliente).
+export async function queryMaterials(
+  filters: LibraryFilters,
+  page = 1,
+  pageSize = LIBRARY_PAGE_SIZE,
+): Promise<{ materials: LibraryMaterial[]; total: number }> {
+  const supabase = await createClient();
+  let query = supabase
+    .from("materials")
+    .select(materialSelect, { count: "exact" })
+    .eq("status", "approved");
 
+  if (filters.vestibular) query = query.eq("vestibular", filters.vestibular);
+  if (filters.faculdade) query = query.eq("faculdade", filters.faculdade);
+  if (filters.subject) query = query.eq("subject", filters.subject);
+  if (filters.materialType) query = query.eq("material_type", filters.materialType);
+  if (filters.year) query = query.eq("year", Number(filters.year));
+
+  const term = sanitizeTerm(filters.search);
+  if (term) {
+    query = query.or(
+      [
+        `title.ilike.%${term}%`,
+        `description.ilike.%${term}%`,
+        `subject.ilike.%${term}%`,
+        `vestibular.ilike.%${term}%`,
+        `faculdade.ilike.%${term}%`,
+      ].join(","),
+    );
+  }
+
+  const from = Math.max(0, (page - 1) * pageSize);
+  query = query
+    .order("created_at", { ascending: false })
+    .range(from, from + pageSize - 1);
+
+  const { data, count, error } = await query;
+  if (error) throw error;
+
+  return {
+    materials: (data ?? []).map((row) => normalizeMaterial(row as MaterialRow)),
+    total: count ?? 0,
+  };
+}
+
+// Opções de filtro (facetas) a partir de uma amostra leve dos aprovados.
+async function getLibraryFacets(): Promise<{
+  options: LibraryFilterOptions;
+  total: number;
+}> {
+  const supabase = await createClient();
+  const { data, count } = await supabase
+    .from("materials")
+    .select("subject,vestibular,faculdade,year", { count: "exact" })
+    .eq("status", "approved")
+    .limit(2000);
+
+  const rows = (data ?? []) as Array<{
+    subject: string | null;
+    vestibular: string | null;
+    faculdade: string | null;
+    year: number | null;
+  }>;
+
+  return {
+    total: count ?? 0,
+    options: {
+      vestibulares: uniqueSorted(
+        rows.map((r) => r.vestibular).filter(Boolean) as string[],
+      ),
+      faculdades: uniqueSorted(
+        rows.map((r) => r.faculdade).filter(Boolean) as string[],
+      ),
+      years: uniqueSorted(
+        rows.map((r) => r.year).filter((y) => y != null) as number[],
+      ).reverse(),
+      subjects: uniqueSorted(
+        rows.map((r) => r.subject).filter(Boolean) as string[],
+      ),
+      materialTypes: [...materialTypes],
+    },
+  };
+}
+
+function mockPage(filters: LibraryFilters): LibraryPage {
+  const materials = filterMaterials(mockLibraryMaterials, filters);
+  return {
+    materials,
+    options: getLibraryFilterOptions(mockLibraryMaterials),
+    isMock: true,
+    total: materials.length,
+    page: 1,
+    pageSize: Math.max(1, materials.length),
+    totalPages: 1,
+  };
+}
+
+export async function getLibraryData(
+  filters: LibraryFilters,
+  page = 1,
+): Promise<LibraryPage> {
+  try {
+    const { options, total: approvedTotal } = await getLibraryFacets();
+
+    // Banco vazio (dev): mantém o fallback mock para a página não ficar nua.
+    if (approvedTotal === 0) {
+      return mockPage(filters);
+    }
+
+    const { materials, total } = await queryMaterials(filters, page);
     return {
-      materials: filterMaterials(sourceMaterials, filters),
-      options: getLibraryFilterOptions(sourceMaterials),
-      isMock: materials.length === 0,
+      materials,
+      options,
+      isMock: false,
+      total,
+      page,
+      pageSize: LIBRARY_PAGE_SIZE,
+      totalPages: Math.max(1, Math.ceil(total / LIBRARY_PAGE_SIZE)),
     };
   } catch {
-    return {
-      materials: filterMaterials(mockLibraryMaterials, filters),
-      options: getLibraryFilterOptions(mockLibraryMaterials),
-      isMock: true,
-    };
+    return mockPage(filters);
   }
 }
 
