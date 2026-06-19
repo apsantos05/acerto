@@ -45,6 +45,9 @@ yarn-error.log*
 # importação local (PDFs, manifesto e caches)
 /content/import-local/
 
+# cache de curadoria admin (texto extraído / OCR)
+/content/admin/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
