@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getProfileRankingSnapshot } from "@/lib/ranking";
+import { normalizePlan, type Plan } from "@/lib/plan";
 import {
   buildAchievements,
   type AchievementCategory,
@@ -22,6 +23,7 @@ export type StudentProfile = {
   points: number;
   streakDays: number;
   badges: string[];
+  plan: Plan;
 };
 
 export type ProfileMaterial = {
@@ -95,6 +97,7 @@ type ProfileRow = {
   streak_days: number | null;
   study_streak: number | null;
   badges: string[] | null;
+  plan: string | null;
 };
 
 type MaterialRow = {
@@ -114,7 +117,7 @@ type PostRow = {
 };
 
 const PROFILE_COLS =
-  "id,username,full_name,email,avatar_url,cover_url,bio,objective,dream_faculty,target_exams,city,state,points,streak_days,study_streak,badges";
+  "id,username,full_name,email,avatar_url,cover_url,bio,objective,dream_faculty,target_exams,city,state,points,streak_days,study_streak,badges,plan";
 
 function normalizeProfile(row: ProfileRow): StudentProfile {
   return {
@@ -135,6 +138,7 @@ function normalizeProfile(row: ProfileRow): StudentProfile {
     points: row.points ?? 0,
     streakDays: row.study_streak ?? row.streak_days ?? 0,
     badges: row.badges ?? [],
+    plan: normalizePlan(row.plan),
   };
 }
 

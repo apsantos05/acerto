@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { normalizePlan, type Plan } from "@/lib/plan";
 
 export type RankingEntry = {
   position: number;
@@ -15,6 +16,7 @@ export type RankingEntry = {
   materialSavesReceived: number;
   commentsMade: number;
   postsCreated: number;
+  plan: Plan;
 };
 
 export type RankingFilters = {
@@ -55,6 +57,7 @@ function normalizeRanking(row: RankingRow): RankingEntry {
     materialSavesReceived: Number(row.material_saves_received ?? 0),
     commentsMade: Number(row.comments_made ?? 0),
     postsCreated: Number(row.posts_created ?? 0),
+    plan: "free",
   };
 }
 
@@ -74,7 +77,26 @@ async function getRanking(
     return [];
   }
 
-  return ((data ?? []) as RankingRow[]).map(normalizeRanking);
+  const entries = ((data ?? []) as RankingRow[]).map(normalizeRanking);
+
+  // A RPC não retorna o plano; busca-os em lote e enriquece.
+  const ids = entries.map((entry) => entry.profileId);
+  if (ids.length > 0) {
+    const { data: planRows } = await supabase
+      .from("profiles")
+      .select("id,plan")
+      .in("id", ids);
+    const planById = new Map(
+      ((planRows ?? []) as Array<{ id: string; plan: string | null }>).map(
+        (row) => [row.id, normalizePlan(row.plan)],
+      ),
+    );
+    for (const entry of entries) {
+      entry.plan = planById.get(entry.profileId) ?? "free";
+    }
+  }
+
+  return entries;
 }
 
 async function getRankingOptions() {

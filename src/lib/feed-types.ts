@@ -1,3 +1,5 @@
+import type { Plan } from "@/lib/plan";
+
 export type FeedAuthor = {
   id: string;
   name: string;
@@ -5,6 +7,7 @@ export type FeedAuthor = {
   avatarUrl: string | null;
   email: string | null;
   city: string | null;
+  plan: Plan;
 };
 
 export type FeedMaterial = {

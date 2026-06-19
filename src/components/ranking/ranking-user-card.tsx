@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BookOpen, Bookmark, Heart, MessageCircle, PenLine } from "lucide-react";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
+import { PlanBadge } from "@/components/profile/plan-badge";
 import type { RankingEntry } from "@/lib/ranking";
 
 type RankingUserCardProps = {
@@ -30,7 +31,10 @@ export function RankingUserCard({ entry }: RankingUserCardProps) {
             size="md"
           />
           <div>
-            <h3 className="font-semibold text-slate-950">{entry.fullName}</h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-semibold text-slate-950">{entry.fullName}</h3>
+              <PlanBadge plan={entry.plan} />
+            </div>
             <p className="mt-1 text-sm text-slate-500">
               @{entry.username}
               {location ? ` · ${location}` : ""}

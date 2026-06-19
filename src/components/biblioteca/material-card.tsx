@@ -11,6 +11,7 @@ import type { LibraryMaterial } from "@/lib/materials";
 import { LikeMaterialButton } from "@/components/biblioteca/like-material-button";
 import { SaveMaterialButton } from "@/components/biblioteca/save-material-button";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
+import { PlanBadge } from "@/components/profile/plan-badge";
 
 type MaterialCardProps = {
   material: LibraryMaterial;
@@ -102,6 +103,7 @@ export function MaterialCard({ material }: MaterialCardProps) {
               <span className="font-medium">{material.author.fullName}</span>
             </span>
           )}
+          <PlanBadge plan={material.author.plan} />
         </div>
       ) : null}
 

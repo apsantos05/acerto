@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { normalizePlan, type Plan } from "@/lib/plan";
 import {
   materialTypes,
   type MaterialStatus,
@@ -10,6 +11,7 @@ export type MaterialAuthor = {
   username: string | null;
   fullName: string;
   avatarUrl: string | null;
+  plan: Plan;
 };
 
 export type LibraryMaterial = {
@@ -198,6 +200,7 @@ type OwnerRow = {
   username: string | null;
   full_name: string | null;
   avatar_url: string | null;
+  plan: string | null;
 };
 
 type MaterialRow = {
@@ -223,7 +226,7 @@ type MaterialRow = {
 };
 
 const materialSelect =
-  "id,title,description,vestibular,faculdade,year,subject,material_type,file_url,external_url,storage_path,upload_kind,tags,status,rating,ratings_count,views_count,created_at,owner:profiles!materials_owner_id_fkey(id,username,full_name,avatar_url)";
+  "id,title,description,vestibular,faculdade,year,subject,material_type,file_url,external_url,storage_path,upload_kind,tags,status,rating,ratings_count,views_count,created_at,owner:profiles!materials_owner_id_fkey(id,username,full_name,avatar_url,plan)";
 
 function firstRelation<T>(value: T | T[] | null): T | null {
   if (Array.isArray(value)) {
@@ -245,6 +248,7 @@ function normalizeOwner(value: OwnerRow | OwnerRow[] | null): MaterialAuthor | n
     username: owner.username,
     fullName: owner.full_name || "Estudante Acerte",
     avatarUrl: owner.avatar_url,
+    plan: normalizePlan(owner.plan),
   };
 }
 

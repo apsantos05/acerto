@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { normalizePlan } from "@/lib/plan";
 import type { FeedAuthor, FeedComment, FeedMaterial, FeedPost } from "@/lib/feed-types";
 
 type ProfileRow = {
@@ -8,6 +9,7 @@ type ProfileRow = {
   avatar_url: string | null;
   email: string | null;
   city: string | null;
+  plan: string | null;
 };
 
 type MaterialRow = {
@@ -60,6 +62,7 @@ function normalizeAuthor(profile: ProfileRow | ProfileRow[] | null): FeedAuthor 
     avatarUrl: author?.avatar_url ?? null,
     email: author?.email ?? null,
     city: author?.city ?? null,
+    plan: normalizePlan(author?.plan),
   };
 }
 
@@ -138,7 +141,7 @@ export async function getFeedData() {
           content,
           tags,
           created_at,
-          author:profiles!posts_author_id_fkey(id, full_name, username, avatar_url, email, city),
+          author:profiles!posts_author_id_fkey(id, full_name, username, avatar_url, email, city, plan),
           material:materials!posts_material_id_fkey(id, title, subject, material_type)
         `,
       )
@@ -168,7 +171,7 @@ export async function getFeedData() {
             post_id,
             content,
             created_at,
-            author:profiles!comments_author_id_fkey(id, full_name, username, avatar_url, email, city)
+            author:profiles!comments_author_id_fkey(id, full_name, username, avatar_url, email, city, plan)
           `,
         )
         .in("post_id", postIds)

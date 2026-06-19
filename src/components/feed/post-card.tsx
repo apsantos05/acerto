@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
+import { PlanBadge } from "@/components/profile/plan-badge";
 import type { FeedComment, FeedPost } from "@/lib/feed-types";
 
 type PostCardProps = {
@@ -152,6 +153,7 @@ export function PostCard({ post }: PostCardProps) {
               (user.user_metadata?.avatar_url as string | undefined) ?? null,
             email: user.email ?? null,
             city: null,
+            plan: "free",
           },
         },
       ]);
@@ -188,18 +190,21 @@ export function PostCard({ post }: PostCardProps) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              {post.author.username ? (
-                <Link
-                  href={`/perfil/${post.author.username}`}
-                  className="font-semibold text-slate-950 hover:text-sky-800"
-                >
-                  {post.author.name}
-                </Link>
-              ) : (
-                <p className="font-semibold text-slate-950">
-                  {post.author.name}
-                </p>
-              )}
+              <div className="flex flex-wrap items-center gap-2">
+                {post.author.username ? (
+                  <Link
+                    href={`/perfil/${post.author.username}`}
+                    className="font-semibold text-slate-950 hover:text-sky-800"
+                  >
+                    {post.author.name}
+                  </Link>
+                ) : (
+                  <p className="font-semibold text-slate-950">
+                    {post.author.name}
+                  </p>
+                )}
+                <PlanBadge plan={post.author.plan} />
+              </div>
               <p className="text-sm text-slate-500">
                 {post.author.username ? `@${post.author.username} · ` : ""}
                 {post.publishedAt}
@@ -280,9 +285,12 @@ export function PostCard({ post }: PostCardProps) {
           <div className="mt-4 space-y-3">
             {comments.map((comment) => (
               <div key={comment.id} className="rounded-lg bg-slate-50 p-3">
-                <p className="text-sm font-semibold text-slate-950">
-                  {comment.author.name}
-                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-sm font-semibold text-slate-950">
+                    {comment.author.name}
+                  </p>
+                  <PlanBadge plan={comment.author.plan} />
+                </div>
                 <p className="mt-1 text-sm leading-6 text-slate-600">
                   {comment.content}
                 </p>
