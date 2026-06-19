@@ -1,10 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ModerationCard } from "@/components/admin/moderation-card";
 import { PostModerationCard } from "@/components/admin/post-moderation-card";
 import { SimuladoAdminCard } from "@/components/admin/simulado-admin-card";
-import { ToastProvider } from "@/components/ui/toast";
+import {
+  BulkActionBar,
+  type BulkField,
+} from "@/components/admin/bulk-action-bar";
+import { ToastProvider, useToast } from "@/components/ui/toast";
+import { useAuth } from "@/components/auth/auth-provider";
+import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
 import type {
   AdminFacets,
   AdminMaterial,
@@ -21,14 +28,42 @@ type AdminPanelProps = {
 
 type Tab = "pending" | "all" | "posts" | "simulados";
 
-export function AdminPanel({
+function chunk<T>(items: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    out.push(items.slice(i, i + size));
+  }
+  return out;
+}
+
+export function AdminPanel(props: AdminPanelProps) {
+  return (
+    <ToastProvider>
+      <AdminPanelInner {...props} />
+    </ToastProvider>
+  );
+}
+
+function AdminPanelInner({
   materials,
   posts,
   simulados,
   facets,
 }: AdminPanelProps) {
+  const router = useRouter();
+  const { supabase, user } = useAuth();
+  const toast = useToast();
+
   const pending = materials.filter((material) => material.status === "pending");
   const [tab, setTab] = useState<Tab>("pending");
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [working, setWorking] = useState(false);
+
+  const isMaterialTab = tab === "pending" || tab === "all";
+  const currentList = tab === "pending" ? pending : materials;
+  const currentIds = currentList.map((material) => material.id);
+  const allSelected =
+    currentIds.length > 0 && currentIds.every((id) => selectedIds.has(id));
 
   const tabs: { id: Tab; label: string; count: number }[] = [
     { id: "pending", label: "Materiais pendentes", count: pending.length },
@@ -37,8 +72,138 @@ export function AdminPanel({
     { id: "simulados", label: "Simulados", count: simulados.length },
   ];
 
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }
+
+  function clearSelection() {
+    setSelectedIds(new Set());
+  }
+
+  async function runUpdate(
+    patch: Record<string, unknown>,
+    message: (count: number) => string,
+  ) {
+    if (!supabase || !user) {
+      toast("Sessão expirada. Entre novamente.", "error");
+      return;
+    }
+    const ids = [...selectedIds];
+    if (ids.length === 0) return;
+
+    setWorking(true);
+    try {
+      for (const part of chunk(ids, 200)) {
+        const { error } = await supabase
+          .from("materials")
+          .update({ ...patch, updated_by: user.id })
+          .in("id", part);
+        if (error) throw error;
+      }
+      toast(message(ids.length), "success");
+      clearSelection();
+      router.refresh();
+    } catch (updateError) {
+      console.error("[admin] ação em massa falhou:", updateError);
+      toast(
+        getSupabaseErrorMessage(updateError, "Falha na ação em massa."),
+        "error",
+      );
+    } finally {
+      setWorking(false);
+    }
+  }
+
+  function bulkApprove() {
+    void runUpdate({ status: "approved" }, (n) => `${n} material(is) aprovado(s).`);
+  }
+
+  function bulkReject() {
+    void runUpdate({ status: "rejected" }, (n) => `${n} material(is) rejeitado(s).`);
+  }
+
+  function bulkApplyField(field: BulkField, value: string) {
+    const labels: Record<BulkField, string> = {
+      faculdade: "Faculdade",
+      subject: "Matéria",
+      vestibular: "Vestibular",
+      status: "Status",
+    };
+    void runUpdate(
+      { [field]: value },
+      (n) => `${labels[field]} alterada em ${n} material(is).`,
+    );
+  }
+
+  async function bulkDelete() {
+    if (!supabase || !user) {
+      toast("Sessão expirada. Entre novamente.", "error");
+      return;
+    }
+    const ids = [...selectedIds];
+    if (ids.length === 0) return;
+
+    setWorking(true);
+    try {
+      // Remove arquivos do storage em lote (best-effort).
+      const paths = materials
+        .filter((m) => selectedIds.has(m.id) && m.storagePath)
+        .map((m) => m.storagePath as string);
+      for (const part of chunk(paths, 100)) {
+        const { error: removeError } = await supabase.storage
+          .from("materials")
+          .remove(part);
+        if (removeError) {
+          console.warn("[admin] remoção de arquivos (seguindo):", removeError.message);
+        }
+      }
+
+      // Remove os registros via RPC (limpa dependências), com concorrência limitada.
+      let ok = 0;
+      let fail = 0;
+      for (const part of chunk(ids, 8)) {
+        const results = await Promise.all(
+          part.map((id) =>
+            supabase.rpc("admin_delete_material", { p_material_id: id }),
+          ),
+        );
+        for (const result of results) {
+          if (result.error) fail++;
+          else ok++;
+        }
+      }
+
+      toast(
+        fail
+          ? `${ok} excluído(s), ${fail} falharam.`
+          : `${ok} material(is) excluído(s).`,
+        fail ? "error" : "success",
+      );
+      clearSelection();
+      router.refresh();
+    } catch (deleteError) {
+      console.error("[admin] exclusão em massa falhou:", deleteError);
+      toast(
+        getSupabaseErrorMessage(deleteError, "Falha na exclusão em massa."),
+        "error",
+      );
+    } finally {
+      setWorking(false);
+    }
+  }
+
+  const showBar = isMaterialTab && selectedIds.size > 0;
+
   return (
-    <ToastProvider>
+    <div className={showBar ? "pb-24" : undefined}>
       <div className="flex flex-wrap gap-2 border-b border-slate-200">
         {tabs.map((item) => (
           <button
@@ -60,13 +225,39 @@ export function AdminPanel({
       </div>
 
       <div className="mt-6">
+        {isMaterialTab && currentIds.length > 0 ? (
+          <div className="mb-3 flex flex-wrap items-center gap-3 text-sm">
+            <button
+              type="button"
+              onClick={() =>
+                allSelected ? clearSelection() : setSelectedIds(new Set(currentIds))
+              }
+              className="font-semibold text-sky-700 transition hover:text-sky-900"
+            >
+              {allSelected ? "Limpar seleção" : "Selecionar todos"} (
+              {currentIds.length})
+            </button>
+            {selectedIds.size > 0 ? (
+              <span className="text-slate-500">
+                {selectedIds.size} selecionado{selectedIds.size === 1 ? "" : "s"}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+
         {tab === "pending" ? (
           <SectionList
             isEmpty={pending.length === 0}
             emptyText="Nenhum material pendente. Tudo em dia!"
           >
             {pending.map((material) => (
-              <ModerationCard key={material.id} material={material} facets={facets} />
+              <ModerationCard
+                key={material.id}
+                material={material}
+                facets={facets}
+                selected={selectedIds.has(material.id)}
+                onToggleSelect={toggleSelect}
+              />
             ))}
           </SectionList>
         ) : null}
@@ -77,7 +268,13 @@ export function AdminPanel({
             emptyText="Nenhum material cadastrado ainda."
           >
             {materials.map((material) => (
-              <ModerationCard key={material.id} material={material} facets={facets} />
+              <ModerationCard
+                key={material.id}
+                material={material}
+                facets={facets}
+                selected={selectedIds.has(material.id)}
+                onToggleSelect={toggleSelect}
+              />
             ))}
           </SectionList>
         ) : null}
@@ -104,7 +301,20 @@ export function AdminPanel({
           </SectionList>
         ) : null}
       </div>
-    </ToastProvider>
+
+      {showBar ? (
+        <BulkActionBar
+          count={selectedIds.size}
+          facets={facets}
+          working={working}
+          onClear={clearSelection}
+          onApprove={bulkApprove}
+          onReject={bulkReject}
+          onDelete={bulkDelete}
+          onApplyField={bulkApplyField}
+        />
+      ) : null}
+    </div>
   );
 }
 

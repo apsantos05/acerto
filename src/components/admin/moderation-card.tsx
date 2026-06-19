@@ -23,6 +23,8 @@ import type { AdminFacets, AdminMaterial } from "@/lib/admin";
 type ModerationCardProps = {
   material: AdminMaterial;
   facets: AdminFacets;
+  selected?: boolean;
+  onToggleSelect?: (id: string) => void;
 };
 
 function formatDate(date: string) {
@@ -48,6 +50,8 @@ const statusLabels: Record<AdminMaterial["status"], string> = {
 export function ModerationCard({
   material: initialMaterial,
   facets,
+  selected = false,
+  onToggleSelect,
 }: ModerationCardProps) {
   const router = useRouter();
   const { supabase, user } = useAuth();
@@ -154,10 +158,23 @@ export function ModerationCard({
   const fileHref = material.externalUrl ?? material.fileUrl;
 
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article
+      className={`rounded-xl border bg-white p-5 shadow-sm transition ${
+        selected ? "border-sky-400 ring-2 ring-sky-100" : "border-slate-200"
+      }`}
+    >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
+            {onToggleSelect ? (
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={() => onToggleSelect(material.id)}
+                className="h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-600 focus:ring-sky-300"
+                aria-label={`Selecionar ${material.title}`}
+              />
+            ) : null}
             <span
               className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${statusStyles[material.status]}`}
             >
