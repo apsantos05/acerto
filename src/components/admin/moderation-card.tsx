@@ -8,17 +8,21 @@ import {
   Check,
   GraduationCap,
   LinkIcon,
+  Pencil,
   School,
   Trash2,
   X,
 } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
+import { useToast } from "@/components/ui/toast";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
+import { MaterialEditModal } from "@/components/admin/material-edit-modal";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
-import type { AdminMaterial } from "@/lib/admin";
+import type { AdminFacets, AdminMaterial } from "@/lib/admin";
 
 type ModerationCardProps = {
   material: AdminMaterial;
+  facets: AdminFacets;
 };
 
 function formatDate(date: string) {
@@ -41,10 +45,16 @@ const statusLabels: Record<AdminMaterial["status"], string> = {
   rejected: "Rejeitado",
 };
 
-export function ModerationCard({ material }: ModerationCardProps) {
+export function ModerationCard({
+  material: initialMaterial,
+  facets,
+}: ModerationCardProps) {
   const router = useRouter();
   const { supabase, user } = useAuth();
+  const toast = useToast();
+  const [material, setMaterial] = useState(initialMaterial);
   const [isSaving, setIsSaving] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [error, setError] = useState("");
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [done, setDone] = useState<"approved" | "rejected" | "deleted" | null>(
@@ -61,21 +71,25 @@ export function ModerationCard({ material }: ModerationCardProps) {
     try {
       const { error: updateError } = await supabase
         .from("materials")
-        .update({ status })
+        .update({ status, updated_by: user.id })
         .eq("id", material.id);
       if (updateError) {
         throw updateError;
       }
+      toast(
+        status === "approved" ? "Material aprovado." : "Material rejeitado.",
+        "success",
+      );
       setDone(status);
       router.refresh();
     } catch (moderateError) {
       console.error("[admin] falha ao moderar material:", moderateError);
-      setError(
-        getSupabaseErrorMessage(
-          moderateError,
-          "Não foi possível atualizar o material.",
-        ),
+      const message = getSupabaseErrorMessage(
+        moderateError,
+        "Não foi possível atualizar o material.",
       );
+      setError(message);
+      toast(message, "error");
     } finally {
       setIsSaving(false);
     }
@@ -89,32 +103,18 @@ export function ModerationCard({ material }: ModerationCardProps) {
     }
     setIsSaving(true);
     try {
-      // 1. Arquivo: usar SEMPRE a Storage API (nunca deletar storage.objects
-      //    direto). Pular quando for link externo (sem storage_path).
       if (material.storagePath) {
         const { error: removeError } = await supabase.storage
           .from("materials")
           .remove([material.storagePath]);
         if (removeError) {
-          // Best-effort: não bloqueia a exclusão do registro.
           console.warn(
             "[admin] falha ao remover arquivo do storage (seguindo):",
             removeError.message,
           );
-        } else {
-          console.info(
-            "[admin] arquivo removido do storage:",
-            material.storagePath,
-          );
         }
-      } else {
-        console.info(
-          "[admin] material sem storage_path (link externo) — sem remoção de arquivo",
-        );
       }
 
-      // 2-5. RPC remove likes, saved_materials, material_ratings e, por fim,
-      //      o registro em materials.
       const { error: rpcError } = await supabase.rpc("admin_delete_material", {
         p_material_id: material.id,
       });
@@ -122,17 +122,17 @@ export function ModerationCard({ material }: ModerationCardProps) {
         throw rpcError;
       }
 
-      console.info("[admin] material excluído:", material.id);
+      toast("Material excluído.", "success");
       setDone("deleted");
       router.refresh();
     } catch (deleteError) {
       console.error("[admin] falha ao excluir material:", deleteError);
-      setError(
-        getSupabaseErrorMessage(
-          deleteError,
-          "Não foi possível excluir o material.",
-        ),
+      const message = getSupabaseErrorMessage(
+        deleteError,
+        "Não foi possível excluir o material.",
       );
+      setError(message);
+      toast(message, "error");
     } finally {
       setIsSaving(false);
     }
@@ -166,6 +166,11 @@ export function ModerationCard({ material }: ModerationCardProps) {
             <span className="text-xs font-semibold text-slate-500">
               {material.materialType}
             </span>
+            {material.priority === "alta" ? (
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+                Prioridade alta
+              </span>
+            ) : null}
           </div>
           <h2 className="mt-3 text-xl font-semibold text-slate-950">
             {material.title}
@@ -262,6 +267,16 @@ export function ModerationCard({ material }: ModerationCardProps) {
             </>
           ) : null}
 
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            disabled={isSaving}
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            <Pencil size={16} />
+            Editar
+          </button>
+
           {confirmingDelete ? (
             <div className="flex gap-2">
               <button
@@ -289,7 +304,7 @@ export function ModerationCard({ material }: ModerationCardProps) {
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <Trash2 size={16} />
-              Excluir material
+              Excluir
             </button>
           )}
         </div>
@@ -299,6 +314,25 @@ export function ModerationCard({ material }: ModerationCardProps) {
         <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
           {error}
         </p>
+      ) : null}
+
+      {editing ? (
+        <MaterialEditModal
+          material={material}
+          facets={facets}
+          onClose={() => setEditing(false)}
+          onSaved={(updated) => {
+            setMaterial(updated);
+            setEditing(false);
+            router.refresh();
+          }}
+          onApproveSaved={(updated) => {
+            setMaterial(updated);
+            setEditing(false);
+            setDone("approved");
+            router.refresh();
+          }}
+        />
       ) : null}
     </article>
   );

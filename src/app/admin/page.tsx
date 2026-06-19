@@ -4,6 +4,7 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
 import { AdminPanel } from "@/components/admin/admin-panel";
 import {
+  getAdminFacets,
   getAdminMaterials,
   getAdminSimulados,
   getRecentPosts,
@@ -17,10 +18,11 @@ export default async function AdminPage() {
     notFound();
   }
 
-  const [materials, posts, simulados] = await Promise.all([
+  const [materials, posts, simulados, facets] = await Promise.all([
     getAdminMaterials(),
     getRecentPosts(),
     getAdminSimulados(),
+    getAdminFacets(),
   ]);
 
   const pendingCount = materials.filter(
@@ -42,7 +44,12 @@ export default async function AdminPage() {
       </div>
 
       <div className="mt-2">
-        <AdminPanel materials={materials} posts={posts} simulados={simulados} />
+        <AdminPanel
+          materials={materials}
+          posts={posts}
+          simulados={simulados}
+          facets={facets}
+        />
       </div>
     </AppShell>
   );

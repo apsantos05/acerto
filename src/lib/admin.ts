@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { SUBJECTS } from "@/lib/catalog";
 
 export type AdminAuthor = {
   id: string;
@@ -13,17 +14,30 @@ export type AdminMaterial = {
   id: string;
   title: string;
   description: string;
+  summary: string;
   vestibular: string;
   faculdade: string;
   year: number | null;
   subject: string;
   materialType: string;
+  difficulty: string;
+  priority: string;
+  editora: string;
+  keywords: string[];
+  slug: string;
   status: AdminMaterialStatus;
+  uploadKind: "file" | "link";
   fileUrl: string | null;
   externalUrl: string | null;
   storagePath: string | null;
   createdAt: string;
   author: AdminAuthor | null;
+};
+
+export type AdminFacets = {
+  faculdades: string[];
+  vestibulares: string[];
+  subjects: string[];
 };
 
 export type AdminPost = {
@@ -83,12 +97,19 @@ type MaterialRow = {
   id: string;
   title: string;
   description: string | null;
+  summary: string | null;
   vestibular: string | null;
   faculdade: string | null;
   year: number | null;
   subject: string | null;
   material_type: string | null;
+  difficulty: string | null;
+  priority: string | null;
+  editora: string | null;
+  keywords: string[] | null;
+  slug: string | null;
   status: string | null;
+  upload_kind: string | null;
   file_url: string | null;
   external_url: string | null;
   storage_path: string | null;
@@ -96,14 +117,44 @@ type MaterialRow = {
   owner: OwnerRow | OwnerRow[] | null;
 };
 
+const ADMIN_MATERIAL_COLS =
+  "id,title,description,summary,vestibular,faculdade,year,subject,material_type,difficulty,priority,editora,keywords,slug,status,upload_kind,file_url,external_url,storage_path,created_at,owner:profiles!materials_owner_id_fkey(id,username,full_name,avatar_url)";
+
+function mapMaterial(row: MaterialRow): AdminMaterial {
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description ?? "",
+    summary: row.summary ?? "",
+    vestibular: row.vestibular ?? "Todos",
+    faculdade: row.faculdade ?? "Medicina",
+    year: row.year,
+    subject: row.subject ?? "Interdisciplinar",
+    materialType: row.material_type ?? "Material",
+    difficulty: row.difficulty ?? "",
+    priority: row.priority === "alta" ? "alta" : "normal",
+    editora: row.editora ?? "",
+    keywords: row.keywords ?? [],
+    slug: row.slug ?? "",
+    status:
+      row.status === "approved" || row.status === "rejected"
+        ? row.status
+        : "pending",
+    uploadKind: row.upload_kind === "link" ? "link" : "file",
+    fileUrl: row.file_url,
+    externalUrl: row.external_url,
+    storagePath: row.storage_path,
+    createdAt: row.created_at,
+    author: toAuthor(row.owner),
+  };
+}
+
 export async function getAdminMaterials(): Promise<AdminMaterial[]> {
   try {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("materials")
-      .select(
-        "id,title,description,vestibular,faculdade,year,subject,material_type,status,file_url,external_url,storage_path,created_at,owner:profiles!materials_owner_id_fkey(id,username,full_name,avatar_url)",
-      )
+      .select(ADMIN_MATERIAL_COLS)
       .order("created_at", { ascending: false })
       .limit(200);
 
@@ -112,28 +163,42 @@ export async function getAdminMaterials(): Promise<AdminMaterial[]> {
       return [];
     }
 
-    return ((data ?? []) as MaterialRow[]).map((row) => ({
-      id: row.id,
-      title: row.title,
-      description: row.description ?? "",
-      vestibular: row.vestibular ?? "Todos",
-      faculdade: row.faculdade ?? "Medicina",
-      year: row.year,
-      subject: row.subject ?? "Interdisciplinar",
-      materialType: row.material_type ?? "Material",
-      status:
-        row.status === "approved" || row.status === "rejected"
-          ? row.status
-          : "pending",
-      fileUrl: row.file_url,
-      externalUrl: row.external_url,
-      storagePath: row.storage_path,
-      createdAt: row.created_at,
-      author: toAuthor(row.owner),
-    }));
+    return ((data ?? []) as MaterialRow[]).map(mapMaterial);
   } catch (loadError) {
     console.error("[admin] erro inesperado em materiais:", loadError);
     return [];
+  }
+}
+
+// Opções dos selects com busca da edição (carregadas do banco).
+export async function getAdminFacets(): Promise<AdminFacets> {
+  const empty: AdminFacets = { faculdades: [], vestibulares: [], subjects: [] };
+  try {
+    const supabase = await createClient();
+    const [facsRes, vestsRes, subsRes] = await Promise.all([
+      supabase.from("faculties").select("name").order("name"),
+      supabase.from("vestibulares").select("name").order("name"),
+      supabase.from("materials").select("subject").not("subject", "is", null).limit(1000),
+    ]);
+
+    const uniq = (values: string[]) =>
+      Array.from(new Set(values.filter(Boolean))).sort((a, b) =>
+        a.localeCompare(b, "pt-BR"),
+      );
+
+    return {
+      faculdades: uniq(((facsRes.data ?? []) as { name: string }[]).map((r) => r.name)),
+      vestibulares: uniq(((vestsRes.data ?? []) as { name: string }[]).map((r) => r.name)),
+      subjects: uniq([
+        ...SUBJECTS.map((s) => s.filter),
+        ...((subsRes.data ?? []) as { subject: string | null }[]).map(
+          (r) => r.subject ?? "",
+        ),
+      ]),
+    };
+  } catch (facetError) {
+    console.error("[admin] facets falharam:", facetError);
+    return empty;
   }
 }
 

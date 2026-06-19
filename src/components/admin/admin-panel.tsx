@@ -4,17 +4,29 @@ import { useState } from "react";
 import { ModerationCard } from "@/components/admin/moderation-card";
 import { PostModerationCard } from "@/components/admin/post-moderation-card";
 import { SimuladoAdminCard } from "@/components/admin/simulado-admin-card";
-import type { AdminMaterial, AdminPost, AdminSimulado } from "@/lib/admin";
+import { ToastProvider } from "@/components/ui/toast";
+import type {
+  AdminFacets,
+  AdminMaterial,
+  AdminPost,
+  AdminSimulado,
+} from "@/lib/admin";
 
 type AdminPanelProps = {
   materials: AdminMaterial[];
   posts: AdminPost[];
   simulados: AdminSimulado[];
+  facets: AdminFacets;
 };
 
 type Tab = "pending" | "all" | "posts" | "simulados";
 
-export function AdminPanel({ materials, posts, simulados }: AdminPanelProps) {
+export function AdminPanel({
+  materials,
+  posts,
+  simulados,
+  facets,
+}: AdminPanelProps) {
   const pending = materials.filter((material) => material.status === "pending");
   const [tab, setTab] = useState<Tab>("pending");
 
@@ -26,7 +38,7 @@ export function AdminPanel({ materials, posts, simulados }: AdminPanelProps) {
   ];
 
   return (
-    <div>
+    <ToastProvider>
       <div className="flex flex-wrap gap-2 border-b border-slate-200">
         {tabs.map((item) => (
           <button
@@ -54,7 +66,7 @@ export function AdminPanel({ materials, posts, simulados }: AdminPanelProps) {
             emptyText="Nenhum material pendente. Tudo em dia!"
           >
             {pending.map((material) => (
-              <ModerationCard key={material.id} material={material} />
+              <ModerationCard key={material.id} material={material} facets={facets} />
             ))}
           </SectionList>
         ) : null}
@@ -65,7 +77,7 @@ export function AdminPanel({ materials, posts, simulados }: AdminPanelProps) {
             emptyText="Nenhum material cadastrado ainda."
           >
             {materials.map((material) => (
-              <ModerationCard key={material.id} material={material} />
+              <ModerationCard key={material.id} material={material} facets={facets} />
             ))}
           </SectionList>
         ) : null}
@@ -92,7 +104,7 @@ export function AdminPanel({ materials, posts, simulados }: AdminPanelProps) {
           </SectionList>
         ) : null}
       </div>
-    </div>
+    </ToastProvider>
   );
 }
 
