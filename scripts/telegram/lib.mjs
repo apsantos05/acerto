@@ -1,8 +1,39 @@
 /**
  * Utilitários compartilhados do pipeline de importação do Telegram.
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 import { createHash } from "node:crypto";
+
+const CACHE_DIR = join("content", "telegram", "cache");
+
+// Cache de texto extraído (pdf-parse ou OCR), por sha256.
+export function textCachePath(hash) {
+  return join(CACHE_DIR, "text", `${hash}.txt`);
+}
+export function readTextCache(hash) {
+  const p = textCachePath(hash);
+  return existsSync(p) ? readFileSync(p, "utf8") : null;
+}
+export function writeTextCache(hash, text) {
+  const p = textCachePath(hash);
+  mkdirSync(join(CACHE_DIR, "text"), { recursive: true });
+  writeFileSync(p, text ?? "");
+}
+
+// Cache de resultado da IA, por sha256.
+export function aiCachePath(hash) {
+  return join(CACHE_DIR, "ai", `${hash}.json`);
+}
+export function readAiCache(hash) {
+  const p = aiCachePath(hash);
+  return existsSync(p) ? JSON.parse(readFileSync(p, "utf8")) : null;
+}
+export function writeAiCache(hash, obj) {
+  const p = aiCachePath(hash);
+  mkdirSync(join(CACHE_DIR, "ai"), { recursive: true });
+  writeFileSync(p, JSON.stringify(obj, null, 2));
+}
 
 export function loadEnv(path = ".env.local") {
   const env = {};

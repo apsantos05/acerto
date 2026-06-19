@@ -141,6 +141,7 @@ for (const it of items) {
       owner_id: ownerId,
       title: it.title,
       description: it.description || null,
+      summary: it.summary || null,
       subject: it.subject || "Geral",
       material_type: it.materialType || "Apostila",
       vestibular: it.vestibular || "Todos",

@@ -1,43 +1,78 @@
 # Ingestão de materiais do Telegram → biblioteca
 
-Pipeline em 3 etapas para baixar PDFs (apostilas, provas, gabaritos, resumos…)
-de canais/grupos do Telegram, **classificá-los** (universidade, vestibular,
-matéria, ano, tipo, editora, dificuldade, prioridade) e publicá-los na
-biblioteca do Acerte — sem duplicações e prontos para moderação.
+Pipeline para baixar PDFs de canais/grupos do Telegram, **classificá-los**
+(universidade, vestibular, matéria, ano, tipo, editora, dificuldade,
+prioridade), opcionalmente **rodar OCR** em PDFs escaneados e **enriquecer com
+IA** (resumo, descrição, tags), e publicar na biblioteca do Acerte — sem
+duplicações e pendentes para moderação.
 
 > ⚠️ Tudo roda **localmente, na sua máquina**, com as suas credenciais. O login
-> do Telegram (telefone/código/2FA) e a service-role key do Supabase ficam só
-> com você. `content/telegram/`, `sources.json` e `.env.local` são gitignored.
+> do Telegram, a service-role do Supabase e a chave da Anthropic ficam só com
+> você. `content/telegram/`, `sources.json` e `.env.local` são gitignored.
 
-## Pré-requisitos (uma vez)
+## Ordem do pipeline
+
+```
+pull → normalize → [ocr] → [ai-classify] → revisar curated.json → import
+```
+OCR e IA são opcionais (entre colchetes). Sem eles, a classificação por
+heurística (nome + legenda + texto do PDF) já funciona.
+
+## Pré-requisitos
+
+### Dependências Node (uma vez)
 
 ```bash
-npm i -D telegram input pdf-parse
+npm i -D telegram input pdf-parse @anthropic-ai/sdk
+```
+- `telegram` + `input`: cliente do Telegram e prompts de login.
+- `pdf-parse`: extrai texto do PDF (classificação melhor; opcional).
+- `@anthropic-ai/sdk`: classificação por IA (opcional).
+
+### Tesseract + Poppler (só se for usar OCR)
+
+OCR precisa de dois binários de **sistema** no PATH:
+
+- **Tesseract OCR** — com o idioma português (`por`).
+  - Windows: instale o build do **UB Mannheim**
+    (https://github.com/UB-Mannheim/tesseract/wiki). No instalador, em
+    *Additional language data*, marque **Portuguese**. Adicione a pasta de
+    instalação (ex.: `C:\Program Files\Tesseract-OCR`) ao PATH.
+  - Confira: `tesseract --version` e `tesseract --list-langs` (deve listar `por`).
+- **Poppler** — fornece o `pdftoppm` (rasteriza o PDF em imagens).
+  - Windows: baixe o Poppler for Windows
+    (https://github.com/oschwartz10612/poppler-windows/releases) e adicione a
+    pasta `Library\bin` ao PATH.
+  - Confira: `pdftoppm -v`.
+
+### Variáveis no `.env.local` (gitignored)
+
+```
+# Telegram (etapa pull)
+TELEGRAM_API_ID=123456
+TELEGRAM_API_HASH=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TELEGRAM_SESSION=
+
+# Supabase (etapa import) — service_role IGNORA o RLS
+SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
+IMPORT_OWNER_USERNAME=acerteoficial
+IMPORT_STATUS=pending        # pending = moderação em /admin; approved = direto
+IMPORT_MAX_MB=10
+
+# OCR (etapa ocr) — opcionais
+OCR_LANG=por
+OCR_MAX_PAGES=3
+OCR_DPI=200
+
+# IA (etapa ai-classify) — opcionais (exceto a chave)
+ANTHROPIC_API_KEY=sk-ant-...
+AI_MODEL=claude-haiku-4-5
+AI_BATCH_SIZE=5
+AI_MAX_CHARS=4000
 ```
 
-- `telegram` + `input`: cliente do Telegram e prompts de login.
-- `pdf-parse`: extrai o texto do PDF para classificar melhor (opcional — sem
-  ele, classifica só por nome/legenda).
-
-1. **Telegram API:** https://my.telegram.org → *API development tools* → gere
-   `api_id` e `api_hash`.
-2. **Supabase service_role:** Project Settings → API → `service_role` (secreta;
-   ignora o RLS para gravar como o perfil oficial).
-3. No `.env.local`:
-
-   ```
-   TELEGRAM_API_ID=123456
-   TELEGRAM_API_HASH=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-   TELEGRAM_SESSION=
-   SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
-   IMPORT_OWNER_USERNAME=acerteoficial
-   IMPORT_STATUS=pending        # pending = moderação em /admin; approved = direto
-   IMPORT_MAX_MB=10
-   ```
-
-4. As 9 origens já estão em `scripts/telegram/sources.json` (canais públicos e
-   links de convite privados). Você precisa **já ser membro** dos privados, ou o
-   script tenta entrar pelo link automaticamente.
+As 9 origens já estão em `scripts/telegram/sources.json`. Você precisa **já ser
+membro** dos canais privados, ou o script tenta entrar pelo link.
 
 ## Etapas
 
@@ -45,51 +80,64 @@ npm i -D telegram input pdf-parse
 # 1) Baixar os PDFs (1ª vez pede telefone + código; salve a TELEGRAM_SESSION impressa)
 node scripts/telegram/pull-telegram.mjs
 
-# 2) Classificar (universidade, matéria, tipo, editora, prioridade…) + dedup por hash
+# 2) Classificar + dedup por hash (escreve cache de texto p/ OCR e IA)
 node scripts/telegram/normalize.mjs
+
+# 2.5) OCR dos PDFs escaneados (needsOcr) — opcional
+node scripts/telegram/ocr.mjs --dry     # lista os candidatos
+node scripts/telegram/ocr.mjs           # roda o OCR e reclassifica
+
+# 2.7) Enriquecer com IA (resumo, descrição, tags, matéria, vestibular...) — opcional
+node scripts/telegram/ai-classify.mjs --dry   # estima nº de requisições, sem custo
+node scripts/telegram/ai-classify.mjs         # chama o Claude Haiku em lote
+
 #    -> REVISE content/telegram/curated.json e marque "skip": true no que não deve entrar.
-#       Reexecutar preserva suas edições.
 
-# 3a) Prévia (não grava)
+# 3) Importar (sobe PDFs ao bucket e cria/atualiza os registros, status pending)
 node scripts/telegram/import-materials.mjs --dry
-
-# 3b) Importar (sobe PDFs ao bucket e cria/atualiza os registros)
 node scripts/telegram/import-materials.mjs
 ```
 
-Antes de importar, rode **`supabase/materials_ingest.sql`** no SQL Editor (cria
-as colunas editora/priority/difficulty/file_hash/slug/keywords, amplia os tipos
-de material e semeia as universidades prioritárias).
+Rode antes no SQL Editor: **`supabase/materials_ingest.sql`** (colunas e tipos)
+e **`supabase/materials_ai.sql`** (coluna `summary`).
 
-## Como a classificação funciona
+## OCR — como funciona
 
-- **Universidade + vestibular:** Fuvest→USP, Comvest→UNICAMP, Vunesp→UNESP,
-  Mandic→SLMANDIC, Einstein→ALBERT EINSTEIN, etc. As 14 universidades
-  prioritárias entram como `priority: "alta"`.
-- **Editora:** detectada pelo canal de origem (apostilasbernoulli→Bernoulli) ou
-  pelo texto. Bernoulli, Poliedro, Hexag, Farias Brito, COC, Anglo e Objetivo
-  recebem prioridade alta.
-- **Tipo:** Apostila, Simulado, Prova, Gabarito, Lista de exercícios, Resumo,
-  Revisão, Caderno de questões, Redação, Correção comentada, Questões
-  discursivas/objetivas, Material teórico.
-- **Matéria, ano, dificuldade, keywords, slug e descrição** saem das mesmas
-  heurísticas (nome + legenda + texto do PDF).
-- Cada material fica vinculado à **universidade** (faculties) e ao
-  **vestibular** (vestibulares), aparecendo na matéria *e* na universidade nos
-  filtros da biblioteca.
+`ocr.mjs` seleciona os itens com `needsOcr: true` (ou sem texto em cache),
+rasteriza as primeiras `OCR_MAX_PAGES` páginas com `pdftoppm`, roda o Tesseract
+(`-l por`), grava o texto no cache e **reclassifica** o item com o texto
+recuperado, marcando `needsOcr: false`. Rode OCR **antes** de curar manualmente
+(ele sobrescreve a classificação dos itens escaneados). Se os binários não
+estiverem no PATH, o script falha com instrução clara em vez de inventar texto.
+
+## IA — como funciona e controle de custo
+
+`ai-classify.mjs` usa **Claude Haiku** (barato) com **structured outputs** (JSON
+garantido) para gerar, por material: `summary`, `description`, `tags`,
+`difficulty`, `subject`, `vestibular` e `universidade` (escolhida entre as
+universidades válidas). Mescla no `curated.json`.
+
+Custo é contido por padrão:
+- **só itens pendentes** do `curated.json` (não toca em material aprovado);
+- **cache por sha256** em `content/telegram/cache/ai/` — não reprocessa o mesmo
+  PDF; rerodar só classifica o que falta;
+- **texto limitado** a `AI_MAX_CHARS` por item;
+- **lote** de `AI_BATCH_SIZE` itens por requisição (menos chamadas);
+- modelo barato e **sem "thinking"**;
+- **`--dry`** estima o número de requisições sem gastar nada.
+
+Para evitar custo alto: comece com `--dry`, rode em lotes maiores
+(`AI_BATCH_SIZE=8`), reduza `AI_MAX_CHARS`, e processe primeiro só os de
+prioridade alta (marque `skip:true` no resto, rode a IA, depois reavalie). Para
+volumes grandes e sem pressa, a Batches API da Anthropic dá mais 50% de
+desconto — posso adaptar o script se quiser.
 
 ## Observações
 
 - **Sem duplicatas:** dedup por **sha256**. O mesmo arquivo em canais diferentes
   vira 1 item; reimportar **atualiza metadados** em vez de criar registro novo.
 - **Moderação:** com `IMPORT_STATUS=pending`, tudo entra pendente para você
-  aprovar em `/admin`.
-- **Bucket > 10 MB:** para arquivos maiores, no SQL Editor:
-  `update storage.buckets set file_size_limit = 52428800 where id = 'materials';`
-- **OCR (futuro):** PDFs escaneados (sem camada de texto) são marcados com
-  `needsOcr: true` no `curated.json` e classificados só por nome/legenda. OCR
-  real (tesseract) e classificação/resumo por IA ficam como evolução — os
-  scripts já isolam esses pontos (`extractText`, `description`) para plugar
-  depois.
-- **Plano B (sem API):** dá para exportar pelo Telegram Desktop (JSON + mídia);
-  me avise que escrevo o conversor do `result.json` para o mesmo `manifest.json`.
+  aprovar em `/admin` antes de publicar.
+- **Bucket > 10 MB:** `update storage.buckets set file_size_limit = 52428800 where id = 'materials';`
+- **Plano B (sem API do Telegram):** export do Telegram Desktop (JSON + mídia);
+  me avise que escrevo o conversor para o mesmo `manifest.json`.
