@@ -4,6 +4,8 @@ import { AppShell } from "@/components/layout/app-shell";
 import { PageHeader } from "@/components/ui/page-header";
 import { AdminPanel } from "@/components/admin/admin-panel";
 import {
+  ADMIN_PAGE_SIZE,
+  getAdminCounts,
   getAdminFacets,
   getAdminMaterials,
   getAdminSimulados,
@@ -11,23 +13,45 @@ import {
   isCurrentUserAdmin,
 } from "@/lib/admin";
 
-export default async function AdminPage() {
-  const isAdmin = await isCurrentUserAdmin();
+type AdminTab = "pending" | "all" | "posts" | "simulados";
 
+type AdminPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+function getParam(
+  sp: Record<string, string | string[] | undefined>,
+  key: string,
+) {
+  const value = sp[key];
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function AdminPage({ searchParams }: AdminPageProps) {
+  const isAdmin = await isCurrentUserAdmin();
   if (!isAdmin) {
     notFound();
   }
 
-  const [materials, posts, simulados, facets] = await Promise.all([
-    getAdminMaterials(),
-    getRecentPosts(),
-    getAdminSimulados(),
+  const sp = (await searchParams) ?? {};
+  const tabParam = getParam(sp, "tab") ?? "pending";
+  const tab: AdminTab = (["pending", "all", "posts", "simulados"] as const).includes(
+    tabParam as AdminTab,
+  )
+    ? (tabParam as AdminTab)
+    : "pending";
+  const page = Math.max(1, Number(getParam(sp, "page")) || 1);
+  const isMaterialTab = tab === "pending" || tab === "all";
+
+  const [counts, materialsRes, posts, simulados, facets] = await Promise.all([
+    getAdminCounts(),
+    isMaterialTab
+      ? getAdminMaterials(tab, page, ADMIN_PAGE_SIZE)
+      : Promise.resolve({ materials: [], total: 0 }),
+    tab === "posts" ? getRecentPosts() : Promise.resolve([]),
+    tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
     getAdminFacets(),
   ]);
-
-  const pendingCount = materials.filter(
-    (material) => material.status === "pending",
-  ).length;
 
   return (
     <AppShell>
@@ -35,17 +59,22 @@ export default async function AdminPage() {
         <PageHeader
           eyebrow="Administração"
           title="Moderação"
-          description="Aprove, rejeite ou exclua materiais e posts da comunidade."
+          description="Aprove, rejeite, edite ou exclua materiais e posts da comunidade."
         />
         <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800">
           <ShieldCheck size={17} />
-          {pendingCount} pendente{pendingCount === 1 ? "" : "s"}
+          {counts.pending} pendente{counts.pending === 1 ? "" : "s"}
         </div>
       </div>
 
       <div className="mt-2">
         <AdminPanel
-          materials={materials}
+          tab={tab}
+          page={page}
+          pageSize={ADMIN_PAGE_SIZE}
+          materials={materialsRes.materials}
+          materialsTotal={materialsRes.total}
+          counts={counts}
           posts={posts}
           simulados={simulados}
           facets={facets}

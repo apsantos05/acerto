@@ -150,24 +150,73 @@ function mapMaterial(row: MaterialRow): AdminMaterial {
   };
 }
 
-export async function getAdminMaterials(): Promise<AdminMaterial[]> {
+export const ADMIN_PAGE_SIZE = 50;
+
+export type AdminCounts = {
+  pending: number;
+  approved: number;
+  rejected: number;
+  total: number;
+  posts: number;
+  simulados: number;
+};
+
+// Contagens reais (head:true não traz linhas — barato).
+export async function getAdminCounts(): Promise<AdminCounts> {
+  const empty: AdminCounts = {
+    pending: 0, approved: 0, rejected: 0, total: 0, posts: 0, simulados: 0,
+  };
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("materials")
-      .select(ADMIN_MATERIAL_COLS)
-      .order("created_at", { ascending: false })
-      .limit(200);
+    const headCount = async (table: string, status?: string) => {
+      let query = supabase.from(table).select("*", { count: "exact", head: true });
+      if (status) query = query.eq("status", status);
+      const { count } = await query;
+      return count ?? 0;
+    };
+    const [pending, approved, rejected, total, posts, simulados] = await Promise.all([
+      headCount("materials", "pending"),
+      headCount("materials", "approved"),
+      headCount("materials", "rejected"),
+      headCount("materials"),
+      headCount("posts"),
+      headCount("simulados"),
+    ]);
+    return { pending, approved, rejected, total, posts, simulados };
+  } catch (countError) {
+    console.error("[admin] falha nas contagens:", countError);
+    return empty;
+  }
+}
 
+// Página de materiais (server-side). status "pending" filtra; "all" traz todos.
+export async function getAdminMaterials(
+  status: "pending" | "all" = "pending",
+  page = 1,
+  pageSize = ADMIN_PAGE_SIZE,
+): Promise<{ materials: AdminMaterial[]; total: number }> {
+  try {
+    const supabase = await createClient();
+    const from = Math.max(0, (page - 1) * pageSize);
+    let query = supabase
+      .from("materials")
+      .select(ADMIN_MATERIAL_COLS, { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range(from, from + pageSize - 1);
+    if (status === "pending") query = query.eq("status", "pending");
+
+    const { data, count, error } = await query;
     if (error) {
       console.error("[admin] falha ao carregar materiais:", error);
-      return [];
+      return { materials: [], total: 0 };
     }
-
-    return ((data ?? []) as MaterialRow[]).map(mapMaterial);
+    return {
+      materials: ((data ?? []) as MaterialRow[]).map(mapMaterial),
+      total: count ?? 0,
+    };
   } catch (loadError) {
     console.error("[admin] erro inesperado em materiais:", loadError);
-    return [];
+    return { materials: [], total: 0 };
   }
 }
 
