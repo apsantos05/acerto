@@ -154,10 +154,16 @@ export function slugify(value) {
 const TITLE_ACRONYMS = new Set([
   "ENEM", "SISU", "FUVEST", "USP", "UNICAMP", "UNESP", "UFMG", "UNIFESP",
   "UFRJ", "UFSC", "UFPR", "FAMERP", "FAMEMA", "UFSCAR", "PUC", "PUC-SP",
-  "SP", "RJ", "MG", "SC", "PR", "BR", "COC", "SAS", "II", "III", "IV", "V", "VI",
+  "UECE", "ITA", "IME", "SP", "RJ", "MG", "SC", "PR", "BR", "COC", "SAS",
+  "II", "III", "IV", "V", "VI",
 ]);
 const TITLE_CONTEXT = /\b(conte[úu]do|quest[õo]es|exerc[íi]cios|gabarito|revis[ãa]o|resumo|caderno|corre[çc][ãa]o|simulado|prova|lista|teoria)\b/i;
 const TITLE_SMALL = new Set(["de", "da", "do", "das", "dos", "e", "em", "para", "com", "a", "o", "na", "no", "ao", "aos"]);
+const TITLE_QUANTITY = new Set([
+  "questões", "questoes", "exercícios", "exercicios", "mapas", "resumos", "resumo",
+  "aulas", "aula", "provas", "prova", "simulados", "simulado", "listas", "lista",
+  "páginas", "paginas", "atividades", "vídeos", "videos", "flashcards",
+]);
 
 export function stripArtificialPrefix(title) {
   let t = (title || "").trim();
@@ -166,21 +172,11 @@ export function stripArtificialPrefix(title) {
     if (!m) break;
     const n = Number(m[1]);
     if (n >= 1900 && n <= 2099) break;
+    const nextWord = m[3].split(/\s+/)[0]?.toLowerCase() ?? "";
+    if (TITLE_QUANTITY.has(nextWord)) break; // contagem ("1000 questões"): mantém
     t = m[3].trim();
   }
   return t;
-}
-
-function titleIsMostlyUpper(t) {
-  let total = 0;
-  let upper = 0;
-  for (const ch of t) {
-    if (/[a-zà-ÿ]/i.test(ch)) {
-      total++;
-      if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) upper++;
-    }
-  }
-  return total > 0 && upper / total > 0.7;
 }
 
 function titleCaseRaw(t) {
@@ -197,7 +193,9 @@ function titleCaseRaw(t) {
   if (marker && marker.index && marker.index > 0) {
     const before = out.slice(0, marker.index).trim();
     const after = out.slice(marker.index).trim();
-    if (before && !/[—–-]$/.test(before)) out = `${before} — ${after}`;
+    if (/[a-zà-ÿ]{3,}/i.test(before) && !/[—–-]$/.test(before)) {
+      out = `${before} — ${after}`;
+    }
   }
   return out;
 }
@@ -209,7 +207,7 @@ export function normalizeTitle(raw) {
   t = t.replace(/\.?pdf$/i, "").trim();
   t = t.replace(/_+/g, " ").replace(/\bdownload\b/gi, " ").replace(/\(\d+\)\s*$/, "").replace(/\s+/g, " ").trim();
   t = stripArtificialPrefix(t);
-  if (titleIsMostlyUpper(t)) t = titleCaseRaw(t);
+  t = titleCaseRaw(t);
   return (t.trim() || original).slice(0, 160);
 }
 

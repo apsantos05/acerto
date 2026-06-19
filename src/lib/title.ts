@@ -12,17 +12,26 @@
 const ACRONYMS = new Set([
   "ENEM", "SISU", "FUVEST", "USP", "UNICAMP", "UNESP", "UFMG", "UNIFESP",
   "UFRJ", "UFSC", "UFPR", "FAMERP", "FAMEMA", "UFSCAR", "PUC", "PUC-SP",
-  "SP", "RJ", "MG", "SC", "PR", "BR", "COC", "SAS", "II", "III", "IV", "V", "VI",
+  "UECE", "ITA", "IME", "SP", "RJ", "MG", "SC", "PR", "BR", "COC", "SAS",
+  "II", "III", "IV", "V", "VI",
 ]);
 const CONTEXT_MARKER =
   /\b(conte[úu]do|quest[õo]es|exerc[íi]cios|gabarito|revis[ãa]o|resumo|caderno|corre[çc][ãa]o|simulado|prova|lista|teoria)\b/i;
 const SMALL_WORDS = new Set([
   "de", "da", "do", "das", "dos", "e", "em", "para", "com", "a", "o", "na", "no", "ao", "aos",
 ]);
+// Quando o número inicial é seguido por um destes substantivos, ele é uma
+// CONTAGEM e faz parte do título (ex.: "1000 questões"), não um prefixo de lote.
+const QUANTITY_NOUNS = new Set([
+  "questões", "questoes", "exercícios", "exercicios", "mapas", "resumos", "resumo",
+  "aulas", "aula", "provas", "prova", "simulados", "simulado", "listas", "lista",
+  "páginas", "paginas", "atividades", "vídeos", "videos", "flashcards", "questões.",
+]);
 
 // Remove um prefixo artificial: número (1–4 dígitos, exceto ano) opcionalmente
 // seguido de uma única letra. Ex.: "999 ", "5 B ", "12 A ". Só separador por
 // espaço — assim "13.7" (ponto) é preservado. Aplica em loop (códigos de lote).
+// NÃO remove quando o número é uma contagem ("1000 questões").
 function stripPrefixes(input: string): string {
   let t = input;
   for (let i = 0; i < 3; i++) {
@@ -30,21 +39,11 @@ function stripPrefixes(input: string): string {
     if (!m) break;
     const n = Number(m[1]);
     if (n >= 1900 && n <= 2099) break; // ano: mantém
+    const nextWord = m[3].split(/\s+/)[0]?.toLowerCase() ?? "";
+    if (QUANTITY_NOUNS.has(nextWord)) break; // contagem: mantém o número
     t = m[3].trim();
   }
   return t;
-}
-
-function isMostlyUpper(t: string): boolean {
-  let total = 0;
-  let upper = 0;
-  for (const ch of t) {
-    if (/[a-zà-ÿ]/i.test(ch)) {
-      total++;
-      if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) upper++;
-    }
-  }
-  return total > 0 && upper / total > 0.7;
 }
 
 function titleCase(t: string): string {
@@ -62,7 +61,10 @@ function titleCase(t: string): string {
   if (marker && marker.index && marker.index > 0) {
     const before = out.slice(0, marker.index).trim();
     const after = out.slice(marker.index).trim();
-    if (before && !/[—–-]$/.test(before)) out = `${before} — ${after}`;
+    // Só insere se houver uma palavra real antes (evita "1000 — Questões...").
+    if (/[a-zà-ÿ]{3,}/i.test(before) && !/[—–-]$/.test(before)) {
+      out = `${before} — ${after}`;
+    }
   }
   return out;
 }
@@ -86,10 +88,7 @@ export function cleanMaterialTitle(title: string | null | undefined): string {
     .replace(/\s+/g, " ")
     .trim();
   t = stripPrefixes(t);
-
-  if (isMostlyUpper(t)) {
-    t = titleCase(t);
-  }
+  t = titleCase(t); // preserva siglas (ENEM/UECE/...), números e seções "13.7"
 
   return (t.trim() || original).slice(0, 160);
 }
