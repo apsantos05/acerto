@@ -539,6 +539,56 @@ export async function getMyMaterials() {
   }
 }
 
+// Materiais salvos (favoritos) do usuário logado.
+export async function getSavedMaterials(): Promise<LibraryMaterial[]> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+      .from("saved_materials")
+      .select(`created_at, material:materials(${materialSelect})`)
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return ((data ?? []) as Array<{ material: MaterialRow | MaterialRow[] | null }>)
+      .map((row) => (Array.isArray(row.material) ? row.material[0] : row.material))
+      .filter((m): m is MaterialRow => Boolean(m))
+      .map((m) => normalizeMaterial(m));
+  } catch (savedError) {
+    console.error("[favoritos] falha ao carregar:", savedError);
+    return [];
+  }
+}
+
+// Materiais relacionados (mesma matéria), para a página de detalhe.
+export async function getRelatedMaterials(
+  material: LibraryMaterial,
+  limit = 6,
+): Promise<LibraryMaterial[]> {
+  if (material.id.startsWith("mock-")) return [];
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("materials")
+      .select(materialSelect)
+      .eq("status", "approved")
+      .eq("subject", material.subject)
+      .neq("id", material.id)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    return (data ?? []).map((row) => normalizeMaterial(row as MaterialRow));
+  } catch {
+    return [];
+  }
+}
+
 export async function incrementMaterialViews(id: string) {
   if (id.startsWith("mock-")) {
     return;

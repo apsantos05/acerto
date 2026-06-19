@@ -11,7 +11,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/biblioteca", label: "Biblioteca" },
   { href: "/simulados", label: "Simulados" },
-  { href: "/meus-materiais", label: "Meus materiais" },
+  { href: "/favoritos", label: "Favoritos" },
   { href: "/feed", label: "Feed" },
   { href: "/ranking", label: "Ranking" },
   { href: "/perfil", label: "Perfil" },
@@ -20,8 +20,9 @@ const navItems = [
 const mobileNavItems = [
   { href: "/", label: "Início" },
   { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/universidades", label: "Universidades" },
   { href: "/simulados", label: "Simulados" },
-  { href: "/feed", label: "Feed" },
+  { href: "/planos", label: "Planos" },
   { href: "/ranking", label: "Ranking" },
 ];
 
