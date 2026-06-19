@@ -14,6 +14,7 @@ import { ToastProvider, useToast } from "@/components/ui/toast";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
 import { reclassifyMaterial } from "@/lib/reclassify";
+import { isInvalidTitle, titleFromMetadata } from "@/lib/title";
 import type {
   AdminFacets,
   AdminMaterial,
@@ -272,6 +273,91 @@ function AdminPanelInner({
     }
   }
 
+  async function runFixTitles(targets: AdminMaterial[]) {
+    if (!supabase || !user) {
+      toast("Sessão expirada. Entre novamente.", "error");
+      return;
+    }
+    const invalid = targets.filter((m) => isInvalidTitle(m.title));
+    if (invalid.length === 0) {
+      toast("Nenhum título inválido no escopo.", "success");
+      return;
+    }
+
+    setWorking(true);
+    try {
+      let renamed = 0;
+      let needPdf = 0;
+      let fail = 0;
+      const planned: { id: string; patch: Record<string, unknown> }[] = [];
+
+      for (const m of invalid) {
+        const newTitle = titleFromMetadata({
+          editora: m.editora,
+          subject: m.subject,
+          vestibular: m.vestibular,
+          materialType: m.materialType,
+          year: m.year,
+        });
+        if (!newTitle) {
+          needPdf++;
+          continue;
+        }
+        const { patch } = reclassifyMaterial({
+          id: m.id,
+          title: newTitle,
+          description: m.description,
+          summary: m.summary,
+          keywords: m.keywords,
+          slug: m.slug,
+          editora: m.editora,
+          faculdade: m.faculdade,
+          vestibular: m.vestibular,
+          subject: m.subject,
+          materialType: m.materialType,
+          year: m.year,
+          difficulty: m.difficulty,
+          priority: m.priority,
+        });
+        planned.push({ id: m.id, patch: { ...patch, title: newTitle } });
+      }
+
+      for (let i = 0; i < planned.length; i += 8) {
+        const batch = planned.slice(i, i + 8);
+        const results = await Promise.all(
+          batch.map((p) =>
+            supabase
+              .from("materials")
+              .update({ ...p.patch, updated_by: user.id })
+              .eq("id", p.id),
+          ),
+        );
+        for (const result of results) {
+          if (result.error) fail++;
+          else renamed++;
+        }
+      }
+
+      toast(
+        `${renamed} título(s) corrigido(s)` +
+          (needPdf ? `, ${needPdf} precisam do script (PDF/OCR)` : "") +
+          (fail ? `, ${fail} falharam` : "") +
+          ".",
+        fail ? "error" : "success",
+      );
+      clearSelection();
+      router.refresh();
+    } catch (fixError) {
+      console.error("[admin] correção de títulos falhou:", fixError);
+      toast(
+        getSupabaseErrorMessage(fixError, "Falha ao corrigir títulos."),
+        "error",
+      );
+    } finally {
+      setWorking(false);
+    }
+  }
+
   const showBar = isMaterialTab && selectedIds.size > 0;
 
   return (
@@ -345,6 +431,21 @@ function AdminPanelInner({
                 className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
               >
                 Reclassificar todos
+              </button>
+              <button
+                type="button"
+                disabled={working || materials.length === 0}
+                onClick={() =>
+                  runFixTitles(
+                    selectedIds.size > 0
+                      ? materials.filter((m) => selectedIds.has(m.id))
+                      : currentList,
+                  )
+                }
+                title="Corrige títulos que parecem UUID/hash ou genéricos (selecionados, ou a aba atual)"
+                className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 font-semibold text-amber-800 transition hover:bg-amber-100 disabled:opacity-50"
+              >
+                Corrigir títulos inválidos
               </button>
             </span>
           </div>
