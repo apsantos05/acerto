@@ -15,6 +15,7 @@ export function SiteFooter() {
             <li><Link href="/biblioteca" className="hover:text-sky-700">Biblioteca</Link></li>
             <li><Link href="/simulados" className="hover:text-sky-700">Simulados</Link></li>
             <li><Link href="/ranking" className="hover:text-sky-700">Ranking</Link></li>
+            <li><Link href="/premium-medicina" className="hover:text-sky-700">Premium Medicina</Link></li>
             <li><Link href="/planos" className="hover:text-sky-700">Planos</Link></li>
           </ul>
         </div>

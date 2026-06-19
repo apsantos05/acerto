@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/ranking",
     "/feed",
     "/planos",
+    "/premium-medicina",
     "/universidades",
     "/materias",
     "/vestibulares",
