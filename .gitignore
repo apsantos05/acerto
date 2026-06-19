@@ -38,6 +38,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# importação do telegram (PDFs baixados, manifestos e config com origens)
+/content/telegram/
+/scripts/telegram/sources.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

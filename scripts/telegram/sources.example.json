@@ -1,0 +1,8 @@
+{
+  "maxPerChat": 0,
+  "sources": [
+    "@nome_do_canal_publico",
+    "https://t.me/outro_canal",
+    "-1001234567890"
+  ]
+}

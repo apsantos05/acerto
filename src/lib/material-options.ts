@@ -1,13 +1,21 @@
 export const materialTypes = [
+  "Apostila",
+  "Material teórico",
+  "Resumo",
+  "Revisão",
+  "Mapa mental",
+  "Lista de exercícios",
+  "Caderno de questões",
+  "Questões discursivas",
+  "Questões objetivas",
+  "Simulado",
   "Prova",
   "Gabarito",
+  "Correção comentada",
+  "Redação",
   "Discursiva",
   "Edital",
   "Leitura",
-  "Simulado",
-  "Resumo",
-  "Lista de exercícios",
-  "Mapa mental",
 ] as const;
 
 export type MaterialType = (typeof materialTypes)[number];
