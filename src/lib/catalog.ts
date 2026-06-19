@@ -30,6 +30,12 @@ export const UNIVERSITIES: CatalogEntry[] = [
   { slug: "einstein", name: "Einstein", label: "Medicina Albert Einstein", filter: "ALBERT EINSTEIN", blurb: "Materiais de Medicina no Albert Einstein: provas, gabaritos, apostilas, simulados, revisões e redações." },
   { slug: "santa-casa", name: "Santa Casa", label: "Medicina Santa Casa", filter: "SANTA CASA", blurb: "Materiais de Medicina na Santa Casa SP: provas, gabaritos, apostilas, simulados, revisões e redações." },
   { slug: "slmandic", name: "SLMandic", label: "Medicina SLMandic", filter: "SLMANDIC", blurb: "Materiais de Medicina na SLMandic: provas, gabaritos, apostilas, simulados, revisões e redações." },
+  { slug: "ufrj", name: "UFRJ", label: "Medicina UFRJ", filter: "UFRJ", blurb: "Materiais de Medicina na UFRJ: provas, gabaritos, apostilas, simulados, revisões e redações." },
+  { slug: "famema", name: "Famema", label: "Medicina Famema", filter: "FAMEMA", blurb: "Materiais de Medicina na Famema: provas, gabaritos, apostilas, simulados, revisões e redações." },
+  { slug: "ufscar", name: "UFSCar", label: "Medicina UFSCar", filter: "UFSCAR", blurb: "Materiais de Medicina na UFSCar: provas, gabaritos, apostilas, simulados, revisões e redações." },
+  { slug: "puc-sp", name: "PUC-SP", label: "Medicina PUC-SP", filter: "PUC-SP", blurb: "Materiais de Medicina na PUC-SP: provas, gabaritos, apostilas, simulados, revisões e redações." },
+  { slug: "puc", name: "PUC", label: "Medicina PUC", filter: "PUC", blurb: "Materiais de Medicina nas PUCs: provas, gabaritos, apostilas, simulados, revisões e redações." },
+  { slug: "enem", name: "ENEM / SISU", label: "Medicina pelo ENEM / SISU", filter: "ENEM / SISU", blurb: "Materiais para entrar em Medicina pelo ENEM e SISU: provas, gabaritos, apostilas, simulados, revisões e redações." },
 ];
 
 // FASE 6 — matérias.
@@ -56,6 +62,16 @@ export const VESTIBULARES: CatalogEntry[] = [
   { slug: "famerp", name: "Famerp", label: "Vestibular Famerp", filter: "FAMERP", blurb: "Provas, gabaritos e materiais do vestibular da Famerp para quem busca Medicina." },
   { slug: "ufsc", name: "UFSC", label: "Vestibular UFSC", filter: "UFSC", blurb: "Provas, gabaritos e materiais do vestibular da UFSC para quem busca Medicina." },
   { slug: "ufpr", name: "UFPR", label: "Vestibular UFPR", filter: "UFPR", blurb: "Provas, gabaritos e materiais do vestibular da UFPR para quem busca Medicina." },
+  { slug: "ufmg", name: "UFMG", label: "Vestibular UFMG", filter: "UFMG", blurb: "Provas, gabaritos e materiais do vestibular da UFMG para quem busca Medicina." },
+  { slug: "unifesp", name: "Unifesp", label: "Vestibular Unifesp", filter: "UNIFESP", blurb: "Provas, gabaritos e materiais do vestibular da Unifesp para quem busca Medicina." },
+  { slug: "ufrj", name: "UFRJ", label: "Vestibular UFRJ", filter: "UFRJ", blurb: "Provas, gabaritos e materiais do vestibular da UFRJ para quem busca Medicina." },
+  { slug: "famema", name: "Famema", label: "Vestibular Famema", filter: "FAMEMA", blurb: "Provas, gabaritos e materiais do vestibular da Famema para quem busca Medicina." },
+  { slug: "ufscar", name: "UFSCar", label: "Vestibular UFSCar", filter: "UFSCAR", blurb: "Provas, gabaritos e materiais do vestibular da UFSCar para quem busca Medicina." },
+  { slug: "puc-sp", name: "PUC-SP", label: "Vestibular PUC-SP", filter: "PUC-SP", blurb: "Provas, gabaritos e materiais do vestibular da PUC-SP para quem busca Medicina." },
+  { slug: "puc", name: "PUC", label: "Vestibular PUC", filter: "PUC", blurb: "Provas, gabaritos e materiais dos vestibulares das PUCs para quem busca Medicina." },
+  { slug: "einstein", name: "Einstein", label: "Vestibular Albert Einstein", filter: "ALBERT EINSTEIN", blurb: "Provas, gabaritos e materiais do vestibular do Albert Einstein para quem busca Medicina." },
+  { slug: "santa-casa", name: "Santa Casa", label: "Vestibular Santa Casa", filter: "SANTA CASA", blurb: "Provas, gabaritos e materiais do vestibular da Santa Casa para quem busca Medicina." },
+  { slug: "mandic", name: "Mandic", label: "Vestibular SLMandic", filter: "MANDIC", blurb: "Provas, gabaritos e materiais do vestibular da SLMandic para quem busca Medicina." },
   { slug: "enem", name: "ENEM", label: "ENEM", filter: "ENEM", blurb: "Provas, gabaritos e materiais do ENEM para quem busca Medicina pelo SiSU." },
 ];
 

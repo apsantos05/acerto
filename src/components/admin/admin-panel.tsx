@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Sparkles } from "lucide-react";
 import { ModerationCard } from "@/components/admin/moderation-card";
 import { PostModerationCard } from "@/components/admin/post-moderation-card";
 import { SimuladoAdminCard } from "@/components/admin/simulado-admin-card";
@@ -12,6 +13,7 @@ import {
 import { ToastProvider, useToast } from "@/components/ui/toast";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
+import { reclassifyMaterial } from "@/lib/reclassify";
 import type {
   AdminFacets,
   AdminMaterial,
@@ -200,6 +202,76 @@ function AdminPanelInner({
     }
   }
 
+  async function runReclassify(targets: AdminMaterial[]) {
+    if (!supabase || !user) {
+      toast("Sessão expirada. Entre novamente.", "error");
+      return;
+    }
+    const planned = targets
+      .map((m) => ({
+        m,
+        ...reclassifyMaterial({
+          id: m.id,
+          title: m.title,
+          description: m.description,
+          summary: m.summary,
+          keywords: m.keywords,
+          slug: m.slug,
+          editora: m.editora,
+          faculdade: m.faculdade,
+          vestibular: m.vestibular,
+          subject: m.subject,
+          materialType: m.materialType,
+          year: m.year,
+          difficulty: m.difficulty,
+          priority: m.priority,
+        }),
+      }))
+      .filter((p) => p.changes.length > 0);
+
+    if (planned.length === 0) {
+      toast("Nada a reclassificar — metadados já consistentes.", "success");
+      return;
+    }
+
+    setWorking(true);
+    try {
+      let ok = 0;
+      let fail = 0;
+      for (let i = 0; i < planned.length; i += 8) {
+        const batch = planned.slice(i, i + 8);
+        const results = await Promise.all(
+          batch.map(({ m, patch }) =>
+            supabase
+              .from("materials")
+              .update({ ...patch, updated_by: user.id })
+              .eq("id", m.id),
+          ),
+        );
+        for (const result of results) {
+          if (result.error) fail++;
+          else ok++;
+        }
+      }
+      toast(
+        fail
+          ? `${ok} reclassificado(s), ${fail} falharam.`
+          : `${ok} material(is) reclassificado(s).`,
+        fail ? "error" : "success",
+      );
+      clearSelection();
+      router.refresh();
+    } catch (reclassifyError) {
+      console.error("[admin] reclassificação falhou:", reclassifyError);
+      toast(
+        getSupabaseErrorMessage(reclassifyError, "Falha ao reclassificar."),
+        "error",
+      );
+    } finally {
+      setWorking(false);
+    }
+  }
+
   const showBar = isMaterialTab && selectedIds.size > 0;
 
   return (
@@ -225,23 +297,56 @@ function AdminPanelInner({
       </div>
 
       <div className="mt-6">
-        {isMaterialTab && currentIds.length > 0 ? (
-          <div className="mb-3 flex flex-wrap items-center gap-3 text-sm">
-            <button
-              type="button"
-              onClick={() =>
-                allSelected ? clearSelection() : setSelectedIds(new Set(currentIds))
-              }
-              className="font-semibold text-sky-700 transition hover:text-sky-900"
-            >
-              {allSelected ? "Limpar seleção" : "Selecionar todos"} (
-              {currentIds.length})
-            </button>
+        {isMaterialTab && materials.length > 0 ? (
+          <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm">
+            {currentIds.length > 0 ? (
+              <button
+                type="button"
+                onClick={() =>
+                  allSelected ? clearSelection() : setSelectedIds(new Set(currentIds))
+                }
+                className="font-semibold text-sky-700 transition hover:text-sky-900"
+              >
+                {allSelected ? "Limpar seleção" : "Selecionar todos"} (
+                {currentIds.length})
+              </button>
+            ) : null}
             {selectedIds.size > 0 ? (
               <span className="text-slate-500">
                 {selectedIds.size} selecionado{selectedIds.size === 1 ? "" : "s"}
               </span>
             ) : null}
+
+            <span className="ml-auto inline-flex items-center gap-2">
+              <Sparkles size={15} className="text-amber-500" />
+              <span className="font-semibold text-slate-700">Curadoria:</span>
+              <button
+                type="button"
+                disabled={working || pending.length === 0}
+                onClick={() => runReclassify(pending)}
+                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+              >
+                Reclassificar pendentes
+              </button>
+              <button
+                type="button"
+                disabled={working || selectedIds.size === 0}
+                onClick={() =>
+                  runReclassify(materials.filter((m) => selectedIds.has(m.id)))
+                }
+                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+              >
+                Reclassificar selecionados
+              </button>
+              <button
+                type="button"
+                disabled={working || materials.length === 0}
+                onClick={() => runReclassify(materials)}
+                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+              >
+                Reclassificar todos
+              </button>
+            </span>
           </div>
         ) : null}
 

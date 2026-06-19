@@ -40,9 +40,11 @@ export const EDITORAS = [
   [/objetivo/, "Objetivo"],
   [/\betapa\b/, "Etapa"],
   [/\bsas\b/, "SAS"],
+  [/ari\s*de\s*s[áa]/, "Ari de Sá"],
 ];
 export const PRIORITY_EDITORAS = new Set([
-  "Bernoulli", "Poliedro", "Hexag", "Farias Brito", "COC", "Anglo", "Objetivo",
+  "Bernoulli", "Poliedro", "Hexag", "Farias Brito", "COC", "Anglo",
+  "Objetivo", "SAS", "Ari de Sá",
 ]);
 
 export const SUBJECTS = [
