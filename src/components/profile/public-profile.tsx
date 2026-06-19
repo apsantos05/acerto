@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { ProfileAvatar } from "@/components/profile/profile-avatar";
 import { ProfileTabs } from "@/components/profile/profile-tabs";
+import { PlanBadge } from "@/components/profile/plan-badge";
 import type { PublicProfileData } from "@/lib/profile";
 
 type PublicProfileProps = {
@@ -26,12 +27,14 @@ export function PublicProfile({ data }: PublicProfileProps) {
   return (
     <div>
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        {/* Capa: imagem do usuário ou gradiente de fallback */}
-        <div className="relative h-40 sm:h-48">
+        {/* Capa: imagem do usuário ou gradiente de fallback. A foto fica numa
+            camada acima (z-10), então a capa nunca a cobre. */}
+        <div className="relative h-32 bg-slate-100 sm:h-44 lg:h-52">
           {profile.coverUrl ? (
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url(${profile.coverUrl})` }}
+              role="img"
               aria-label={`Capa de ${profile.fullName}`}
             />
           ) : (
@@ -39,33 +42,40 @@ export function PublicProfile({ data }: PublicProfileProps) {
           )}
         </div>
 
-        <div className="px-6 pb-6">
-          {/* Avatar sobreposto à capa; nome fica em bloco separado abaixo */}
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div className="-mt-14 sm:-mt-16">
+        <div className="px-4 pb-6 sm:px-6">
+          {/* Linha do avatar: foto sobreposta à capa + botão de editar.
+              z-10 garante a foto SEMPRE acima da capa. */}
+          <div className="flex items-end justify-between gap-3">
+            <div className="relative z-10 -mt-12 sm:-mt-16">
               <ProfileAvatar
                 name={profile.fullName}
                 avatarUrl={profile.avatarUrl}
+                size="xl"
               />
             </div>
             {data.isCurrentUser ? (
               <Link
                 href="/configuracoes/perfil"
-                className="inline-flex w-fit items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="mb-1 inline-flex w-fit shrink-0 items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
                 <PencilLine size={16} />
-                Editar perfil
+                <span className="hidden sm:inline">Editar perfil</span>
+                <span className="sm:hidden">Editar</span>
               </Link>
             ) : null}
           </div>
 
-          <div className="mt-4">
+          {/* Identidade: nome, e logo abaixo o @username + badge do plano */}
+          <div className="mt-3 sm:mt-4">
             <h1 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
               {profile.fullName}
             </h1>
-            <p className="mt-1 text-sm font-medium text-slate-500">
-              @{profile.username}
-            </p>
+            <div className="mt-1.5 flex flex-wrap items-center gap-2">
+              <p className="text-sm font-medium text-slate-500">
+                @{profile.username}
+              </p>
+              <PlanBadge plan={profile.plan} size="md" showFree />
+            </div>
           </div>
 
           <p className="mt-4 max-w-3xl leading-7 text-slate-600">
