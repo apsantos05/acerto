@@ -41,12 +41,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     ? (tabParam as AdminTab)
     : "pending";
   const page = Math.max(1, Number(getParam(sp, "page")) || 1);
+  const search = (getParam(sp, "q") ?? "").trim();
   const isMaterialTab = tab === "pending" || tab === "all";
 
   const [counts, materialsRes, posts, simulados, facets] = await Promise.all([
     getAdminCounts(),
     isMaterialTab
-      ? getAdminMaterials(tab, page, ADMIN_PAGE_SIZE)
+      ? getAdminMaterials(tab, page, ADMIN_PAGE_SIZE, search)
       : Promise.resolve({ materials: [], total: 0 }),
     tab === "posts" ? getRecentPosts() : Promise.resolve([]),
     tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
@@ -72,6 +73,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           tab={tab}
           page={page}
           pageSize={ADMIN_PAGE_SIZE}
+          search={search}
           materials={materialsRes.materials}
           materialsTotal={materialsRes.total}
           counts={counts}

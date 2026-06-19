@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, Sparkles, X } from "lucide-react";
 import { ModerationCard } from "@/components/admin/moderation-card";
 import { PostModerationCard } from "@/components/admin/post-moderation-card";
 import { SimuladoAdminCard } from "@/components/admin/simulado-admin-card";
@@ -30,6 +30,7 @@ type AdminPanelProps = {
   tab: Tab;
   page: number;
   pageSize: number;
+  search: string;
   materials: AdminMaterial[]; // página atual (apenas abas de material)
   materialsTotal: number; // total da aba de material ativa
   counts: AdminCounts;
@@ -65,6 +66,7 @@ function AdminPanelInner({
   tab,
   page,
   pageSize,
+  search,
   materials,
   materialsTotal,
   counts,
@@ -92,8 +94,9 @@ function AdminPanelInner({
     { id: "simulados", label: "Simulados", count: counts.simulados },
   ];
 
-  const tabHref = (t: Tab) => `/admin?tab=${t}&page=1`;
-  const pageHref = (p: number) => `/admin?tab=${tab}&page=${p}`;
+  const qParam = search ? `&q=${encodeURIComponent(search)}` : "";
+  const tabHref = (t: Tab) => `/admin?tab=${t}&page=1${qParam}`;
+  const pageHref = (p: number) => `/admin?tab=${tab}&page=${p}${qParam}`;
 
   function toggleSelect(id: string) {
     setSelectedIds((prev) => {
@@ -319,10 +322,44 @@ function AdminPanelInner({
         <span>Rejeitados: <b className="text-red-700">{counts.rejected.toLocaleString("pt-BR")}</b></span>
         {isMaterialTab ? (
           <span className="ml-auto text-slate-500">
-            Mostrando {materials.length} · página {page} de {totalPages}
+            {search
+              ? `Encontrados: ${materialsTotal.toLocaleString("pt-BR")}`
+              : `Mostrando ${materials.length}`}{" "}
+            · página {page} de {totalPages}
           </span>
         ) : null}
       </div>
+
+      {/* Busca server-side (abas de material) */}
+      {isMaterialTab ? (
+        <form method="get" action="/admin" className="mb-4 flex flex-wrap gap-2">
+          <input type="hidden" name="tab" value={tab} />
+          <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 focus-within:border-sky-400 focus-within:ring-4 focus-within:ring-sky-100">
+            <Search size={18} className="text-slate-400" />
+            <input
+              name="q"
+              defaultValue={search}
+              placeholder="Pesquisar materiais..."
+              className="w-full bg-transparent text-sm text-slate-900 outline-none"
+            />
+          </label>
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+          >
+            Buscar
+          </button>
+          {search ? (
+            <Link
+              href={`/admin?tab=${tab}&page=1`}
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            >
+              <X size={16} />
+              Limpar
+            </Link>
+          ) : null}
+        </form>
+      ) : null}
 
       {/* Abas (navegação server-side) */}
       <div className="flex flex-wrap gap-2 border-b border-slate-200">
@@ -404,9 +441,11 @@ function AdminPanelInner({
           <SectionList
             isEmpty={materials.length === 0}
             emptyText={
-              tab === "pending"
-                ? "Nenhum material pendente nesta página."
-                : "Nenhum material nesta página."
+              search
+                ? `Nenhum material encontrado para “${search}”.`
+                : tab === "pending"
+                  ? "Nenhum material pendente nesta página."
+                  : "Nenhum material nesta página."
             }
           >
             {materials.map((material) => (

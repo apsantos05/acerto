@@ -189,11 +189,19 @@ export async function getAdminCounts(): Promise<AdminCounts> {
   }
 }
 
+// Remove caracteres que quebrariam a sintaxe do .or()/ilike do PostgREST.
+function sanitizeTerm(term?: string) {
+  return (term ?? "").replace(/[,()%*]/g, " ").trim();
+}
+
 // Página de materiais (server-side). status "pending" filtra; "all" traz todos.
+// `search` busca em title/description/summary/subject/faculdade/vestibular/
+// editora/material_type (ilike) e em year (igualdade, quando for um ano).
 export async function getAdminMaterials(
   status: "pending" | "all" = "pending",
   page = 1,
   pageSize = ADMIN_PAGE_SIZE,
+  search?: string,
 ): Promise<{ materials: AdminMaterial[]; total: number }> {
   try {
     const supabase = await createClient();
@@ -204,6 +212,22 @@ export async function getAdminMaterials(
       .order("created_at", { ascending: false })
       .range(from, from + pageSize - 1);
     if (status === "pending") query = query.eq("status", "pending");
+
+    const term = sanitizeTerm(search);
+    if (term) {
+      const ors = [
+        `title.ilike.%${term}%`,
+        `description.ilike.%${term}%`,
+        `summary.ilike.%${term}%`,
+        `subject.ilike.%${term}%`,
+        `faculdade.ilike.%${term}%`,
+        `vestibular.ilike.%${term}%`,
+        `editora.ilike.%${term}%`,
+        `material_type.ilike.%${term}%`,
+      ];
+      if (/^\d{4}$/.test(term)) ors.push(`year.eq.${term}`);
+      query = query.or(ors.join(","));
+    }
 
     const { data, count, error } = await query;
     if (error) {
