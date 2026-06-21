@@ -46,14 +46,30 @@ function stripPrefixes(input: string): string {
   return t;
 }
 
+// Título "cru" = tudo MAIÚSCULO ou tudo minúsculo. Caixa mista = já legível.
+function isMixedCase(t: string): boolean {
+  let hasUpper = false;
+  let hasLower = false;
+  for (const ch of t) {
+    if (!/[a-zà-ÿ]/i.test(ch)) continue;
+    if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) hasUpper = true;
+    else if (ch === ch.toLowerCase() && ch !== ch.toUpperCase()) hasLower = true;
+    if (hasUpper && hasLower) return true;
+  }
+  return false;
+}
+
 function titleCase(t: string): string {
   const words = t.split(/\s+/).map((w, idx) => {
     if (ACRONYMS.has(w.toUpperCase())) return w.toUpperCase();
     if (/[0-9]/.test(w)) return w; // anos, seções "13.7"
-    if (!/[a-zà-ÿ]/i.test(w)) return w; // "+", pontuação isolada
+    const letters = w.replace(/[^a-zà-ÿ]/gi, "");
+    if (letters.length === 0) return w; // "+", pontuação isolada
+    if (letters.length === 1) return w; // letra isolada (ex.: "(Q", "Y)") — preserva
     const lower = w.toLowerCase();
-    if (idx > 0 && SMALL_WORDS.has(lower)) return lower;
-    return lower.charAt(0).toUpperCase() + lower.slice(1);
+    if (idx > 0 && SMALL_WORDS.has(letters.toLowerCase())) return lower;
+    // Capitaliza a 1ª LETRA (ignora "(" inicial): "(amarela)" → "(Amarela)".
+    return lower.replace(/[a-zà-ÿ]/i, (c) => c.toUpperCase());
   });
   let out = words.join(" ");
   // Insere " — " antes do primeiro marcador de contexto (se houver título antes).
@@ -88,7 +104,9 @@ export function cleanMaterialTitle(title: string | null | undefined): string {
     .replace(/\s+/g, " ")
     .trim();
   t = stripPrefixes(t);
-  t = titleCase(t); // preserva siglas (ENEM/UECE/...), números e seções "13.7"
+  // Title Case só quando o título está "cru" (tudo maiúsculo ou tudo minúsculo).
+  // Títulos já em caixa mista (ex.: "UFSC 2015 - Prova 1 (Amarela)") ficam iguais.
+  if (!isMixedCase(t)) t = titleCase(t);
 
   return (t.trim() || original).slice(0, 160);
 }

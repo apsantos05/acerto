@@ -179,14 +179,28 @@ export function stripArtificialPrefix(title) {
   return t;
 }
 
+function titleIsMixedCase(t) {
+  let hasUpper = false;
+  let hasLower = false;
+  for (const ch of t) {
+    if (!/[a-zà-ÿ]/i.test(ch)) continue;
+    if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) hasUpper = true;
+    else if (ch === ch.toLowerCase() && ch !== ch.toUpperCase()) hasLower = true;
+    if (hasUpper && hasLower) return true;
+  }
+  return false;
+}
+
 function titleCaseRaw(t) {
   const words = t.split(/\s+/).map((w, idx) => {
     if (TITLE_ACRONYMS.has(w.toUpperCase())) return w.toUpperCase();
     if (/[0-9]/.test(w)) return w;
-    if (!/[a-zà-ÿ]/i.test(w)) return w;
+    const letters = w.replace(/[^a-zà-ÿ]/gi, "");
+    if (letters.length === 0) return w;
+    if (letters.length === 1) return w; // letra isolada — preserva
     const lower = w.toLowerCase();
-    if (idx > 0 && TITLE_SMALL.has(lower)) return lower;
-    return lower.charAt(0).toUpperCase() + lower.slice(1);
+    if (idx > 0 && TITLE_SMALL.has(letters.toLowerCase())) return lower;
+    return lower.replace(/[a-zà-ÿ]/i, (c) => c.toUpperCase());
   });
   let out = words.join(" ");
   const marker = out.match(TITLE_CONTEXT);
@@ -207,7 +221,7 @@ export function normalizeTitle(raw) {
   t = t.replace(/\.?pdf$/i, "").trim();
   t = t.replace(/_+/g, " ").replace(/\bdownload\b/gi, " ").replace(/\(\d+\)\s*$/, "").replace(/\s+/g, " ").trim();
   t = stripArtificialPrefix(t);
-  t = titleCaseRaw(t);
+  if (!titleIsMixedCase(t)) t = titleCaseRaw(t);
   return (t.trim() || original).slice(0, 160);
 }
 
