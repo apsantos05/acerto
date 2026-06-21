@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/trilhas", label: "Trilhas" },
   { href: "/simulados", label: "Simulados" },
   { href: "/favoritos", label: "Favoritos" },
   { href: "/feed", label: "Feed" },
@@ -21,6 +22,7 @@ const navItems = [
 const mobileNavItems = [
   { href: "/", label: "Início" },
   { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/trilhas", label: "Trilhas" },
   { href: "/universidades", label: "Universidades" },
   { href: "/simulados", label: "Simulados" },
   { href: "/planos", label: "Planos" },

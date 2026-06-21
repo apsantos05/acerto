@@ -145,7 +145,8 @@ archived_at. RLS own-only.
 17. `simulado_timer.sql` → 18. `profile_revamp.sql` →
 19. **`materials_ingest_fixed.sql`** → 20. **`materials_ai_fixed.sql`** →
 21. **`plans_fixed.sql`** → 22. **`admin_material_edit.sql`** →
-23. **`plan_gating.sql`** (limite de simulados na RPC + trigger de favoritos).
+23. **`plan_gating.sql`** (limite de simulados na RPC + trigger de favoritos) →
+24. **`study_tracks.sql`** (trilhas + cronograma + progresso + seed de 11 trilhas).
 Seeds: `seed_materials.sql`, `seed_feed.sql`, `seed_simulados.sql`.
 Auditoria documentada em `supabase/database_audit.md`.
 
@@ -333,6 +334,34 @@ Telegram via `CURATED_PATH`/`CACHE_DIR`.
   Convenção de paleta: superfícies `bg-white→dark:bg-slate-900`, bordas
   `slate-200→slate-800`, texto `slate-600→slate-300` / `slate-950→white`, botão
   primário `slate-950/white→white/slate-950`, acentos `-500/15` (fundo) e `-300` (texto).
+
+## Trilhas de Estudo (IMPLEMENTADO)
+
+Área central nova: cronogramas guiados por universidade para Medicina.
+- **Rotas:** `/trilhas` (lista) e `/trilhas/[slug]` (detalhe). No menu (navbar desktop
+  e mobile) e no `sitemap.ts`.
+- **Banco:** `supabase/study_tracks.sql` (idempotente, com SEED de 11 trilhas +
+  cronograma de 2 semanas cada). Tabelas: `study_tracks`, `study_track_weeks`,
+  `study_track_tasks`, `user_track_progress`. RPC `reset_track_progress`. RLS:
+  trilhas/semanas/tarefas leitura pública + escrita admin (`is_admin()`); progresso
+  own-only. Helper `study_tracks` usa `university`/`vestibular` com os MESMOS valores
+  de `materials.faculdade`/`materials.vestibular` para a recomendação reusar a query
+  da biblioteca.
+- **Lib:** `src/lib/tracks.ts` (`getTracks`, `getTrackBySlug`, `getTrackDetail` com
+  semanas+tarefas+progresso+recomendações de materiais/simulados).
+- **Gating** (em `src/lib/gating.ts`): `PLAN_RANK`, `viewerPlanRank`, `canAccessTrack`,
+  `isTrackWeekUnlocked`. Coluna `plan_required` (free/premium/premium_med) por trilha.
+  Free/plano insuficiente: vê lista + prévia + **só a 1ª semana**; resto → modal de
+  upgrade. Premium acessa trilhas `premium`; Premium Medicina acessa tudo; admin total.
+  No seed: USP/Unicamp/Unesp/UFSC/UFPR/UFMG/Unifesp = `premium`; Famerp/Einstein/
+  Santa Casa/SLMandic = `premium_med`.
+- **Cronograma:** `src/components/trilhas/track-schedule.tsx` (client) — marcar/desmarcar
+  tarefa (upsert/delete em `user_track_progress`), barra de progresso, resetar (RPC),
+  "continuar de onde parou", semanas bloqueadas com prévia + `UpgradeButton`.
+- **Admin:** aba "Trilhas" (`src/components/admin/track-admin-manager.tsx`) — criar/editar
+  trilha, ativar/desativar, definir plano exigido, gerenciar semanas e tarefas
+  (vincular material/simulado por id). `getAdminCounts` agora inclui `tracks`.
+- **UX:** componentes já nascem com dark mode; cabeçalho premium em gradiente.
 
 ## Feed Social
 

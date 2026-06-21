@@ -11,6 +11,8 @@ import {
   BulkActionBar,
   type BulkField,
 } from "@/components/admin/bulk-action-bar";
+import { TrackAdminManager } from "@/components/admin/track-admin-manager";
+import type { StudyTrack } from "@/lib/tracks";
 import { ToastProvider, useToast } from "@/components/ui/toast";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
@@ -24,7 +26,7 @@ import type {
   AdminSimulado,
 } from "@/lib/admin";
 
-type Tab = "pending" | "all" | "posts" | "simulados";
+type Tab = "pending" | "all" | "posts" | "simulados" | "trilhas";
 
 type AdminPanelProps = {
   tab: Tab;
@@ -36,6 +38,7 @@ type AdminPanelProps = {
   counts: AdminCounts;
   posts: AdminPost[];
   simulados: AdminSimulado[];
+  tracks: StudyTrack[];
   facets: AdminFacets;
 };
 
@@ -72,6 +75,7 @@ function AdminPanelInner({
   counts,
   posts,
   simulados,
+  tracks,
   facets,
 }: AdminPanelProps) {
   const router = useRouter();
@@ -92,6 +96,7 @@ function AdminPanelInner({
     { id: "all", label: "Todos os materiais", count: counts.total },
     { id: "posts", label: "Posts", count: counts.posts },
     { id: "simulados", label: "Simulados", count: counts.simulados },
+    { id: "trilhas", label: "Trilhas", count: counts.tracks },
   ];
 
   const qParam = search ? `&q=${encodeURIComponent(search)}` : "";
@@ -475,6 +480,8 @@ function AdminPanelInner({
             ))}
           </SectionList>
         ) : null}
+
+        {tab === "trilhas" ? <TrackAdminManager tracks={tracks} /> : null}
 
         {/* Paginação (abas de material) */}
         {isMaterialTab && totalPages > 1 ? (

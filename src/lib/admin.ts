@@ -159,12 +159,13 @@ export type AdminCounts = {
   total: number;
   posts: number;
   simulados: number;
+  tracks: number;
 };
 
 // Contagens reais (head:true não traz linhas — barato).
 export async function getAdminCounts(): Promise<AdminCounts> {
   const empty: AdminCounts = {
-    pending: 0, approved: 0, rejected: 0, total: 0, posts: 0, simulados: 0,
+    pending: 0, approved: 0, rejected: 0, total: 0, posts: 0, simulados: 0, tracks: 0,
   };
   try {
     const supabase = await createClient();
@@ -174,15 +175,16 @@ export async function getAdminCounts(): Promise<AdminCounts> {
       const { count } = await query;
       return count ?? 0;
     };
-    const [pending, approved, rejected, total, posts, simulados] = await Promise.all([
+    const [pending, approved, rejected, total, posts, simulados, tracks] = await Promise.all([
       headCount("materials", "pending"),
       headCount("materials", "approved"),
       headCount("materials", "rejected"),
       headCount("materials"),
       headCount("posts"),
       headCount("simulados"),
+      headCount("study_tracks"),
     ]);
-    return { pending, approved, rejected, total, posts, simulados };
+    return { pending, approved, rejected, total, posts, simulados, tracks };
   } catch (countError) {
     console.error("[admin] falha nas contagens:", countError);
     return empty;

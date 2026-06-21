@@ -12,8 +12,9 @@ import {
   getRecentPosts,
   isCurrentUserAdmin,
 } from "@/lib/admin";
+import { getTracks } from "@/lib/tracks";
 
-type AdminTab = "pending" | "all" | "posts" | "simulados";
+type AdminTab = "pending" | "all" | "posts" | "simulados" | "trilhas";
 
 type AdminPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -35,22 +36,23 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   const sp = (await searchParams) ?? {};
   const tabParam = getParam(sp, "tab") ?? "pending";
-  const tab: AdminTab = (["pending", "all", "posts", "simulados"] as const).includes(
-    tabParam as AdminTab,
-  )
+  const tab: AdminTab = (
+    ["pending", "all", "posts", "simulados", "trilhas"] as const
+  ).includes(tabParam as AdminTab)
     ? (tabParam as AdminTab)
     : "pending";
   const page = Math.max(1, Number(getParam(sp, "page")) || 1);
   const search = (getParam(sp, "q") ?? "").trim();
   const isMaterialTab = tab === "pending" || tab === "all";
 
-  const [counts, materialsRes, posts, simulados, facets] = await Promise.all([
+  const [counts, materialsRes, posts, simulados, tracks, facets] = await Promise.all([
     getAdminCounts(),
     isMaterialTab
       ? getAdminMaterials(tab, page, ADMIN_PAGE_SIZE, search)
       : Promise.resolve({ materials: [], total: 0 }),
     tab === "posts" ? getRecentPosts() : Promise.resolve([]),
     tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
+    tab === "trilhas" ? getTracks(true) : Promise.resolve([]),
     getAdminFacets(),
   ]);
 
@@ -79,6 +81,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           counts={counts}
           posts={posts}
           simulados={simulados}
+          tracks={tracks}
           facets={facets}
         />
       </div>

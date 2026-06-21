@@ -166,6 +166,39 @@ export async function simuladosUsedThisMonth(viewer?: Viewer): Promise<number> {
   }
 }
 
+// -------- Trilhas de estudo --------
+
+export const PLAN_RANK: Record<Plan, number> = {
+  free: 0,
+  premium: 1,
+  premium_med: 2,
+};
+
+/** Rank do plano do viewer (admin acima de tudo). */
+export function viewerPlanRank(viewer: Viewer): number {
+  return viewer.isAdmin ? 99 : PLAN_RANK[viewer.plan];
+}
+
+/** Acesso COMPLETO à trilha? (plano do viewer >= plano exigido pela trilha) */
+export function canAccessTrack(
+  track: { planRequired: Plan },
+  viewer: Viewer,
+): boolean {
+  return viewerPlanRank(viewer) >= PLAN_RANK[track.planRequired];
+}
+
+/**
+ * Semana liberada? Free/plano insuficiente acessa apenas a 1ª semana (prévia);
+ * o restante exige o plano da trilha (ou admin).
+ */
+export function isTrackWeekUnlocked(
+  track: { planRequired: Plan },
+  weekNumber: number,
+  viewer: Viewer,
+): boolean {
+  return canAccessTrack(track, viewer) || weekNumber <= 1;
+}
+
 /** Quantos favoritos o usuário tem (para exibir na UI). */
 export async function favoritesUsed(viewer?: Viewer): Promise<number> {
   const v = viewer ?? (await getViewer());
