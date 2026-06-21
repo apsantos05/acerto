@@ -58,7 +58,7 @@ const plans: Plan[] = [
       "Sem anúncios",
     ],
     cta: "Assinar Premium",
-    href: "/cadastro?plano=premium",
+    href: "/api/checkout/premium",
   },
   {
     id: "premium_med",
@@ -76,13 +76,25 @@ const plans: Plan[] = [
       "Prioridade nos materiais da sua universidade-alvo",
     ],
     cta: "Assinar Premium Medicina",
-    href: "/cadastro?plano=premium_med",
+    href: "/api/checkout/premium-med",
   },
 ];
 
-export default function PlanosPage() {
+type PlanosPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function PlanosPage({ searchParams }: PlanosPageProps) {
+  const sp = (await searchParams) ?? {};
+  const hasError = sp.erro === "checkout";
+
   return (
     <AppShell>
+      {hasError ? (
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          Não foi possível iniciar o checkout agora. Tente novamente em instantes.
+        </div>
+      ) : null}
       <div className="text-center">
         <p className="text-sm font-semibold uppercase tracking-wide text-sky-700 dark:text-sky-400">
           Planos
@@ -153,8 +165,7 @@ export default function PlanosPage() {
       </div>
 
       <p className="mt-8 text-center text-xs text-slate-400 dark:text-slate-500">
-        Pagamento online em breve. Os preços são iniciais e podem mudar no
-        lançamento.
+        Pagamento recorrente seguro via Mercado Pago. Cancele quando quiser.
       </p>
     </AppShell>
   );

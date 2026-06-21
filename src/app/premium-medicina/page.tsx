@@ -19,7 +19,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { UNIVERSITIES, SITE_NAME, SITE_URL } from "@/lib/catalog";
 
 const PRICE = "R$ 39";
-const CHECKOUT_HREF = "/cadastro?plano=premium_med";
+const CHECKOUT_HREF = "/api/checkout/premium-med";
 
 export const metadata: Metadata = {
   title: "Premium Medicina — aprove na faculdade dos seus sonhos",

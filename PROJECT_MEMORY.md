@@ -146,7 +146,8 @@ archived_at. RLS own-only.
 19. **`materials_ingest_fixed.sql`** → 20. **`materials_ai_fixed.sql`** →
 21. **`plans_fixed.sql`** → 22. **`admin_material_edit.sql`** →
 23. **`plan_gating.sql`** (limite de simulados na RPC + trigger de favoritos) →
-24. **`study_tracks.sql`** (trilhas + cronograma + progresso + seed de 11 trilhas).
+24. **`study_tracks.sql`** (trilhas + cronograma + progresso + seed de 11 trilhas) →
+25. **`payments.sql`** (subscriptions + payment_events + trigger anti-tamper de plano).
 Seeds: `seed_materials.sql`, `seed_feed.sql`, `seed_simulados.sql`.
 Auditoria documentada em `supabase/database_audit.md`.
 
@@ -398,9 +399,30 @@ Telegram via `CURATED_PATH`/`CACHE_DIR`.
 - **Landing `/premium-medicina`** — página de vendas (hero, benefícios, universidades,
   biblioteca premium, simulados, depoimentos placeholder, FAQ com JSON-LD, CTA).
 - Doc de design: `documentos do produto/monetizacao.md`.
-- **Pagamento:** não implementado. CTAs apontam para `/cadastro?plano=...`.
-  Próximo passo: checkout (Stripe/Mercado Pago) + webhook que seta `plan`/
-  `premium_until` + gating real.
+
+### Checkout (IMPLEMENTADO — Mercado Pago Assinaturas)
+- **Gateway:** Mercado Pago **Preapproval** (assinatura recorrente mensal) via REST
+  (`fetch`, sem SDK). Lib: `src/lib/mercadopago.ts` (createPreapproval, getPreapproval,
+  getPayment, verifyWebhookSignature HMAC, PAID_PLANS premium=19/premium_med=39).
+- **Rotas:** `GET/POST /api/checkout/premium`, `/api/checkout/premium-med`
+  (`src/lib/checkout.ts` → não logado redireciona p/ `/cadastro?plano=`; logado cria
+  preapproval e redireciona ao init_point) e `POST /api/mercado-pago/webhook`.
+- **Webhook:** valida `x-signature`; em produção rejeita assinatura inválida (401);
+  registra tudo em `payment_events`; atualiza `profiles.plan`/`premium_until` e
+  `subscriptions` via **service role** (`src/lib/supabase/admin.ts`). authorized→ativa,
+  cancelled→free, payment approved→renova +1 mês.
+- **Páginas:** `/checkout/success|failure|pending`. `/planos` e `/premium-medicina`
+  agora apontam os CTAs pagos para as rotas de checkout.
+- **Banco:** `supabase/payments.sql` — `subscriptions`, `payment_events`, RLS
+  (leitura own/admin; escrita só service role) + **trigger `protect_plan_columns`**
+  que impede o usuário de trocar `plan`/`premium_until` manualmente (só service
+  role/admin). Espelha a falha que existia na policy `profiles_update_own`.
+- **Env (servidor, sem `NEXT_PUBLIC_`):** `SUPABASE_SERVICE_ROLE_KEY`,
+  `MERCADO_PAGO_ACCESS_TOKEN`, `MERCADO_PAGO_WEBHOOK_SECRET` + `NEXT_PUBLIC_SITE_URL`.
+  Guia completo: `MERCADO_PAGO.md`.
+- ⚠️ Mapeamento de pagamento recorrente→usuário depende de `external_reference`
+  (`<userId>:<plan>`). Renovação mensal via payment só estende se o pagamento trouxer
+  o external_reference; a concessão/cancelamento principais vêm do preapproval.
 
 ---
 
@@ -431,11 +453,12 @@ Telegram via `CURATED_PATH`/`CACHE_DIR`.
 - ✅ **Modo noturno** — IMPLEMENTADO (ver seção "Modo Noturno").
 - ✅ **Gating por plano** — IMPLEMENTADO (ver "Sistema de Planos"). Pré-requisito
   para o usuário rodar no banco: **`supabase/plan_gating.sql`**.
-- **Integração de pagamento (checkout + webhook)** — agora é o próximo passo de
-  monetização: webhook seta `plan`/`premium_until`; o gating já está pronto para
-  refletir a mudança. Premium Medicina ainda precisa dos recursos exclusivos
-  (trilhas por universidade, simulados oficiais por banca, correção de redação,
-  cronograma) — hoje `isPremiumMed()` existe mas não há features exclusivas ligadas.
+- ✅ **Integração de pagamento (checkout + webhook)** — IMPLEMENTADO (Mercado Pago,
+  ver "Checkout" em Monetização). Pré-requisito p/ produção: rodar `payments.sql` +
+  configurar as env vars + cadastrar o webhook no painel do MP (ver `MERCADO_PAGO.md`).
+- **Recursos exclusivos do Premium Medicina** ainda a ligar: simulados oficiais por
+  banca, correção de redação, cronograma personalizado (trilhas já existem). Hoje
+  `isPremiumMed()` existe mas poucas features são exclusivas dele.
 - OCR avançado / melhorias de SEO.
 
 **Prioridade Média:** app mobile, IA de recomendação, cronograma inteligente,
