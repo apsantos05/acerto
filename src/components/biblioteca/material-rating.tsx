@@ -95,19 +95,19 @@ export function MaterialRating({
   const displayValue = hover || myRating || 0;
 
   return (
-    <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-5">
+    <div className="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+        <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
           <Star size={18} className="text-amber-500" fill="currentColor" />
           {count > 0 ? (
             <>
               {average.toFixed(1)}
-              <span className="font-normal text-slate-500">
+              <span className="font-normal text-slate-500 dark:text-slate-400">
                 · {count} {count === 1 ? "avaliação" : "avaliações"}
               </span>
             </>
           ) : (
-            <span className="font-normal text-slate-500">
+            <span className="font-normal text-slate-500 dark:text-slate-400">
               Ainda sem avaliações
             </span>
           )}
@@ -115,12 +115,12 @@ export function MaterialRating({
       </div>
 
       {isMock ? (
-        <p className="mt-3 text-sm text-slate-500">
+        <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
           Avaliação disponível para materiais reais da comunidade.
         </p>
       ) : user ? (
         <div className="mt-4">
-          <p className="text-sm font-medium text-slate-700">
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
             {myRating ? "Sua avaliação" : "Avalie este material"}
           </p>
           <div
@@ -140,7 +140,7 @@ export function MaterialRating({
                 <Star
                   size={28}
                   className={
-                    value <= displayValue ? "text-amber-500" : "text-slate-300"
+                    value <= displayValue ? "text-amber-500" : "text-slate-300 dark:text-slate-600"
                   }
                   fill={value <= displayValue ? "currentColor" : "none"}
                 />
@@ -148,20 +148,20 @@ export function MaterialRating({
             ))}
           </div>
           {message ? (
-            <p className="mt-2 text-sm text-emerald-700">{message}</p>
+            <p className="mt-2 text-sm text-emerald-700 dark:text-emerald-300">{message}</p>
           ) : null}
           {error ? (
-            <p className="mt-2 text-sm text-red-700">{error}</p>
+            <p className="mt-2 text-sm text-red-700 dark:text-red-300">{error}</p>
           ) : null}
         </div>
       ) : (
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             Entre para avaliar este material.
           </p>
           <Link
             href="/login"
-            className="inline-flex items-center justify-center rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="inline-flex items-center justify-center rounded-lg bg-slate-950 dark:bg-white px-4 py-2 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200"
           >
             Entrar para avaliar
           </Link>

@@ -127,15 +127,15 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-slate-950">Plano da semana</h2>
+        <h2 className="text-xl font-semibold text-slate-950 dark:text-white">Plano da semana</h2>
         <div className="flex items-center gap-3">
-          <CalendarDays className="text-sky-700" />
+          <CalendarDays className="text-sky-700 dark:text-sky-400" />
           <button
             type="button"
             onClick={() => setIsAdding((open) => !open)}
-            className="inline-flex items-center gap-1 rounded-lg bg-slate-950 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="inline-flex items-center gap-1 rounded-lg bg-slate-950 dark:bg-white px-3 py-2 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200"
           >
             <Plus size={16} />
             Adicionar tarefa
@@ -149,13 +149,13 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Título (ex.: Biologia celular)"
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-sky-400"
+            className="rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500 px-3 py-2 text-sm outline-none focus:border-sky-400"
           />
           <input
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Matéria (opcional)"
-            className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-sky-400"
+            className="rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500 px-3 py-2 text-sm outline-none focus:border-sky-400"
           />
           <button
             type="submit"
@@ -169,7 +169,7 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
       ) : null}
 
       {error ? (
-        <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p className="mt-4 rounded-lg bg-red-50 dark:bg-red-500/10 px-3 py-2 text-sm text-red-700 dark:text-red-300">
           {error}
         </p>
       ) : null}
@@ -186,14 +186,14 @@ export function WeeklyPlan({ tasks: initialTasks }: WeeklyPlanProps) {
             />
           ))
         ) : (
-          <div className="rounded-lg border border-dashed border-slate-300 p-6 text-center">
-            <p className="text-sm text-slate-600">
+          <div className="rounded-lg border border-dashed border-slate-300 dark:border-slate-700 p-6 text-center">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               Você ainda não tem tarefas ativas nesta semana.
             </p>
             <button
               type="button"
               onClick={() => setIsAdding(true)}
-              className="mt-3 inline-flex items-center gap-1 rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white"
+              className="mt-3 inline-flex items-center gap-1 rounded-lg bg-slate-950 dark:bg-white px-4 py-2 text-sm font-semibold text-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
               <Plus size={16} />
               Criar tarefa
@@ -219,12 +219,12 @@ function TaskRow({
   const [draft, setDraft] = useState(String(task.progress));
 
   return (
-    <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
+    <div className="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-medium text-slate-950">{task.title}</p>
+          <p className="font-medium text-slate-950 dark:text-white">{task.title}</p>
           {task.subject ? (
-            <p className="text-xs text-slate-500">{task.subject}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{task.subject}</p>
           ) : null}
         </div>
         <div className="flex shrink-0 gap-2">
@@ -232,7 +232,7 @@ function TaskRow({
             type="button"
             onClick={onDone}
             title="Concluir"
-            className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 px-2 py-1 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50"
+            className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 dark:border-emerald-500/30 px-2 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300 transition hover:bg-emerald-50 dark:hover:bg-emerald-500/15"
           >
             <Check size={14} />
             Concluir
@@ -241,14 +241,14 @@ function TaskRow({
             type="button"
             onClick={onDelete}
             title="Excluir"
-            className="inline-flex items-center rounded-lg border border-slate-200 px-2 py-1 text-slate-500 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700"
+            className="inline-flex items-center rounded-lg border border-slate-200 dark:border-slate-700 px-2 py-1 text-slate-500 dark:text-slate-400 transition hover:border-red-200 dark:hover:border-red-500/30 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-700 dark:hover:text-red-300"
           >
             <Trash2 size={14} />
           </button>
         </div>
       </div>
 
-      <div className="mt-3 h-2 rounded-full bg-slate-200">
+      <div className="mt-3 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
         <div
           className="h-2 rounded-full bg-cyan-400 transition-all"
           style={{ width: `${task.progress}%` }}
@@ -262,13 +262,13 @@ function TaskRow({
           max={100}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          className="w-20 rounded-lg border border-slate-200 px-2 py-1 text-sm outline-none focus:border-sky-400"
+          className="w-20 rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 px-2 py-1 text-sm outline-none focus:border-sky-400"
         />
-        <span className="text-sm text-slate-500">% de progresso</span>
+        <span className="text-sm text-slate-500 dark:text-slate-400">% de progresso</span>
         <button
           type="button"
           onClick={() => onProgress(clampProgress(Number(draft)))}
-          className="ml-auto inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+          className="ml-auto inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-100 dark:hover:bg-slate-800"
         >
           <Save size={13} />
           Salvar progresso

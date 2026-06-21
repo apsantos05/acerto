@@ -156,7 +156,7 @@ const productJsonLd = {
 
 export default function PremiumMedicinaPage() {
   return (
-    <main className="bg-white">
+    <main className="bg-white dark:bg-slate-900">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
@@ -243,10 +243,10 @@ export default function PremiumMedicinaPage() {
       {/* BENEFÍCIOS */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
-          <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl">
+          <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
             Tudo que você precisa para passar
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+          <p className="mx-auto mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
             Pare de juntar PDF solto no WhatsApp. O Premium Medicina reúne o
             material certo, no formato certo, para a sua banca.
           </p>
@@ -257,15 +257,15 @@ export default function PremiumMedicinaPage() {
             return (
               <div
                 key={b.title}
-                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700 dark:bg-sky-500/15 dark:text-sky-400">
                   <Icon size={22} />
                 </span>
-                <h3 className="mt-4 text-lg font-semibold text-slate-950">
+                <h3 className="mt-4 text-lg font-semibold text-slate-950 dark:text-white">
                   {b.title}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{b.text}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{b.text}</p>
               </div>
             );
           })}
@@ -273,13 +273,13 @@ export default function PremiumMedicinaPage() {
       </section>
 
       {/* UNIVERSIDADES ATENDIDAS */}
-      <section className="bg-slate-50 py-20">
+      <section className="bg-slate-50 py-20 dark:bg-slate-800/50">
         <div className="mx-auto max-w-6xl px-6">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl">
+            <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
               Universidades atendidas
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+            <p className="mx-auto mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
               Trilhas e materiais específicos para as principais faculdades de
               Medicina do país.
             </p>
@@ -289,17 +289,17 @@ export default function PremiumMedicinaPage() {
               <Link
                 key={u.slug}
                 href={`/universidades/${u.slug}`}
-                className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-200 hover:shadow-md"
+                className="group flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-sky-500/40"
               >
                 <span className="flex items-center gap-3">
                   <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-950 text-cyan-300">
                     <GraduationCap size={18} />
                   </span>
-                  <span className="font-semibold text-slate-950 group-hover:text-sky-800">
+                  <span className="font-semibold text-slate-950 group-hover:text-sky-800 dark:text-white dark:group-hover:text-sky-400">
                     {u.label}
                   </span>
                 </span>
-                <ArrowRight size={16} className="text-slate-400" />
+                <ArrowRight size={16} className="text-slate-400 dark:text-slate-500" />
               </Link>
             ))}
           </div>
@@ -310,35 +310,35 @@ export default function PremiumMedicinaPage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-cyan-100 px-3 py-1 text-sm font-semibold text-cyan-800">
+            <span className="inline-flex items-center gap-2 rounded-full bg-cyan-100 px-3 py-1 text-sm font-semibold text-cyan-800 dark:bg-cyan-500/15 dark:text-cyan-300">
               <Sparkles size={15} />
               Biblioteca Premium
             </span>
-            <h2 className="mt-4 text-3xl font-semibold text-slate-950 sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
               O acervo completo, organizado para você
             </h2>
-            <p className="mt-3 text-slate-600">
+            <p className="mt-3 text-slate-600 dark:text-slate-300">
               Milhares de materiais das melhores editoras, filtrados por
               universidade, vestibular, matéria e ano — sem perder tempo
               procurando.
             </p>
             <ul className="mt-6 space-y-3">
               {libraryFeatures.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-slate-700">
-                  <Check size={18} className="mt-0.5 shrink-0 text-emerald-600" />
+                <li key={f} className="flex items-start gap-2 text-slate-700 dark:text-slate-200">
+                  <Check size={18} className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                   {f}
                 </li>
               ))}
             </ul>
             <Link
               href={CHECKOUT_HREF}
-              className="mt-7 inline-flex items-center gap-2 rounded-lg bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="mt-7 inline-flex items-center gap-2 rounded-lg bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
               Desbloquear o acervo
               <ArrowRight size={16} />
             </Link>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-sky-50 to-cyan-50 p-8">
+          <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-sky-50 to-cyan-50 p-8 dark:border-slate-800 dark:from-sky-950/40 dark:to-cyan-950/40">
             <div className="grid grid-cols-2 gap-4">
               {[
                 { k: "Apostilas", v: "editoras top" },
@@ -348,10 +348,10 @@ export default function PremiumMedicinaPage() {
               ].map((item) => (
                 <div
                   key={item.k}
-                  className="rounded-xl border border-white bg-white/70 p-5 text-center shadow-sm"
+                  className="rounded-xl border border-white bg-white/70 p-5 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900/70"
                 >
-                  <p className="text-lg font-bold text-slate-950">{item.k}</p>
-                  <p className="mt-1 text-sm text-slate-600">{item.v}</p>
+                  <p className="text-lg font-bold text-slate-950 dark:text-white">{item.k}</p>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{item.v}</p>
                 </div>
               ))}
             </div>
@@ -419,10 +419,10 @@ export default function PremiumMedicinaPage() {
       {/* DEPOIMENTOS */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
-          <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl">
+          <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
             Quem estuda com o AcerteVest
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+          <p className="mx-auto mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
             A comunidade que estuda junto para passar junto.
           </p>
         </div>
@@ -430,10 +430,10 @@ export default function PremiumMedicinaPage() {
           {testimonials.map((t) => (
             <figure
               key={t.name}
-              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              className="flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
             >
               <Quote size={24} className="text-sky-300" />
-              <blockquote className="mt-3 flex-1 text-sm leading-6 text-slate-700">
+              <blockquote className="mt-3 flex-1 text-sm leading-6 text-slate-700 dark:text-slate-200">
                 {t.text}
               </blockquote>
               <figcaption className="mt-5 flex items-center gap-3">
@@ -441,10 +441,10 @@ export default function PremiumMedicinaPage() {
                   {t.name[0]}
                 </span>
                 <span>
-                  <span className="block text-sm font-semibold text-slate-950">
+                  <span className="block text-sm font-semibold text-slate-950 dark:text-white">
                     {t.name}
                   </span>
-                  <span className="block text-xs text-slate-500">{t.detail}</span>
+                  <span className="block text-xs text-slate-500 dark:text-slate-400">{t.detail}</span>
                 </span>
               </figcaption>
             </figure>
@@ -453,10 +453,10 @@ export default function PremiumMedicinaPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-slate-50 py-20">
+      <section className="bg-slate-50 py-20 dark:bg-slate-800/50">
         <div className="mx-auto max-w-3xl px-6">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl">
+            <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
               Perguntas frequentes
             </h2>
           </div>
@@ -464,15 +464,15 @@ export default function PremiumMedicinaPage() {
             {faqs.map((f) => (
               <details
                 key={f.q}
-                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm [&_summary::-webkit-details-marker]:hidden"
+                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm [&_summary::-webkit-details-marker]:hidden dark:border-slate-800 dark:bg-slate-900"
               >
-                <summary className="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-slate-950">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 text-base font-semibold text-slate-950 dark:text-white">
                   {f.q}
-                  <span className="text-sky-700 transition group-open:rotate-45">
+                  <span className="text-sky-700 transition group-open:rotate-45 dark:text-sky-400">
                     +
                   </span>
                 </summary>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{f.a}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{f.a}</p>
               </details>
             ))}
           </div>

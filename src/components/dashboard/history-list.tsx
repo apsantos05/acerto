@@ -53,24 +53,24 @@ export function HistoryList({ tasks: initialTasks, goals: initialGoals }: Histor
   return (
     <div className="space-y-8">
       {error ? (
-        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
+        <p className="rounded-lg bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300">{error}</p>
       ) : null}
 
       <section>
         <div className="flex items-center gap-2">
-          <BookOpen className="text-sky-700" />
-          <h2 className="text-xl font-semibold text-slate-950">Tarefas concluídas</h2>
+          <BookOpen className="text-sky-700 dark:text-sky-400" />
+          <h2 className="text-xl font-semibold text-slate-950 dark:text-white">Tarefas concluídas</h2>
         </div>
         <div className="mt-5 space-y-3">
           {tasks.length > 0 ? (
             tasks.map((task) => (
               <article
                 key={task.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm"
               >
                 <div className="min-w-0">
-                  <p className="font-semibold text-slate-950">{task.title}</p>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="font-semibold text-slate-950 dark:text-white">{task.title}</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {task.subject ? `${task.subject} · ` : ""}
                     {task.progress}% · concluída em {formatDate(task.completedAt)}
                   </p>
@@ -78,7 +78,7 @@ export function HistoryList({ tasks: initialTasks, goals: initialGoals }: Histor
                 <button
                   type="button"
                   onClick={() => restore("study_tasks", task.id)}
-                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
                   <RotateCcw size={15} />
                   Restaurar
@@ -86,7 +86,7 @@ export function HistoryList({ tasks: initialTasks, goals: initialGoals }: Histor
               </article>
             ))
           ) : (
-            <p className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-600">
+            <p className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-6 text-center text-sm text-slate-600 dark:text-slate-300">
               Nenhuma tarefa concluída ainda.
             </p>
           )}
@@ -95,26 +95,26 @@ export function HistoryList({ tasks: initialTasks, goals: initialGoals }: Histor
 
       <section>
         <div className="flex items-center gap-2">
-          <Target className="text-sky-700" />
-          <h2 className="text-xl font-semibold text-slate-950">Metas concluídas</h2>
+          <Target className="text-sky-700 dark:text-sky-400" />
+          <h2 className="text-xl font-semibold text-slate-950 dark:text-white">Metas concluídas</h2>
         </div>
         <div className="mt-5 space-y-3">
           {goals.length > 0 ? (
             goals.map((goal) => (
               <article
                 key={goal.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm"
               >
                 <div className="min-w-0">
-                  <p className="font-semibold text-slate-950">{goal.description}</p>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="font-semibold text-slate-950 dark:text-white">{goal.description}</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {goal.progress}% · concluída em {formatDate(goal.completedAt)}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => restore("weekly_goals", goal.id)}
-                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
                   <RotateCcw size={15} />
                   Restaurar
@@ -122,7 +122,7 @@ export function HistoryList({ tasks: initialTasks, goals: initialGoals }: Histor
               </article>
             ))
           ) : (
-            <p className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-600">
+            <p className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-6 text-center text-sm text-slate-600 dark:text-slate-300">
               Nenhuma meta concluída ainda.
             </p>
           )}

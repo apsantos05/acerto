@@ -103,7 +103,7 @@ export function CreatePost() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+      className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
       <div className="flex gap-4">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-sm font-semibold text-cyan-300">
@@ -116,19 +116,19 @@ export function CreatePost() {
             onChange={(event) => setContent(event.target.value)}
             rows={4}
             placeholder="Compartilhe uma dúvida, dica de estudo ou recomendação de material..."
-            className="w-full resize-none rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="w-full resize-none rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
 
           <div className="mt-4 grid gap-3 md:grid-cols-[1fr_0.8fr]">
             <label className="block">
-              <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-slate-500">
+              <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
                 <LinkIcon size={15} />
                 Material anexado
               </span>
               <select
                 value={materialId}
                 onChange={(event) => setMaterialId(event.target.value)}
-                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               >
                 <option value="">Nenhum material</option>
                 {materials.map((material) => (
@@ -140,7 +140,7 @@ export function CreatePost() {
             </label>
 
             <label className="block">
-              <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-slate-500">
+              <span className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
                 <Tags size={15} />
                 Tags
               </span>
@@ -148,23 +148,23 @@ export function CreatePost() {
                 value={tags}
                 onChange={(event) => setTags(event.target.value)}
                 placeholder="biologia, fuvest, revisão"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+                className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
               />
             </label>
           </div>
 
           {authError ? (
-            <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
               {authError}
             </p>
           ) : null}
           {error ? (
-            <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">
               {error}
             </p>
           ) : null}
           {success ? (
-            <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <p className="mt-4 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
               {success}
             </p>
           ) : null}
@@ -172,7 +172,7 @@ export function CreatePost() {
           <div className="mt-4 flex justify-end">
             <button
               disabled={isSubmitting || isLoading}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
               <SendHorizonal size={18} />
               {isSubmitting ? "Publicando..." : "Publicar"}

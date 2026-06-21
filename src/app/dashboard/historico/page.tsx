@@ -12,7 +12,7 @@ export default async function HistoricoPage() {
     <AppShell>
       <Link
         href="/dashboard"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 hover:text-sky-950"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 dark:text-sky-400 hover:text-sky-950 dark:hover:text-sky-300"
       >
         <ArrowLeft size={17} />
         Voltar para o dashboard

@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+/* Modo noturno por classe (.dark no <html>), não por preferência do SO.
+   Assim o toggle controla o tema e a escolha é persistida em localStorage. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #f7fbff;
   --foreground: #0f172a;
+}
+
+.dark {
+  --background: #0a0f1a;
+  --foreground: #e2e8f0;
 }
 
 @theme inline {
@@ -21,4 +30,13 @@ body {
 ::selection {
   background: #7dd3fc;
   color: #082f49;
+}
+
+/* Transição suave ao alternar tema (sem animar layout). */
+.dark,
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
 }

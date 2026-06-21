@@ -39,34 +39,34 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mt-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-950">Simulados</h2>
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">Simulados</h2>
           <Link
             href="/simulados"
-            className="text-sm font-semibold text-sky-700 hover:text-sky-900"
+            className="text-sm font-semibold text-sky-700 dark:text-sky-400 hover:text-sky-900 dark:hover:text-sky-300"
           >
             Ver simulados
           </Link>
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg bg-slate-50 p-4">
-            <p className="text-2xl font-semibold text-slate-950">
+          <div className="rounded-lg bg-slate-50 dark:bg-slate-800/50 p-4">
+            <p className="text-2xl font-semibold text-slate-950 dark:text-white">
               {simStats.attempts}
             </p>
-            <p className="mt-1 text-sm text-slate-500">Simulados feitos</p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Simulados feitos</p>
           </div>
-          <div className="rounded-lg bg-slate-50 p-4">
+          <div className="rounded-lg bg-slate-50 dark:bg-slate-800/50 p-4">
             <p className="text-2xl font-semibold text-emerald-600">
               {simStats.bestPercent}%
             </p>
-            <p className="mt-1 text-sm text-slate-500">Melhor pontuação</p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Melhor pontuação</p>
           </div>
-          <div className="rounded-lg bg-slate-50 p-4">
-            <p className="truncate text-sm font-semibold text-slate-950">
+          <div className="rounded-lg bg-slate-50 dark:bg-slate-800/50 p-4">
+            <p className="truncate text-sm font-semibold text-slate-950 dark:text-white">
               {simStats.last ? simStats.last.title : "—"}
             </p>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {simStats.last
                 ? `${simStats.last.score}/${simStats.last.total} no último`
                 : "Nenhum simulado realizado"}
@@ -76,12 +76,12 @@ export default async function DashboardPage() {
       </section>
 
       <div className="mt-8 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-slate-950">
+        <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
           Plano de estudos
         </h2>
         <Link
           href="/dashboard/historico"
-          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
         >
           <History size={16} />
           Ver histórico
@@ -93,10 +93,10 @@ export default async function DashboardPage() {
         <WeeklyGoalCard goal={goal} />
       </div>
 
-      <section className="mt-8 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="mt-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
         <div className="flex items-center gap-2">
-          <FileUp className="text-sky-700" />
-          <h2 className="text-xl font-semibold text-slate-950">
+          <FileUp className="text-sky-700 dark:text-sky-400" />
+          <h2 className="text-xl font-semibold text-slate-950 dark:text-white">
             Materiais recentes
           </h2>
         </div>
@@ -105,16 +105,16 @@ export default async function DashboardPage() {
             recentMaterials.map((material) => (
               <div
                 key={material.id}
-                className="rounded-lg border border-slate-100 bg-slate-50 p-4"
+                className="rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-4"
               >
-                <p className="font-semibold text-slate-950">{material.title}</p>
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="font-semibold text-slate-950 dark:text-white">{material.title}</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                   {material.materialType} · {material.subject}
                 </p>
               </div>
             ))
           ) : (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Nenhum material aprovado ainda.
             </p>
           )}

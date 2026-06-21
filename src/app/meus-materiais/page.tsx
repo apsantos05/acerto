@@ -18,7 +18,7 @@ export default async function MeusMateriaisPage() {
         />
         <Link
           href="/biblioteca/enviar"
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 dark:bg-white px-4 py-3 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200"
         >
           <Plus size={18} />
           Enviar material
@@ -26,7 +26,7 @@ export default async function MeusMateriaisPage() {
       </div>
 
       {error ? (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+        <div className="rounded-xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-800 dark:text-amber-300">
           {error}
         </div>
       ) : null}
@@ -36,22 +36,22 @@ export default async function MeusMateriaisPage() {
           {materials.map((material) => (
             <article
               key={material.id}
-              className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+              className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm"
             >
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <div>
                   <MaterialStatusBadge status={material.status} />
-                  <h2 className="mt-3 text-xl font-semibold text-slate-950">
+                  <h2 className="mt-3 text-xl font-semibold text-slate-950 dark:text-white">
                     {material.title}
                   </h2>
-                  <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                  <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 dark:text-slate-300">
                     {material.description}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Link
                     href={`/biblioteca/${material.id}`}
-                    className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                    className="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                   >
                     Ver detalhe
                   </Link>
@@ -60,7 +60,7 @@ export default async function MeusMateriaisPage() {
                       href={material.externalUrl ?? material.fileUrl ?? "#"}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                      className="inline-flex items-center justify-center rounded-lg bg-slate-950 dark:bg-white px-4 py-2 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200"
                     >
                       Abrir
                     </a>
@@ -68,25 +68,25 @@ export default async function MeusMateriaisPage() {
                 </div>
               </div>
 
-              <div className="mt-5 grid gap-3 border-t border-slate-100 pt-4 text-sm text-slate-600 md:grid-cols-4">
+              <div className="mt-5 grid gap-3 border-t border-slate-100 dark:border-slate-800 pt-4 text-sm text-slate-600 dark:text-slate-300 md:grid-cols-4">
                 <span className="inline-flex items-center gap-2">
-                  <FileText size={16} className="text-sky-700" />
+                  <FileText size={16} className="text-sky-700 dark:text-sky-400" />
                   {material.materialType}
                 </span>
                 <span className="inline-flex items-center gap-2">
                   {material.uploadKind === "link" ? (
-                    <LinkIcon size={16} className="text-sky-700" />
+                    <LinkIcon size={16} className="text-sky-700 dark:text-sky-400" />
                   ) : (
-                    <FileText size={16} className="text-sky-700" />
+                    <FileText size={16} className="text-sky-700 dark:text-sky-400" />
                   )}
                   {material.uploadKind === "link" ? "Link externo" : "Arquivo"}
                 </span>
                 <span className="inline-flex items-center gap-2">
-                  <CalendarDays size={16} className="text-sky-700" />
+                  <CalendarDays size={16} className="text-sky-700 dark:text-sky-400" />
                   {material.year} · {material.subject}
                 </span>
                 <span className="inline-flex items-center gap-2">
-                  <Eye size={16} className="text-sky-700" />
+                  <Eye size={16} className="text-sky-700 dark:text-sky-400" />
                   {material.viewsCount.toLocaleString("pt-BR")} visualizações
                 </span>
               </div>
@@ -96,7 +96,7 @@ export default async function MeusMateriaisPage() {
                   {material.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
+                      className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300"
                     >
                       {tag}
                     </span>
@@ -107,17 +107,17 @@ export default async function MeusMateriaisPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
-          <h2 className="text-lg font-semibold text-slate-950">
+        <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 text-center">
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
             Nenhum material enviado
           </h2>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
             Quando você enviar um material, ele aparecerá aqui como pendente de
             aprovação.
           </p>
           <Link
             href="/biblioteca/enviar"
-            className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white"
+            className="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 dark:bg-white px-4 py-3 text-sm font-semibold text-white dark:text-slate-950"
           >
             <Plus size={18} />
             Enviar material

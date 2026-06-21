@@ -144,7 +144,8 @@ archived_at. RLS own-only.
 14. `study_planner.sql` → 15. `study_history.sql` → 16. `simulados.sql` →
 17. `simulado_timer.sql` → 18. `profile_revamp.sql` →
 19. **`materials_ingest_fixed.sql`** → 20. **`materials_ai_fixed.sql`** →
-21. **`plans_fixed.sql`** → 22. **`admin_material_edit.sql`**.
+21. **`plans_fixed.sql`** → 22. **`admin_material_edit.sql`** →
+23. **`plan_gating.sql`** (limite de simulados na RPC + trigger de favoritos).
 Seeds: `seed_materials.sql`, `seed_feed.sql`, `seed_simulados.sql`.
 Auditoria documentada em `supabase/database_audit.md`.
 
@@ -170,10 +171,25 @@ matéria, estatísticas avançadas, sem anúncios.
 Tudo do Premium + trilhas por universidade, simulados oficiais por banca, correção
 de redação, cronograma personalizado, prioridade nos materiais da universidade-alvo.
 
-> ⚠️ **Gating ainda NÃO implementado** no código (era a próxima tarefa, ver abaixo).
-> Hoje a estrutura existe (`plan`, `is_premium`, badge, página /planos), mas os
-> limites (2 simulados/mês, 20 favoritos, bloqueio de acervo) ainda **não** são
-> aplicados. **Checkout/pagamento não existe** — CTAs levam a `/cadastro?plano=...`.
+### Gating por plano (IMPLEMENTADO)
+Helpers server-side em **`src/lib/gating.ts`**: `getViewer()`, `isPremium()`,
+`isPremiumMed()`, `canAccessMaterial()`, `canTakeSimulado()`, `canFavoriteMaterial()`
+(+ `viewerIsPremium`, `isPremiumMaterial`, `simuladosUsedThisMonth`, `favoritesUsed`).
+- **Admin tem acesso total** (role==='admin' conta como premium em todos os helpers).
+- **Limites Free:** 2 simulados/mês (`FREE_SIMULADOS_PER_MONTH`), 20 favoritos
+  (`FREE_FAVORITES_LIMIT`).
+- **Material premium** = apostilas / materiais com editora (`isPremiumMaterial`);
+  provas e gabaritos seguem livres. A biblioteca continua **pública (SEO)**: o
+  metadado fica visível; bloqueia-se o ACESSO ao arquivo (prévia + modal de upgrade).
+- **Reforço REAL no banco** (`supabase/plan_gating.sql`, não burlável pelo client):
+  `plan_has_premium()` + `start_simulado` com limite mensal + trigger
+  `enforce_favorites_limit` em `saved_materials`.
+- **UI:** `src/components/plan/upgrade-modal.tsx` (`UpgradeModal` + `UpgradeButton`)
+  — botão leva a `/planos`. Integrado em material-detail (locked), save-material-button
+  (limite 20) e simulado-runner (limite 2/mês, `canStart`).
+
+> ⚠️ **Checkout/pagamento ainda não existe** — CTAs levam a `/cadastro?plano=...`.
+> Falta o webhook que seta `plan`/`premium_until` (Stripe/Mercado Pago).
 
 ---
 
@@ -301,6 +317,23 @@ Telegram via `CURATED_PATH`/`CACHE_DIR`.
 
 ---
 
+## Modo Noturno (IMPLEMENTADO)
+
+- **Tailwind v4 por classe:** `@custom-variant dark` em `globals.css` + variáveis
+  `--background`/`--foreground` para `:root` e `.dark`. A classe `.dark` fica no `<html>`.
+- **Sem flash:** script inline em `layout.tsx` aplica `.dark` antes da 1ª pintura
+  (lê `localStorage['acerte-theme']`, com fallback para `prefers-color-scheme`).
+  `<html suppressHydrationWarning>`.
+- **Estado:** `src/components/theme/theme-provider.tsx` usa `useSyncExternalStore`
+  (fonte da verdade = classe no `<html>`, sem `setState` em efeito — exigência do
+  lint `react-hooks/set-state-in-effect`). Toggle em `theme-toggle.tsx` (Sun/Moon),
+  presente na navbar (desktop e mobile). Preferência salva em `localStorage`.
+- **Cobertura:** navbar, app-shell, biblioteca, simulados, dashboard, admin, planos,
+  perfil, feed, ranking, catálogo, auth e UI primitives receberam variantes `dark:`.
+  Convenção de paleta: superfícies `bg-white→dark:bg-slate-900`, bordas
+  `slate-200→slate-800`, texto `slate-600→slate-300` / `slate-950→white`, botão
+  primário `slate-950/white→white/slate-950`, acentos `-500/15` (fundo) e `-300` (texto).
+
 ## Feed Social
 
 - `/feed` (requer auth). Posts com avatar/nome/@username clicáveis, **curtir**,
@@ -366,18 +399,14 @@ Telegram via `CURATED_PATH`/`CACHE_DIR`.
 ## Próximas Tarefas
 
 **Prioridade Alta:**
-- **Modo noturno** (toggle claro/escuro, salvar preferência, temar navbar/cards/
-  biblioteca/admin/planos/dashboard sem quebrar o design).
-- **Regras automáticas por plano (gating)** — pedido detalhado pendente:
-  - Ler `profiles.plan` (free/premium/premium_med).
-  - Free: 2 simulados/mês, 20 favoritos. Premium: ilimitado + acervo completo.
-    Premium Medicina: + trilhas/recursos de medicina.
-  - **Modal de upgrade** ao tentar recurso premium → botão para `/planos`; mostrar
-    prévia, bloquear acesso completo.
-  - **Helpers no servidor** (não só front): `isPremium()`, `isPremiumMed()`,
-    `canAccessMaterial()`, `canTakeSimulado()`, `canFavoriteMaterial()`.
-  - **Admin tem acesso total** independente do plano.
-- Integração de pagamento (checkout + webhook).
+- ✅ **Modo noturno** — IMPLEMENTADO (ver seção "Modo Noturno").
+- ✅ **Gating por plano** — IMPLEMENTADO (ver "Sistema de Planos"). Pré-requisito
+  para o usuário rodar no banco: **`supabase/plan_gating.sql`**.
+- **Integração de pagamento (checkout + webhook)** — agora é o próximo passo de
+  monetização: webhook seta `plan`/`premium_until`; o gating já está pronto para
+  refletir a mudança. Premium Medicina ainda precisa dos recursos exclusivos
+  (trilhas por universidade, simulados oficiais por banca, correção de redação,
+  cronograma) — hoje `isPremiumMed()` existe mas não há features exclusivas ligadas.
 - OCR avançado / melhorias de SEO.
 
 **Prioridade Média:** app mobile, IA de recomendação, cronograma inteligente,

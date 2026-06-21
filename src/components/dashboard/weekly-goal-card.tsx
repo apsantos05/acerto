@@ -103,7 +103,7 @@ export function WeeklyGoalCard({ goal: initialGoal }: WeeklyGoalCardProps) {
 
   if (!goal) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
+      <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-950 p-6 text-white shadow-sm">
         <Target className="text-cyan-300" />
         <h2 className="mt-5 text-xl font-semibold">Meta atual</h2>
         <p className="mt-2 text-slate-300">
@@ -132,7 +132,7 @@ export function WeeklyGoalCard({ goal: initialGoal }: WeeklyGoalCardProps) {
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-slate-950 p-6 text-white shadow-sm">
+    <section className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-950 p-6 text-white shadow-sm">
       <Target className="text-cyan-300" />
       <h2 className="mt-5 text-xl font-semibold">Meta atual</h2>
       <p className="mt-2 text-slate-300">{goal.description}</p>

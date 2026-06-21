@@ -18,17 +18,17 @@ export default async function ConfiguracoesPerfilPage() {
       {profile ? (
         <EditProfileForm profile={profile} />
       ) : (
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-950">
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <h2 className="text-xl font-semibold text-slate-950 dark:text-white">
             Perfil indisponível
           </h2>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
             Não foi possível carregar seu perfil. Entre novamente ou confira a
             configuração do Supabase.
           </p>
           <Link
             href="/login"
-            className="mt-5 inline-flex rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white"
+            className="mt-5 inline-flex rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
           >
             Entrar
           </Link>

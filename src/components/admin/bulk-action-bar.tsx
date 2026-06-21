@@ -24,7 +24,7 @@ const STATUS_OPTIONS = [
 ];
 
 const controlClass =
-  "rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100";
+  "rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500";
 
 export function BulkActionBar({
   count,
@@ -51,20 +51,20 @@ export function BulkActionBar({
           : [];
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 shadow-[0_-4px_16px_rgba(15,23,42,0.08)] backdrop-blur">
+    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 shadow-[0_-4px_16px_rgba(15,23,42,0.08)] backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-6 py-3">
-        <span className="text-sm font-semibold text-slate-900">
+        <span className="text-sm font-semibold text-slate-900 dark:text-white">
           {count} selecionado{count === 1 ? "" : "s"}
         </span>
         <button
           type="button"
           onClick={onClear}
-          className="text-sm font-medium text-slate-500 transition hover:text-slate-800"
+          className="text-sm font-medium text-slate-500 transition hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100"
         >
           Limpar
         </button>
 
-        <span className="hidden h-6 w-px bg-slate-200 sm:block" />
+        <span className="hidden h-6 w-px bg-slate-200 sm:block dark:bg-slate-800" />
 
         <button
           type="button"
@@ -79,13 +79,13 @@ export function BulkActionBar({
           type="button"
           onClick={onReject}
           disabled={working}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:opacity-60 dark:border-red-500/30 dark:text-red-300 dark:hover:bg-red-500/10"
         >
           <X size={16} />
           Rejeitar
         </button>
 
-        <span className="hidden h-6 w-px bg-slate-200 sm:block" />
+        <span className="hidden h-6 w-px bg-slate-200 sm:block dark:bg-slate-800" />
 
         {/* Alterar campo em massa */}
         <select
@@ -139,12 +139,12 @@ export function BulkActionBar({
           type="button"
           disabled={working || !value.trim()}
           onClick={() => onApplyField(field, value.trim())}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-slate-950 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-slate-950 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           Aplicar
         </button>
 
-        <span className="hidden h-6 w-px bg-slate-200 sm:block" />
+        <span className="hidden h-6 w-px bg-slate-200 sm:block dark:bg-slate-800" />
 
         {confirmDelete ? (
           <span className="inline-flex items-center gap-2">
@@ -160,7 +160,7 @@ export function BulkActionBar({
             <button
               type="button"
               onClick={() => setConfirmDelete(false)}
-              className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               Cancelar
             </button>
@@ -170,7 +170,7 @@ export function BulkActionBar({
             type="button"
             onClick={() => setConfirmDelete(true)}
             disabled={working}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:opacity-60 dark:border-slate-800 dark:text-slate-300 dark:hover:border-red-500/30 dark:hover:bg-red-500/10 dark:hover:text-red-300"
           >
             <Trash2 size={16} />
             Excluir
@@ -178,7 +178,7 @@ export function BulkActionBar({
         )}
 
         {working ? (
-          <Loader2 size={18} className="animate-spin text-slate-500" />
+          <Loader2 size={18} className="animate-spin text-slate-500 dark:text-slate-400" />
         ) : null}
       </div>
     </div>

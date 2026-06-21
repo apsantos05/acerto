@@ -26,10 +26,10 @@ export function PublicProfile({ data }: PublicProfileProps) {
 
   return (
     <div>
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         {/* Capa: imagem do usuário ou gradiente de fallback. A foto fica numa
             camada acima (z-10), então a capa nunca a cobre. */}
-        <div className="relative h-32 bg-slate-100 sm:h-44 lg:h-52">
+        <div className="relative h-32 bg-slate-100 sm:h-44 lg:h-52 dark:bg-slate-800">
           {profile.coverUrl ? (
             <div
               className="absolute inset-0 bg-cover bg-center"
@@ -56,7 +56,7 @@ export function PublicProfile({ data }: PublicProfileProps) {
             {data.isCurrentUser ? (
               <Link
                 href="/configuracoes/perfil"
-                className="mb-1 inline-flex w-fit shrink-0 items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="mb-1 inline-flex w-fit shrink-0 items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 <PencilLine size={16} />
                 <span className="hidden sm:inline">Editar perfil</span>
@@ -67,39 +67,39 @@ export function PublicProfile({ data }: PublicProfileProps) {
 
           {/* Identidade: nome, e logo abaixo o @username + badge do plano */}
           <div className="mt-3 sm:mt-4">
-            <h1 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+            <h1 className="text-2xl font-semibold text-slate-950 sm:text-3xl dark:text-white">
               {profile.fullName}
             </h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-2">
-              <p className="text-sm font-medium text-slate-500">
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                 @{profile.username}
               </p>
               <PlanBadge plan={profile.plan} size="md" showFree />
             </div>
           </div>
 
-          <p className="mt-4 max-w-3xl leading-7 text-slate-600">
+          <p className="mt-4 max-w-3xl leading-7 text-slate-600 dark:text-slate-300">
             {profile.bio}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-3 text-sm text-slate-600">
-            <span className="inline-flex items-center gap-2 rounded-full bg-cyan-100 px-3 py-1 font-semibold text-cyan-800">
+          <div className="mt-5 flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-300">
+            <span className="inline-flex items-center gap-2 rounded-full bg-cyan-100 px-3 py-1 font-semibold text-cyan-800 dark:bg-cyan-500/15 dark:text-cyan-300">
               <Stethoscope size={16} />
               Objetivo: {profile.objective}
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">
+            <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
               <Building2 size={16} />
               {profile.dreamFaculty}
             </span>
             {profile.streakDays > 0 ? (
-              <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 font-semibold text-orange-700">
+              <span className="inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 font-semibold text-orange-700 dark:bg-orange-500/15 dark:text-orange-300">
                 <Flame size={16} />
                 {profile.streakDays}{" "}
                 {profile.streakDays === 1 ? "dia de sequência" : "dias de sequência"}
               </span>
             ) : null}
             {location ? (
-              <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700">
+              <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                 <MapPin size={16} />
                 {location}
               </span>
@@ -111,7 +111,7 @@ export function PublicProfile({ data }: PublicProfileProps) {
               {profile.targetExams.map((exam) => (
                 <span
                   key={exam}
-                  className="rounded-full border border-slate-200 px-3 py-1 text-sm font-semibold text-slate-700"
+                  className="rounded-full border border-slate-200 px-3 py-1 text-sm font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-200"
                 >
                   {exam}
                 </span>
@@ -181,10 +181,10 @@ function ProfileStat({
   value: string;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <Icon size={20} className="text-sky-700" />
-      <p className="mt-3 text-2xl font-semibold text-slate-950">{value}</p>
-      <p className="mt-1 text-sm font-medium text-slate-500">{label}</p>
+    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <Icon size={20} className="text-sky-700 dark:text-sky-400" />
+      <p className="mt-3 text-2xl font-semibold text-slate-950 dark:text-white">{value}</p>
+      <p className="mt-1 text-sm font-medium text-slate-500 dark:text-slate-400">{label}</p>
     </div>
   );
 }

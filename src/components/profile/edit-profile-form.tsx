@@ -232,15 +232,15 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
     >
-      <h2 className="text-xl font-semibold text-slate-950">Dados públicos</h2>
-      <p className="mt-1 text-sm leading-6 text-slate-600">
+      <h2 className="text-xl font-semibold text-slate-950 dark:text-white">Dados públicos</h2>
+      <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
         Essas informações aparecem em `/perfil/{username || "username"}`.
       </p>
 
       {/* Preview do cabeçalho: capa + avatar sobreposto, como no perfil público */}
-      <div className="mt-5 overflow-hidden rounded-xl border border-slate-200">
+      <div className="mt-5 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
         <div className="relative h-28 sm:h-32">
           {coverUrl ? (
             <div
@@ -262,7 +262,7 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
             type="button"
             onClick={() => coverInputRef.current?.click()}
             disabled={isUploadingCover}
-            className="absolute right-3 top-3 inline-flex items-center gap-2 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-70"
+            className="absolute right-3 top-3 inline-flex items-center gap-2 rounded-lg bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-70 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-900"
           >
             <ImagePlus size={14} />
             {isUploadingCover ? "Enviando..." : "Enviar capa"}
@@ -287,124 +287,124 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
           type="button"
           onClick={() => avatarInputRef.current?.click()}
           disabled={isUploadingAvatar}
-          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           <UploadCloud size={16} />
           {isUploadingAvatar ? "Enviando..." : "Enviar foto"}
         </button>
-        <span className="text-xs text-slate-500">JPG, PNG ou WebP até 5 MB</span>
+        <span className="text-xs text-slate-500 dark:text-slate-400">JPG, PNG ou WebP até 5 MB</span>
       </div>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Nome</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Nome</span>
           <input
             value={fullName}
             onChange={(event) => setFullName(event.target.value)}
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Username</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Username</span>
           <input
             value={username}
             onChange={(event) => setUsername(event.target.value)}
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
             URL da foto (opcional)
           </span>
           <input
             value={avatarUrl}
             onChange={(event) => setAvatarUrl(event.target.value)}
             placeholder="https://... ou use o botão Enviar foto"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-700">Bio</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Bio</span>
           <textarea
             value={bio}
             onChange={(event) => setBio(event.target.value)}
             rows={4}
-            className="mt-2 w-full resize-none rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full resize-none rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
             Objetivo
           </span>
           <input
             value="Medicina"
             disabled
-            className="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-slate-500"
+            className="mt-2 w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-slate-500 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
             Faculdade dos sonhos
           </span>
           <input
             value={dreamFaculty}
             onChange={(event) => setDreamFaculty(event.target.value)}
             placeholder="USP, Unicamp, UFMG..."
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
             Vestibulares que está prestando
           </span>
           <input
             value={targetExams}
             onChange={(event) => setTargetExams(event.target.value)}
             placeholder="Fuvest, ENEM, Unicamp"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Cidade</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Cidade</span>
           <input
             value={city}
             onChange={(event) => setCity(event.target.value)}
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Estado</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Estado</span>
           <input
             value={state}
             onChange={(event) => setState(event.target.value)}
             maxLength={2}
             placeholder="SP"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
           />
         </label>
       </div>
 
-      <p className="mt-5 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600">
+      <p className="mt-5 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:bg-slate-800/50 dark:text-slate-300">
         Suas conquistas e badges são concedidos automaticamente conforme sua
         participação no Acerte — materiais, posts, simulados, reputação e
         sequência de estudos.
       </p>
 
       {error ? (
-        <p className="mt-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="mt-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">
           {error}
         </p>
       ) : null}
       {success ? (
-        <p className="mt-5 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+        <p className="mt-5 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
           {success}
         </p>
       ) : null}
@@ -412,13 +412,13 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href={`/perfil/${username || profile.username}`}
-          className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           Ver perfil público
         </Link>
         <button
           disabled={isSubmitting || isUploadingAvatar}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
         >
           <Save size={18} />
           {isSubmitting ? "Salvando..." : "Salvar perfil"}

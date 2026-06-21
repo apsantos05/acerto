@@ -26,7 +26,7 @@ const priorityOptions = ["normal", "alta"];
 const statusOptions: AdminMaterialStatus[] = ["pending", "approved", "rejected"];
 
 const inputClass =
-  "mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100";
+  "mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500";
 
 export function MaterialEditModal({
   material,
@@ -148,17 +148,17 @@ export function MaterialEditModal({
       onClick={onClose}
     >
       <div
-        className="flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl"
+        className="flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl dark:bg-slate-900"
         onClick={(event) => event.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <h2 className="text-lg font-semibold text-slate-950">Editar material</h2>
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">Editar material</h2>
           <button
             type="button"
             onClick={onClose}
             disabled={busy}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 disabled:opacity-60"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 disabled:opacity-60 dark:text-slate-400 dark:hover:bg-slate-800"
             aria-label="Fechar"
           >
             <X size={20} />
@@ -168,39 +168,39 @@ export function MaterialEditModal({
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-6 py-5">
           {/* Preview do arquivo (não altera o arquivo físico) */}
-          <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-              <FileText size={16} className="text-sky-700" />
+          <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
+            <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+              <FileText size={16} className="text-sky-700 dark:text-sky-400" />
               {fileName}
             </div>
             {fileHref ? (
               <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <span className="truncate text-xs text-slate-500" title={fileHref}>
+                <span className="truncate text-xs text-slate-500 dark:text-slate-400" title={fileHref}>
                   {fileHref}
                 </span>
                 <a
                   href={fileHref}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-sky-800 transition hover:bg-sky-50"
+                  className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-sky-800 transition hover:bg-sky-50 dark:border-slate-700 dark:bg-slate-900 dark:text-sky-400 dark:hover:bg-sky-500/15"
                 >
                   <ExternalLink size={14} />
                   Abrir PDF
                 </a>
               </div>
             ) : (
-              <p className="mt-1 text-xs text-slate-500">Sem arquivo vinculado.</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Sem arquivo vinculado.</p>
             )}
           </div>
 
           <div className="grid gap-4">
             <label className="block">
-              <span className="text-sm font-medium text-slate-700">Título</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Título</span>
               <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputClass} />
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium text-slate-700">Descrição</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Descrição</span>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -210,7 +210,7 @@ export function MaterialEditModal({
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium text-slate-700">Resumo (IA)</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Resumo (IA)</span>
               <textarea
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
@@ -242,7 +242,7 @@ export function MaterialEditModal({
                 placeholder="Buscar vestibular"
               />
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Tipo</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Tipo</span>
                 <select
                   value={materialType}
                   onChange={(e) => setMaterialType(e.target.value)}
@@ -261,7 +261,7 @@ export function MaterialEditModal({
               </label>
 
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Dificuldade</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Dificuldade</span>
                 <select
                   value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value)}
@@ -276,7 +276,7 @@ export function MaterialEditModal({
               </label>
 
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Prioridade</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Prioridade</span>
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
@@ -291,12 +291,12 @@ export function MaterialEditModal({
               </label>
 
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Editora</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Editora</span>
                 <input value={editora} onChange={(e) => setEditora(e.target.value)} className={inputClass} />
               </label>
 
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Ano</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Ano</span>
                 <input
                   type="number"
                   value={year}
@@ -306,7 +306,7 @@ export function MaterialEditModal({
               </label>
 
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Status</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Status</span>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as AdminMaterialStatus)}
@@ -322,26 +322,26 @@ export function MaterialEditModal({
             </div>
 
             <label className="block">
-              <span className="text-sm font-medium text-slate-700">
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                 Palavras-chave (separadas por vírgula)
               </span>
               <input value={keywords} onChange={(e) => setKeywords(e.target.value)} className={inputClass} />
             </label>
 
             <label className="block">
-              <span className="text-sm font-medium text-slate-700">Slug</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Slug</span>
               <input value={slug} onChange={(e) => setSlug(e.target.value)} className={inputClass} />
             </label>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="flex flex-col gap-2 border-t border-slate-200 px-6 py-4 sm:flex-row sm:justify-end">
+        <div className="flex flex-col gap-2 border-t border-slate-200 px-6 py-4 sm:flex-row sm:justify-end dark:border-slate-800">
           <button
             type="button"
             onClick={onClose}
             disabled={busy}
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+            className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-60 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             Cancelar
           </button>
@@ -349,7 +349,7 @@ export function MaterialEditModal({
             type="button"
             onClick={() => save(false)}
             disabled={busy}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 disabled:opacity-60"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 disabled:opacity-60 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
           >
             {saving === "save" ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
             Salvar

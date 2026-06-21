@@ -16,40 +16,40 @@ import { materials, stats } from "@/lib/mock-data";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f7fbff]">
+    <main className="min-h-screen bg-[#f7fbff] dark:bg-slate-950">
       <Navbar />
 
       <section className="mx-auto grid w-full max-w-7xl gap-12 px-6 pb-16 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:pb-24 lg:pt-20">
         <div className="flex flex-col justify-center">
-          <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-medium text-sky-800 shadow-sm">
+          <div className="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-medium text-sky-800 shadow-sm dark:border-sky-500/30 dark:bg-slate-900 dark:text-sky-400">
             <Sparkles size={16} />
             Comunidade focada em Medicina
           </div>
-          <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-slate-950 sm:text-5xl lg:text-6xl">
+          <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
             Acerte sua preparação com materiais de quem está na mesma jornada.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
             Uma plataforma para vestibulandos organizarem provas, simulados,
             resumos, rankings e discussões em um único lugar.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/cadastro"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
               Começar agora
               <ArrowRight size={18} />
             </Link>
             <Link
               href="/biblioteca"
-              className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-sky-300 hover:text-sky-800"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-sky-300 hover:text-sky-800 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:hover:border-sky-500/40 dark:hover:text-sky-400"
             >
               Ver biblioteca
             </Link>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-sky-950/10">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xl shadow-sky-950/10 dark:border-slate-800 dark:bg-slate-900">
           <div className="rounded-xl bg-slate-950 p-5 text-white">
             <div className="flex items-center justify-between">
               <div>
@@ -71,20 +71,20 @@ export default function Home() {
             {materials.slice(0, 3).map((material) => (
               <div
                 key={material.title}
-                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4"
+                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50"
               >
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-cyan-100 p-2 text-cyan-800">
+                  <div className="rounded-lg bg-cyan-100 p-2 text-cyan-800 dark:bg-cyan-500/15 dark:text-cyan-300">
                     <FileText size={18} />
                   </div>
                   <div>
-                    <p className="font-medium text-slate-950">
+                    <p className="font-medium text-slate-950 dark:text-white">
                       {material.title}
                     </p>
-                    <p className="text-sm text-slate-500">{material.subject}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{material.subject}</p>
                   </div>
                 </div>
-                <span className="text-sm font-semibold text-emerald-600">
+                <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                   {material.score}
                 </span>
               </div>
@@ -93,7 +93,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white">
+      <section className="border-y border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto grid max-w-7xl gap-4 px-6 py-8 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
           {stats.map((stat) => (
             <StatCard key={stat.label} label={stat.label} value={stat.value} />
@@ -103,10 +103,10 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase text-sky-700">
+          <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-400">
             Tudo no mesmo fluxo
           </p>
-          <h2 className="mt-3 text-3xl font-semibold text-slate-950">
+          <h2 className="mt-3 text-3xl font-semibold text-slate-950 dark:text-white">
             Estudo colaborativo, organizado e mensurável.
           </h2>
         </div>

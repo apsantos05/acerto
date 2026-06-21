@@ -20,36 +20,36 @@ export default async function SimuladosPage() {
           {simulados.map((sim) => (
             <article
               key={sim.id}
-              className="flex h-full flex-col justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-sky-200 hover:shadow-md"
+              className="flex h-full flex-col justify-between rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition hover:border-sky-200 hover:shadow-md"
             >
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-800">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-cyan-100 px-3 py-1 text-xs font-semibold text-cyan-800 dark:bg-cyan-500/15 dark:text-cyan-300">
                     <GraduationCap size={14} />
                     {sim.vestibular}
                   </span>
-                  <span className="text-xs font-semibold text-slate-500">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
                     {sim.faculty}
                   </span>
                 </div>
-                <h2 className="mt-3 text-lg font-semibold text-slate-950">
+                <h2 className="mt-3 text-lg font-semibold text-slate-950 dark:text-white">
                   {sim.title}
                 </h2>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
                   {sim.description}
                 </p>
 
-                <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-600">
+                <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
                   <span className="inline-flex items-center gap-2">
-                    <FileQuestion size={16} className="text-sky-700" />
+                    <FileQuestion size={16} className="text-sky-700 dark:text-sky-400" />
                     {sim.questionCount} questões
                   </span>
                   <span className="inline-flex items-center gap-2">
-                    <Clock size={16} className="text-sky-700" />
+                    <Clock size={16} className="text-sky-700 dark:text-sky-400" />
                     {sim.durationMinutes} min
                   </span>
                   <span className="inline-flex items-center gap-2">
-                    <Gauge size={16} className="text-sky-700" />
+                    <Gauge size={16} className="text-sky-700 dark:text-sky-400" />
                     {sim.difficulty}
                   </span>
                 </div>
@@ -59,7 +59,7 @@ export default async function SimuladosPage() {
                     {sim.subjects.map((s) => (
                       <span
                         key={s}
-                        className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
+                        className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-600 dark:text-slate-300"
                       >
                         {s}
                       </span>
@@ -70,7 +70,7 @@ export default async function SimuladosPage() {
 
               <Link
                 href={`/simulados/${sim.id}`}
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 dark:bg-white px-4 py-3 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200"
               >
                 <Play size={16} />
                 Começar simulado
@@ -79,7 +79,7 @@ export default async function SimuladosPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600">
+        <div className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 text-center text-slate-600 dark:text-slate-300">
           Nenhum simulado publicado ainda.
         </div>
       )}

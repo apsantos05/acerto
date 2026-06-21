@@ -112,14 +112,14 @@ export function LikeMaterialButton({
         disabled={isSubmitting || isLoading}
         className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-70 ${
           isLiked
-            ? "bg-red-50 text-red-700 hover:bg-red-100"
-            : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+            ? "bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-500/20"
+            : "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
         }`}
       >
         <Heart size={17} fill={isLiked ? "currentColor" : "none"} />
         {isSubmitting ? "Curtindo..." : isLiked ? "Curtido" : "Curtir"}
       </button>
-      {error ? <span className="text-xs text-red-600">{error}</span> : null}
+      {error ? <span className="text-xs text-red-600 dark:text-red-400">{error}</span> : null}
     </div>
   );
 }

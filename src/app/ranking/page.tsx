@@ -31,16 +31,16 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
         description="Acompanhe quem mais contribui com materiais, posts, comentários e ajuda prática para a comunidade."
       />
 
-      <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-950">
+      <section className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
           Como os pontos são calculados
         </h2>
-        <div className="mt-4 grid gap-3 text-sm text-slate-600 md:grid-cols-5">
-          <p className="rounded-lg bg-slate-50 p-3">Material aprovado: +20</p>
-          <p className="rounded-lg bg-slate-50 p-3">Curtida em material: +2</p>
-          <p className="rounded-lg bg-slate-50 p-3">Salvamento recebido: +5</p>
-          <p className="rounded-lg bg-slate-50 p-3">Comentário ajudando: +3</p>
-          <p className="rounded-lg bg-slate-50 p-3">Post publicado: +5</p>
+        <div className="mt-4 grid gap-3 text-sm text-slate-600 md:grid-cols-5 dark:text-slate-300">
+          <p className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800/50">Material aprovado: +20</p>
+          <p className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800/50">Curtida em material: +2</p>
+          <p className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800/50">Salvamento recebido: +5</p>
+          <p className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800/50">Comentário ajudando: +3</p>
+          <p className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800/50">Post publicado: +5</p>
         </div>
       </section>
 

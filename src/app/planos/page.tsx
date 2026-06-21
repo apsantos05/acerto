@@ -84,13 +84,13 @@ export default function PlanosPage() {
   return (
     <AppShell>
       <div className="text-center">
-        <p className="text-sm font-semibold uppercase tracking-wide text-sky-700">
+        <p className="text-sm font-semibold uppercase tracking-wide text-sky-700 dark:text-sky-400">
           Planos
         </p>
-        <h1 className="mt-2 text-3xl font-semibold text-slate-950 sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
           Estude de graça. Passe mais rápido no Premium.
         </h1>
-        <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-600">
+        <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-600 dark:text-slate-300">
           Comece sem pagar nada. Quando quiser acelerar, o Premium Medicina te dá
           o acervo completo, simulados oficiais e correção de redação focados na
           sua universidade.
@@ -103,35 +103,35 @@ export default function PlanosPage() {
           return (
             <div
               key={plan.id}
-              className={`flex flex-col rounded-2xl border bg-white p-6 shadow-sm ${
+              className={`flex flex-col rounded-2xl border bg-white p-6 shadow-sm dark:bg-slate-900 ${
                 plan.highlight
-                  ? "border-sky-300 ring-2 ring-sky-200"
-                  : "border-slate-200"
+                  ? "border-sky-300 ring-2 ring-sky-200 dark:ring-sky-500/30"
+                  : "border-slate-200 dark:border-slate-800"
               }`}
             >
               {plan.highlight ? (
-                <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800">
+                <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800 dark:bg-sky-500/15 dark:text-sky-300">
                   Mais popular
                 </span>
               ) : null}
-              <div className="flex items-center gap-2 text-slate-950">
-                <Icon size={20} className="text-sky-700" />
+              <div className="flex items-center gap-2 text-slate-950 dark:text-white">
+                <Icon size={20} className="text-sky-700 dark:text-sky-400" />
                 <h2 className="text-lg font-semibold">{plan.name}</h2>
               </div>
               <div className="mt-3 flex items-end gap-1">
-                <span className="text-3xl font-bold text-slate-950">
+                <span className="text-3xl font-bold text-slate-950 dark:text-white">
                   {plan.price}
                 </span>
-                <span className="pb-1 text-sm text-slate-500">{plan.period}</span>
+                <span className="pb-1 text-sm text-slate-500 dark:text-slate-400">{plan.period}</span>
               </div>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
                 {plan.tagline}
               </p>
 
               <ul className="mt-5 flex-1 space-y-3">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm text-slate-700">
-                    <Check size={16} className="mt-0.5 shrink-0 text-emerald-600" />
+                  <li key={feature} className="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-200">
+                    <Check size={16} className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                     {feature}
                   </li>
                 ))}
@@ -141,8 +141,8 @@ export default function PlanosPage() {
                 href={plan.href}
                 className={`mt-6 inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition ${
                   plan.highlight
-                    ? "bg-slate-950 text-white hover:bg-slate-800"
-                    : "border border-slate-200 text-slate-800 hover:bg-slate-50"
+                    ? "bg-slate-950 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+                    : "border border-slate-200 text-slate-800 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-100 dark:hover:bg-slate-800"
                 }`}
               >
                 {plan.cta}
@@ -152,7 +152,7 @@ export default function PlanosPage() {
         })}
       </div>
 
-      <p className="mt-8 text-center text-xs text-slate-400">
+      <p className="mt-8 text-center text-xs text-slate-400 dark:text-slate-500">
         Pagamento online em breve. Os preços são iniciais e podem mudar no
         lançamento.
       </p>

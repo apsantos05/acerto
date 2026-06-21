@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Clock, Flag, Play, X } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
+import { UpgradeButton, UpgradeModal } from "@/components/plan/upgrade-modal";
 import type {
   ActiveAttempt,
   SimuladoQuestion,
@@ -42,12 +43,16 @@ export function SimuladoRunner({
   simulado,
   questions,
   activeAttempt,
+  canStart = true,
 }: {
   simulado: SimuladoSummary;
   questions: SimuladoQuestion[];
   activeAttempt: ActiveAttempt | null;
+  // Free no limite mensal (2/mês) e sem tentativa em andamento: bloqueia início.
+  canStart?: boolean;
 }) {
   const { supabase, user } = useAuth();
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   const [phase, setPhase] = useState<"intro" | "running" | "result">(
     activeAttempt ? "running" : "intro",
@@ -145,7 +150,16 @@ export function SimuladoRunner({
       setPhase("running");
     } catch (startError) {
       console.error("[simulado] iniciar:", startError);
-      setError(getSupabaseErrorMessage(startError, "Não foi possível iniciar."));
+      const message = getSupabaseErrorMessage(
+        startError,
+        "Não foi possível iniciar.",
+      );
+      // Limite mensal (RPC no banco): abre o modal de upgrade.
+      if (/limite de 2 simulados/i.test(message)) {
+        setShowUpgrade(true);
+      } else {
+        setError(message);
+      }
     } finally {
       setBusy(false);
     }
@@ -154,9 +168,9 @@ export function SimuladoRunner({
   // -------- Não logado --------
   if (!user) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <p className="text-slate-600">Entre na sua conta para fazer este simulado.</p>
-        <Link href="/login" className="mt-4 inline-flex rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white">
+      <div className="rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <p className="text-slate-600 dark:text-slate-300">Entre na sua conta para fazer este simulado.</p>
+        <Link href="/login" className="mt-4 inline-flex rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white dark:bg-white dark:text-slate-950">
           Entrar
         </Link>
       </div>
@@ -174,51 +188,51 @@ export function SimuladoRunner({
     const yourPace = result.total ? (usedSeconds / 60 / result.total).toFixed(1) : "0";
     return (
       <div className="space-y-6">
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
           {result.expired ? (
-            <p className="text-sm font-semibold text-amber-600">Tempo esgotado — finalizado automaticamente</p>
+            <p className="text-sm font-semibold text-amber-600 dark:text-amber-400">Tempo esgotado — finalizado automaticamente</p>
           ) : (
-            <p className="text-sm font-semibold uppercase text-sky-700">Resultado</p>
+            <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-400">Resultado</p>
           )}
-          <p className="mt-2 text-5xl font-bold text-slate-950">{percent}%</p>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-5xl font-bold text-slate-950 dark:text-white">{percent}%</p>
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
             {result.score} acertos · {errors} erros · {result.total} questões
           </p>
-          <p className="mt-1 text-sm text-slate-500">Tempo usado: {fmt(usedSeconds)}</p>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Tempo usado: {fmt(usedSeconds)}</p>
           {officialPace ? (
-            <p className="mt-3 rounded-lg bg-slate-50 px-4 py-2 text-sm text-slate-600">
+            <p className="mt-3 rounded-lg bg-slate-50 px-4 py-2 text-sm text-slate-600 dark:bg-slate-800/50 dark:text-slate-300">
               Seu ritmo: ~{yourPace} min/questão · Ritmo oficial {simulado.vestibular}: ~{officialPace} min/questão ({simulado.officialMinutes} min para {simulado.officialQuestions} questões)
             </p>
           ) : null}
-          <Link href="/simulados" className="mt-5 inline-flex rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+          <Link href="/simulados" className="mt-5 inline-flex rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
             Voltar aos simulados
           </Link>
         </div>
 
         <div className="space-y-4">
           {result.results.map((item, i) => (
-            <article key={item.question_id} className={`rounded-xl border bg-white p-5 shadow-sm ${item.is_correct ? "border-emerald-200" : "border-red-200"}`}>
+            <article key={item.question_id} className={`rounded-xl border bg-white p-5 shadow-sm dark:bg-slate-900 ${item.is_correct ? "border-emerald-200 dark:border-emerald-500/30" : "border-red-200 dark:border-red-500/30"}`}>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase text-slate-500">{i + 1}. {item.subject}</span>
-                <span className={`inline-flex items-center gap-1 text-sm font-semibold ${item.is_correct ? "text-emerald-700" : "text-red-700"}`}>
+                <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">{i + 1}. {item.subject}</span>
+                <span className={`inline-flex items-center gap-1 text-sm font-semibold ${item.is_correct ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}`}>
                   {item.is_correct ? <Check size={15} /> : <X size={15} />}
                   {item.is_correct ? "Acertou" : "Errou"}
                 </span>
               </div>
-              <p className="mt-2 font-medium text-slate-950">{item.question_text}</p>
+              <p className="mt-2 font-medium text-slate-950 dark:text-white">{item.question_text}</p>
               <div className="mt-3 space-y-1 text-sm">
                 {LETTERS.filter((l) => item.alternatives[l] !== undefined).map((l) => {
                   const isCorrect = l === item.correct_answer;
                   const isSelected = l === item.selected;
                   return (
-                    <p key={l} className={`rounded px-2 py-1 ${isCorrect ? "bg-emerald-50 font-semibold text-emerald-800" : isSelected ? "bg-red-50 text-red-700" : "text-slate-600"}`}>
+                    <p key={l} className={`rounded px-2 py-1 ${isCorrect ? "bg-emerald-50 font-semibold text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300" : isSelected ? "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300" : "text-slate-600 dark:text-slate-300"}`}>
                       {l}) {item.alternatives[l]}{isCorrect ? " ✓" : isSelected ? " (sua resposta)" : ""}
                     </p>
                   );
                 })}
               </div>
               {item.explanation ? (
-                <p className="mt-3 rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+                <p className="mt-3 rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300">
                   <span className="font-semibold">Explicação: </span>{item.explanation}
                 </p>
               ) : null}
@@ -232,35 +246,60 @@ export function SimuladoRunner({
   // -------- Intro (regras) --------
   if (phase === "intro") {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
-        <h2 className="text-lg font-semibold text-slate-950">Regras do {simulado.vestibular}</h2>
-        <p className="mt-3 leading-7 text-slate-600">{simulado.rules}</p>
-        <div className="mt-5 flex flex-wrap gap-4 text-sm text-slate-600">
-          <span className="inline-flex items-center gap-2"><Clock size={16} className="text-sky-700" /> {simulado.durationMinutes} min neste simulado</span>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8 dark:border-slate-800 dark:bg-slate-900">
+        <h2 className="text-lg font-semibold text-slate-950 dark:text-white">Regras do {simulado.vestibular}</h2>
+        <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{simulado.rules}</p>
+        <div className="mt-5 flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
+          <span className="inline-flex items-center gap-2"><Clock size={16} className="text-sky-700 dark:text-sky-400" /> {simulado.durationMinutes} min neste simulado</span>
           <span>·</span>
           <span>{simulado.questionCount} questões</span>
           {simulado.officialMinutes > 0 ? (
-            <span className="text-slate-500">(formato oficial: {simulado.officialQuestions} questões em {simulado.officialMinutes} min)</span>
+            <span className="text-slate-500 dark:text-slate-400">(formato oficial: {simulado.officialQuestions} questões em {simulado.officialMinutes} min)</span>
           ) : null}
         </div>
-        {error ? <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
-        <button
-          type="button"
-          onClick={start}
-          disabled={busy}
-          className="mt-6 inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-70"
-        >
-          <Play size={16} />
-          {busy ? "Iniciando..." : "Iniciar simulado"}
-        </button>
-        <p className="mt-3 text-xs text-slate-500">O cronômetro começa ao iniciar e continua mesmo se você recarregar a página.</p>
+        {error ? <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">{error}</p> : null}
+        {canStart ? (
+          <>
+            <button
+              type="button"
+              onClick={start}
+              disabled={busy}
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-70"
+            >
+              <Play size={16} />
+              {busy ? "Iniciando..." : "Iniciar simulado"}
+            </button>
+            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">O cronômetro começa ao iniciar e continua mesmo se você recarregar a página.</p>
+          </>
+        ) : (
+          <>
+            <div className="mt-6 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-300">
+              Você já usou seus 2 simulados deste mês no plano Gratuito. Assine o
+              Premium para simulados ilimitados.
+            </div>
+            <div className="mt-4">
+              <UpgradeButton
+                label="Liberar simulados ilimitados"
+                title="Limite de simulados atingido"
+                message="O plano Gratuito inclui 2 simulados por mês. Assine o Premium para simulados ilimitados e correção no servidor."
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              />
+            </div>
+          </>
+        )}
+        <UpgradeModal
+          open={showUpgrade}
+          onClose={() => setShowUpgrade(false)}
+          title="Limite de simulados atingido"
+          message="O plano Gratuito inclui 2 simulados por mês. Assine o Premium para simulados ilimitados e correção no servidor."
+        />
       </div>
     );
   }
 
   // -------- Running --------
   if (questions.length === 0) {
-    return <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600">Este simulado ainda não tem questões.</div>;
+    return <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">Este simulado ainda não tem questões.</div>;
   }
 
   const question = questions[index];
@@ -270,19 +309,19 @@ export function SimuladoRunner({
   const timeUp = remaining <= 0;
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8">
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-sm text-slate-500">Questão {index + 1} de {questions.length} · {answered} respondidas</span>
-        <span className={`inline-flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-bold ${timeUp ? "bg-red-100 text-red-700" : remaining < 60 ? "bg-amber-100 text-amber-800" : "bg-slate-100 text-slate-700"}`}>
+        <span className="text-sm text-slate-500 dark:text-slate-400">Questão {index + 1} de {questions.length} · {answered} respondidas</span>
+        <span className={`inline-flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-bold ${timeUp ? "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300" : remaining < 60 ? "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300" : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"}`}>
           <Clock size={15} /> {fmt(remaining)}
         </span>
       </div>
-      <div className="mt-2 h-2 rounded-full bg-slate-100">
+      <div className="mt-2 h-2 rounded-full bg-slate-100 dark:bg-slate-800">
         <div className="h-2 rounded-full bg-cyan-400 transition-all" style={{ width: `${progress}%` }} />
       </div>
 
-      <p className="mt-6 text-xs font-semibold uppercase text-sky-700">{question.subject}</p>
-      <p className="mt-2 text-lg font-medium leading-7 text-slate-950">{question.questionText}</p>
+      <p className="mt-6 text-xs font-semibold uppercase text-sky-700 dark:text-sky-400">{question.subject}</p>
+      <p className="mt-2 text-lg font-medium leading-7 text-slate-950 dark:text-white">{question.questionText}</p>
 
       <div className="mt-5 space-y-2">
         {LETTERS.filter((l) => question.alternatives[l] !== undefined).map((l) => {
@@ -293,20 +332,20 @@ export function SimuladoRunner({
               type="button"
               disabled={timeUp || busy}
               onClick={() => setAnswers((prev) => ({ ...prev, [question.id]: l }))}
-              className={`flex w-full items-start gap-3 rounded-lg border px-4 py-3 text-left text-sm transition disabled:opacity-60 ${selected ? "border-sky-500 bg-sky-50 text-slate-950" : "border-slate-200 hover:border-sky-200 hover:bg-slate-50"}`}
+              className={`flex w-full items-start gap-3 rounded-lg border px-4 py-3 text-left text-sm transition disabled:opacity-60 ${selected ? "border-sky-500 bg-sky-50 text-slate-950 dark:border-sky-500 dark:bg-sky-500/10 dark:text-white" : "border-slate-200 hover:border-sky-200 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:border-sky-500/50 dark:hover:bg-slate-800"}`}
             >
-              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${selected ? "bg-sky-600 text-white" : "bg-slate-100 text-slate-600"}`}>{l}</span>
+              <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${selected ? "bg-sky-600 text-white" : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"}`}>{l}</span>
               <span>{question.alternatives[l]}</span>
             </button>
           );
         })}
       </div>
 
-      {timeUp ? <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">Tempo esgotado. Finalizando...</p> : null}
-      {error ? <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
+      {timeUp ? <p className="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-300">Tempo esgotado. Finalizando...</p> : null}
+      {error ? <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">{error}</p> : null}
 
       <div className="mt-6 flex items-center justify-between">
-        <button type="button" onClick={() => setIndex((i) => Math.max(0, i - 1))} disabled={index === 0} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50">
+        <button type="button" onClick={() => setIndex((i) => Math.max(0, i - 1))} disabled={index === 0} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">
           <ArrowLeft size={16} /> Anterior
         </button>
         {isLast ? (
@@ -314,7 +353,7 @@ export function SimuladoRunner({
             <Flag size={16} /> {busy ? "Enviando..." : "Finalizar simulado"}
           </button>
         ) : (
-          <button type="button" onClick={() => setIndex((i) => Math.min(questions.length - 1, i + 1))} className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+          <button type="button" onClick={() => setIndex((i) => Math.min(questions.length - 1, i + 1))} className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
             Próxima <ArrowRight size={16} />
           </button>
         )}

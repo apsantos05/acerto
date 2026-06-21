@@ -8,6 +8,7 @@ import {
   getSimulado,
   getSimuladoQuestions,
 } from "@/lib/simulados";
+import { canTakeSimulado } from "@/lib/gating";
 
 type SimuladoPageProps = {
   params: Promise<{ id: string }>;
@@ -21,33 +22,34 @@ export default async function SimuladoPage({ params }: SimuladoPageProps) {
     notFound();
   }
 
-  const [questions, activeAttempt] = await Promise.all([
+  const [questions, activeAttempt, canStart] = await Promise.all([
     getSimuladoQuestions(id),
     getActiveAttempt(id),
+    canTakeSimulado(),
   ]);
 
   return (
     <AppShell>
       <Link
         href="/simulados"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 hover:text-sky-950"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 dark:text-sky-400 hover:text-sky-950 dark:hover:text-sky-300"
       >
         <ArrowLeft size={17} />
         Voltar aos simulados
       </Link>
 
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+        <h1 className="text-2xl font-semibold text-slate-950 dark:text-white sm:text-3xl">
           {simulado.title}
         </h1>
-        <p className="mt-2 max-w-3xl text-slate-600">{simulado.description}</p>
-        <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-600">
+        <p className="mt-2 max-w-3xl text-slate-600 dark:text-slate-300">{simulado.description}</p>
+        <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
           <span className="inline-flex items-center gap-2">
-            <FileQuestion size={16} className="text-sky-700" />
+            <FileQuestion size={16} className="text-sky-700 dark:text-sky-400" />
             {simulado.questionCount} questões
           </span>
           <span className="inline-flex items-center gap-2">
-            <Clock size={16} className="text-sky-700" />
+            <Clock size={16} className="text-sky-700 dark:text-sky-400" />
             {simulado.durationMinutes} min sugeridos
           </span>
         </div>
@@ -57,6 +59,7 @@ export default async function SimuladoPage({ params }: SimuladoPageProps) {
         simulado={simulado}
         questions={questions}
         activeAttempt={activeAttempt}
+        canStart={canStart || Boolean(activeAttempt)}
       />
     </AppShell>
   );

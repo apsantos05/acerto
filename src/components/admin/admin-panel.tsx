@@ -313,15 +313,15 @@ function AdminPanelInner({
   return (
     <div className={showBar ? "pb-24" : undefined}>
       {/* Contagens reais do banco */}
-      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-600">
+      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-600 dark:text-slate-300">
         <span>
-          <b className="text-slate-900">{counts.total.toLocaleString("pt-BR")}</b> no banco
+          <b className="text-slate-900 dark:text-white">{counts.total.toLocaleString("pt-BR")}</b> no banco
         </span>
-        <span>Pendentes: <b className="text-amber-700">{counts.pending.toLocaleString("pt-BR")}</b></span>
-        <span>Aprovados: <b className="text-emerald-700">{counts.approved.toLocaleString("pt-BR")}</b></span>
-        <span>Rejeitados: <b className="text-red-700">{counts.rejected.toLocaleString("pt-BR")}</b></span>
+        <span>Pendentes: <b className="text-amber-700 dark:text-amber-300">{counts.pending.toLocaleString("pt-BR")}</b></span>
+        <span>Aprovados: <b className="text-emerald-700 dark:text-emerald-300">{counts.approved.toLocaleString("pt-BR")}</b></span>
+        <span>Rejeitados: <b className="text-red-700 dark:text-red-300">{counts.rejected.toLocaleString("pt-BR")}</b></span>
         {isMaterialTab ? (
-          <span className="ml-auto text-slate-500">
+          <span className="ml-auto text-slate-500 dark:text-slate-400">
             {search
               ? `Encontrados: ${materialsTotal.toLocaleString("pt-BR")}`
               : `Mostrando ${materials.length}`}{" "}
@@ -334,25 +334,25 @@ function AdminPanelInner({
       {isMaterialTab ? (
         <form method="get" action="/admin" className="mb-4 flex flex-wrap gap-2">
           <input type="hidden" name="tab" value={tab} />
-          <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 focus-within:border-sky-400 focus-within:ring-4 focus-within:ring-sky-100">
-            <Search size={18} className="text-slate-400" />
+          <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 focus-within:border-sky-400 focus-within:ring-4 focus-within:ring-sky-100 dark:border-slate-700 dark:bg-slate-900">
+            <Search size={18} className="text-slate-400 dark:text-slate-500" />
             <input
               name="q"
               defaultValue={search}
               placeholder="Pesquisar materiais..."
-              className="w-full bg-transparent text-sm text-slate-900 outline-none"
+              className="w-full bg-transparent text-sm text-slate-900 outline-none dark:text-slate-100 dark:placeholder-slate-500"
             />
           </label>
           <button
             type="submit"
-            className="inline-flex items-center justify-center rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="inline-flex items-center justify-center rounded-lg bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
           >
             Buscar
           </button>
           {search ? (
             <Link
               href={`/admin?tab=${tab}&page=1`}
-              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               <X size={16} />
               Limpar
@@ -362,19 +362,19 @@ function AdminPanelInner({
       ) : null}
 
       {/* Abas (navegação server-side) */}
-      <div className="flex flex-wrap gap-2 border-b border-slate-200">
+      <div className="flex flex-wrap gap-2 border-b border-slate-200 dark:border-slate-800">
         {tabs.map((item) => (
           <Link
             key={item.id}
             href={tabHref(item.id)}
             className={`-mb-px border-b-2 px-4 py-3 text-sm font-semibold transition ${
               tab === item.id
-                ? "border-sky-600 text-sky-800"
-                : "border-transparent text-slate-500 hover:text-slate-800"
+                ? "border-sky-600 text-sky-800 dark:text-sky-400"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100"
             }`}
           >
             {item.label}
-            <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+            <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
               {item.count.toLocaleString("pt-BR")}
             </span>
           </Link>
@@ -383,30 +383,30 @@ function AdminPanelInner({
 
       <div className="mt-6">
         {isMaterialTab && materials.length > 0 ? (
-          <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm">
+          <div className="mb-4 flex flex-wrap items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-sm dark:border-slate-800 dark:bg-slate-900">
             <button
               type="button"
               onClick={() =>
                 allSelected ? clearSelection() : setSelectedIds(new Set(currentIds))
               }
-              className="font-semibold text-sky-700 transition hover:text-sky-900"
+              className="font-semibold text-sky-700 transition hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-300"
             >
               {allSelected ? "Limpar seleção" : "Selecionar página"} ({currentIds.length})
             </button>
             {selectedIds.size > 0 ? (
-              <span className="text-slate-500">
+              <span className="text-slate-500 dark:text-slate-400">
                 {selectedIds.size} selecionado{selectedIds.size === 1 ? "" : "s"}
               </span>
             ) : null}
 
             <span className="ml-auto inline-flex flex-wrap items-center gap-2">
               <Sparkles size={15} className="text-amber-500" />
-              <span className="font-semibold text-slate-700">Curadoria:</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-200">Curadoria:</span>
               <button
                 type="button"
                 disabled={working || selectedIds.size === 0}
                 onClick={() => runReclassify(materials.filter((m) => selectedIds.has(m.id)))}
-                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Reclassificar selecionados
               </button>
@@ -414,7 +414,7 @@ function AdminPanelInner({
                 type="button"
                 disabled={working || materials.length === 0}
                 onClick={() => runReclassify(materials)}
-                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-lg border border-slate-200 px-3 py-1.5 font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Reclassificar página
               </button>
@@ -429,7 +429,7 @@ function AdminPanelInner({
                   )
                 }
                 title="Corrige títulos UUID/hash/genéricos da página (ou dos selecionados)"
-                className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 font-semibold text-amber-800 transition hover:bg-amber-100 disabled:opacity-50"
+                className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 font-semibold text-amber-800 transition hover:bg-amber-100 disabled:opacity-50 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300 dark:hover:bg-amber-500/25"
               >
                 Corrigir títulos inválidos
               </button>
@@ -482,7 +482,7 @@ function AdminPanelInner({
             {page > 1 ? (
               <Link
                 href={pageHref(page - 1)}
-                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 <ChevronLeft size={16} />
                 Anterior
@@ -491,8 +491,8 @@ function AdminPanelInner({
 
             {pageWindow(page, totalPages)[0] > 1 ? (
               <>
-                <Link href={pageHref(1)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">1</Link>
-                <span className="px-1 text-slate-400">…</span>
+                <Link href={pageHref(1)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">1</Link>
+                <span className="px-1 text-slate-400 dark:text-slate-500">…</span>
               </>
             ) : null}
 
@@ -504,7 +504,7 @@ function AdminPanelInner({
                 className={`rounded-lg border px-3 py-2 text-sm font-semibold transition ${
                   p === page
                     ? "border-sky-600 bg-sky-600 text-white"
-                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                 }`}
               >
                 {p}
@@ -513,15 +513,15 @@ function AdminPanelInner({
 
             {pageWindow(page, totalPages).slice(-1)[0] < totalPages ? (
               <>
-                <span className="px-1 text-slate-400">…</span>
-                <Link href={pageHref(totalPages)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">{totalPages}</Link>
+                <span className="px-1 text-slate-400 dark:text-slate-500">…</span>
+                <Link href={pageHref(totalPages)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">{totalPages}</Link>
               </>
             ) : null}
 
             {page < totalPages ? (
               <Link
                 href={pageHref(page + 1)}
-                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Próxima
                 <ChevronRight size={16} />
@@ -558,7 +558,7 @@ function SectionList({
 }) {
   if (isEmpty) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600">
+      <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
         {emptyText}
       </div>
     );

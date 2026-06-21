@@ -170,7 +170,7 @@ export function PostCard({ post }: PostCardProps) {
   }
 
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-start gap-4">
         {post.author.username ? (
           <Link href={`/perfil/${post.author.username}`} className="shrink-0">
@@ -194,18 +194,18 @@ export function PostCard({ post }: PostCardProps) {
                 {post.author.username ? (
                   <Link
                     href={`/perfil/${post.author.username}`}
-                    className="font-semibold text-slate-950 hover:text-sky-800"
+                    className="font-semibold text-slate-950 hover:text-sky-800 dark:text-white dark:hover:text-sky-300"
                   >
                     {post.author.name}
                   </Link>
                 ) : (
-                  <p className="font-semibold text-slate-950">
+                  <p className="font-semibold text-slate-950 dark:text-white">
                     {post.author.name}
                   </p>
                 )}
                 <PlanBadge plan={post.author.plan} />
               </div>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 {post.author.username ? `@${post.author.username} · ` : ""}
                 {post.publishedAt}
                 {post.author.city ? ` · ${post.author.city}` : ""}
@@ -213,23 +213,23 @@ export function PostCard({ post }: PostCardProps) {
             </div>
           </div>
 
-          <p className="mt-4 whitespace-pre-wrap leading-7 text-slate-700">
+          <p className="mt-4 whitespace-pre-wrap leading-7 text-slate-700 dark:text-slate-200">
             {post.content}
           </p>
 
           {post.material ? (
             <Link
               href={`/biblioteca/${post.material.id}`}
-              className="mt-4 flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 transition hover:border-sky-200 hover:bg-sky-50"
+              className="mt-4 flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 transition hover:border-sky-200 hover:bg-sky-50 dark:border-slate-800 dark:bg-slate-800/50 dark:hover:border-sky-500/30 dark:hover:bg-sky-500/10"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-sky-700">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-sky-700 dark:bg-slate-900 dark:text-sky-400">
                 <LinkIcon size={18} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-950">
+                <p className="text-sm font-semibold text-slate-950 dark:text-white">
                   {post.material.title}
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {post.material.materialType} · {post.material.subject}
                 </p>
               </div>
@@ -241,7 +241,7 @@ export function PostCard({ post }: PostCardProps) {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
+                  className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"
                 >
                   {tag}
                 </span>
@@ -249,26 +249,26 @@ export function PostCard({ post }: PostCardProps) {
             </div>
           ) : null}
 
-          <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+          <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4 dark:border-slate-800">
             <button
               type="button"
               onClick={toggleLike}
-              className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-slate-50 ${
-                isLiked ? "text-red-600" : "text-slate-600"
+              className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                isLiked ? "text-red-600 dark:text-red-400" : "text-slate-600 dark:text-slate-300"
               }`}
             >
               <Heart size={17} fill={isLiked ? "currentColor" : "none"} />
               {likesCount}
             </button>
-            <span className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600">
+            <span className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 dark:text-slate-300">
               <MessageCircle size={17} />
               {comments.length}
             </span>
             <button
               type="button"
               onClick={toggleSave}
-              className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-slate-50 ${
-                isSaved ? "text-sky-700" : "text-slate-600"
+              className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                isSaved ? "text-sky-700 dark:text-sky-400" : "text-slate-600 dark:text-slate-300"
               }`}
             >
               <Bookmark size={17} fill={isSaved ? "currentColor" : "none"} />
@@ -277,21 +277,21 @@ export function PostCard({ post }: PostCardProps) {
           </div>
 
           {error ? (
-            <p className="mt-3 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p className="mt-3 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">
               {error}
             </p>
           ) : null}
 
           <div className="mt-4 space-y-3">
             {comments.map((comment) => (
-              <div key={comment.id} className="rounded-lg bg-slate-50 p-3">
+              <div key={comment.id} className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800/50">
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-sm font-semibold text-slate-950">
+                  <p className="text-sm font-semibold text-slate-950 dark:text-white">
                     {comment.author.name}
                   </p>
                   <PlanBadge plan={comment.author.plan} />
                 </div>
-                <p className="mt-1 text-sm leading-6 text-slate-600">
+                <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
                   {comment.content}
                 </p>
               </div>
@@ -303,11 +303,11 @@ export function PostCard({ post }: PostCardProps) {
               value={commentText}
               onChange={(event) => setCommentText(event.target.value)}
               placeholder="Escreva um comentário"
-              className="min-w-0 flex-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+              className="min-w-0 flex-1 rounded-lg border border-slate-200 px-4 py-2.5 text-sm text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500"
             />
             <button
               disabled={isCommenting}
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-950 text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               aria-label="Enviar comentário"
             >
               <SendHorizonal size={17} />

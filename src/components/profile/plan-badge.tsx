@@ -10,8 +10,8 @@ type PlanBadgeProps = {
 };
 
 const STYLES: Record<Plan, string> = {
-  free: "bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200",
-  premium: "bg-sky-100 text-sky-800 ring-1 ring-inset ring-sky-200",
+  free: "bg-slate-100 text-slate-600 ring-1 ring-inset ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700",
+  premium: "bg-sky-100 text-sky-800 ring-1 ring-inset ring-sky-200 dark:bg-sky-500/15 dark:text-sky-300 dark:ring-sky-500/30",
   premium_med:
     "bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-950 ring-1 ring-inset ring-amber-400 shadow-sm",
 };

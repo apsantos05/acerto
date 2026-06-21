@@ -9,6 +9,7 @@ import {
   getRelatedMaterials,
   incrementMaterialViews,
 } from "@/lib/materials";
+import { canAccessMaterial } from "@/lib/gating";
 
 type MaterialPageProps = {
   params: Promise<{
@@ -46,10 +47,11 @@ export default async function MaterialPage({ params }: MaterialPageProps) {
   }
 
   const related = await getRelatedMaterials(material);
+  const canAccess = await canAccessMaterial(material);
 
   return (
     <AppShell>
-      <MaterialDetail material={material} />
+      <MaterialDetail material={material} locked={!canAccess} />
 
       {related.length > 0 ? (
         <section className="mt-10">

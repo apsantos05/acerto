@@ -36,9 +36,9 @@ function formatDate(date: string) {
 }
 
 const statusStyles: Record<AdminMaterial["status"], string> = {
-  pending: "bg-amber-100 text-amber-800",
-  approved: "bg-emerald-100 text-emerald-800",
-  rejected: "bg-red-100 text-red-700",
+  pending: "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300",
+  approved: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300",
+  rejected: "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300",
 };
 
 const statusLabels: Record<AdminMaterial["status"], string> = {
@@ -149,7 +149,7 @@ export function ModerationCard({
       deleted: "excluído 🗑️",
     };
     return (
-      <article className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-sm font-medium text-slate-600">
+      <article className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-sm font-medium text-slate-600 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-300">
         “{material.title}” foi {labels[done]}.
       </article>
     );
@@ -159,8 +159,8 @@ export function ModerationCard({
 
   return (
     <article
-      className={`rounded-xl border bg-white p-5 shadow-sm transition ${
-        selected ? "border-sky-400 ring-2 ring-sky-100" : "border-slate-200"
+      className={`rounded-xl border bg-white p-5 shadow-sm transition dark:bg-slate-900 ${
+        selected ? "border-sky-400 ring-2 ring-sky-100" : "border-slate-200 dark:border-slate-800"
       }`}
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -171,7 +171,7 @@ export function ModerationCard({
                 type="checkbox"
                 checked={selected}
                 onChange={() => onToggleSelect(material.id)}
-                className="h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-600 focus:ring-sky-300"
+                className="h-4 w-4 cursor-pointer rounded border-slate-300 text-sky-600 focus:ring-sky-300 dark:border-slate-700"
                 aria-label={`Selecionar ${material.title}`}
               />
             ) : null}
@@ -180,44 +180,44 @@ export function ModerationCard({
             >
               {statusLabels[material.status]}
             </span>
-            <span className="text-xs font-semibold text-slate-500">
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
               {material.materialType}
             </span>
             {material.priority === "alta" ? (
-              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
                 Prioridade alta
               </span>
             ) : null}
           </div>
-          <h2 className="mt-3 text-xl font-semibold text-slate-950">
+          <h2 className="mt-3 text-xl font-semibold text-slate-950 dark:text-white">
             {material.title}
           </h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 dark:text-slate-300">
             {material.description}
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-600">
+          <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
             <span className="inline-flex items-center gap-2">
-              <GraduationCap size={16} className="text-sky-700" />
+              <GraduationCap size={16} className="text-sky-700 dark:text-sky-400" />
               {material.vestibular}
             </span>
             <span className="inline-flex items-center gap-2">
-              <School size={16} className="text-sky-700" />
+              <School size={16} className="text-sky-700 dark:text-sky-400" />
               {material.faculdade}
             </span>
             <span className="inline-flex items-center gap-2">
-              <CalendarDays size={16} className="text-sky-700" />
+              <CalendarDays size={16} className="text-sky-700 dark:text-sky-400" />
               {material.year ? `${material.year} · ` : ""}
               {material.subject}
             </span>
           </div>
 
           {material.author ? (
-            <div className="mt-4 text-sm text-slate-600">
+            <div className="mt-4 text-sm text-slate-600 dark:text-slate-300">
               {material.author.username ? (
                 <Link
                   href={`/perfil/${material.author.username}`}
-                  className="inline-flex items-center gap-2 hover:text-sky-800"
+                  className="inline-flex items-center gap-2 hover:text-sky-800 dark:hover:text-sky-300"
                 >
                   <ProfileAvatar
                     name={material.author.fullName}
@@ -242,7 +242,7 @@ export function ModerationCard({
               )}
             </div>
           ) : (
-            <p className="mt-4 text-sm text-slate-500">
+            <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
               {formatDate(material.createdAt)}
             </p>
           )}
@@ -252,7 +252,7 @@ export function ModerationCard({
               href={fileHref}
               target="_blank"
               rel="noreferrer"
-              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 hover:text-sky-950"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-sky-800 hover:text-sky-950 dark:text-sky-400 dark:hover:text-sky-300"
             >
               <LinkIcon size={16} />
               Abrir arquivo enviado
@@ -276,7 +276,7 @@ export function ModerationCard({
                 type="button"
                 onClick={() => moderate("rejected")}
                 disabled={isSaving}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70 dark:border-red-500/30 dark:text-red-300 dark:hover:bg-red-500/10"
               >
                 <X size={17} />
                 Rejeitar
@@ -288,7 +288,7 @@ export function ModerationCard({
             type="button"
             onClick={() => setEditing(true)}
             disabled={isSaving}
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-sky-200 bg-sky-50 px-4 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-sky-500/30 dark:bg-sky-500/15 dark:text-sky-300 dark:hover:bg-sky-500/25"
           >
             <Pencil size={16} />
             Editar
@@ -308,7 +308,7 @@ export function ModerationCard({
                 type="button"
                 onClick={() => setConfirmingDelete(false)}
                 disabled={isSaving}
-                className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Cancelar
               </button>
@@ -318,7 +318,7 @@ export function ModerationCard({
               type="button"
               onClick={() => setConfirmingDelete(true)}
               disabled={isSaving}
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-70"
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-800 dark:text-slate-300 dark:hover:border-red-500/30 dark:hover:bg-red-500/10 dark:hover:text-red-300"
             >
               <Trash2 size={16} />
               Excluir
@@ -328,7 +328,7 @@ export function ModerationCard({
       </div>
 
       {error ? (
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-300">
           {error}
         </p>
       ) : null}

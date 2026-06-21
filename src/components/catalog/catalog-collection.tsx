@@ -58,27 +58,27 @@ export async function CatalogCollection({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
       />
 
-      <nav aria-label="Trilha" className="flex flex-wrap items-center gap-1 text-sm text-slate-500">
+      <nav aria-label="Trilha" className="flex flex-wrap items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
         {breadcrumbs.map((c, i) => (
           <span key={c.href} className="inline-flex items-center gap-1">
-            {i > 0 ? <ChevronRight size={14} className="text-slate-300" /> : null}
+            {i > 0 ? <ChevronRight size={14} className="text-slate-300 dark:text-slate-600" /> : null}
             {i < breadcrumbs.length - 1 ? (
-              <Link href={c.href} className="hover:text-sky-700">
+              <Link href={c.href} className="hover:text-sky-700 dark:hover:text-sky-300">
                 {c.label}
               </Link>
             ) : (
-              <span className="font-medium text-slate-700">{c.label}</span>
+              <span className="font-medium text-slate-700 dark:text-slate-200">{c.label}</span>
             )}
           </span>
         ))}
       </nav>
 
       <header className="mt-4">
-        <h1 className="text-3xl font-semibold text-slate-950 sm:text-4xl">
+        <h1 className="text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
           {title}
         </h1>
-        <p className="mt-3 max-w-3xl leading-7 text-slate-600">{intro}</p>
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-800 shadow-sm">
+        <p className="mt-3 max-w-3xl leading-7 text-slate-600 dark:text-slate-300">{intro}</p>
+        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-800 shadow-sm dark:border-sky-500/30 dark:bg-slate-900 dark:text-sky-300">
           <BookOpenCheck size={16} />
           {total.toLocaleString("pt-BR")} materiais disponíveis
         </div>
@@ -94,7 +94,7 @@ export async function CatalogCollection({
           <div className="mt-8">
             <Link
               href={libraryHref}
-              className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
               Ver todos os materiais
               <ArrowRight size={16} />
@@ -102,13 +102,13 @@ export async function CatalogCollection({
           </div>
         </>
       ) : (
-        <div className="mt-8 rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
-          <h2 className="text-lg font-semibold text-slate-950">
+        <div className="mt-8 rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
             Materiais a caminho
           </h2>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
             Estamos organizando o acervo desta página. Enquanto isso, explore a{" "}
-            <Link href="/biblioteca" className="font-semibold text-sky-700">
+            <Link href="/biblioteca" className="font-semibold text-sky-700 dark:text-sky-400">
               biblioteca completa
             </Link>
             .

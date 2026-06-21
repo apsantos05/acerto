@@ -239,16 +239,16 @@ export function UploadMaterialForm() {
 
   if (!user && !isLoading) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-slate-950">
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+        <h2 className="text-xl font-semibold text-slate-950 dark:text-white">
           Login necessário
         </h2>
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-slate-600 dark:text-slate-300">
           Entre na sua conta para enviar materiais para aprovação.
         </p>
         <Link
           href="/login"
-          className="mt-5 inline-flex rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white"
+          className="mt-5 inline-flex rounded-lg bg-slate-950 dark:bg-white px-4 py-2 text-sm font-semibold text-white dark:text-slate-950"
         >
           Entrar
         </Link>
@@ -260,50 +260,50 @@ export function UploadMaterialForm() {
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm"
     >
       <div className="grid gap-5 md:grid-cols-2">
         <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-700">Título</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Título</span>
           <input
             name="title"
             required
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           />
         </label>
 
         <label className="block md:col-span-2">
-          <span className="text-sm font-medium text-slate-700">Descrição</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Descrição</span>
           <textarea
             name="description"
             required
             rows={4}
-            className="mt-2 w-full resize-none rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full resize-none rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Vestibular</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Vestibular</span>
           <input
             name="vestibular"
             required
             placeholder="Fuvest, ENEM, Unicamp"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Faculdade</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Faculdade</span>
           <input
             name="faculdade"
             required
             placeholder="USP, Unicamp, Sisu Medicina"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Ano</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Ano</span>
           <input
             name="year"
             required
@@ -311,28 +311,28 @@ export function UploadMaterialForm() {
             min={1990}
             max={2035}
             defaultValue={new Date().getFullYear()}
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Matéria</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Matéria</span>
           <input
             name="subject"
             required
             placeholder="Biologia, Química, Redação"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:placeholder-slate-500"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
             Tipo de material
           </span>
           <select
             name="materialType"
             required
-            className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
           >
             {materialTypes.map((type) => (
               <option key={type} value={type}>
@@ -343,24 +343,24 @@ export function UploadMaterialForm() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-medium text-slate-700">Tags</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Tags</span>
           <input
             name="tags"
             placeholder="biologia, fuvest, revisão"
-            className="mt-2 w-full rounded-lg border border-slate-200 px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+            className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:placeholder-slate-500"
           />
         </label>
       </div>
 
-      <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <div className="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-4">
         <div className="grid gap-3 sm:grid-cols-2">
           <button
             type="button"
             onClick={() => setUploadKind("file")}
             className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition ${
               uploadKind === "file"
-                ? "bg-slate-950 text-white"
-                : "border border-slate-200 bg-white text-slate-700"
+                ? "bg-slate-950 dark:bg-white text-white dark:text-slate-950"
+                : "border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200"
             }`}
           >
             <UploadCloud size={18} />
@@ -371,8 +371,8 @@ export function UploadMaterialForm() {
             onClick={() => setUploadKind("link")}
             className={`inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition ${
               uploadKind === "link"
-                ? "bg-slate-950 text-white"
-                : "border border-slate-200 bg-white text-slate-700"
+                ? "bg-slate-950 dark:bg-white text-white dark:text-slate-950"
+                : "border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200"
             }`}
           >
             <LinkIcon size={18} />
@@ -382,43 +382,43 @@ export function UploadMaterialForm() {
 
         {uploadKind === "file" ? (
           <label className="mt-4 block">
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
               PDF ou imagem
             </span>
             <input
               name="file"
               type="file"
               accept="application/pdf,image/jpeg,image/png,image/webp"
-              className="mt-2 w-full rounded-lg border border-dashed border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-cyan-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-cyan-800"
+              className="mt-2 w-full rounded-lg border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 file:mr-4 file:rounded-lg file:border-0 file:bg-cyan-100 dark:file:bg-cyan-500/15 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-cyan-800 dark:file:text-cyan-300"
             />
           </label>
         ) : (
           <label className="mt-4 block">
-            <span className="text-sm font-medium text-slate-700">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
               Link externo
             </span>
             <input
               name="externalUrl"
               type="url"
               placeholder="https://..."
-              className="mt-2 w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-slate-950 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100"
+              className="mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-slate-950 dark:text-slate-100 outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:placeholder-slate-500"
             />
           </label>
         )}
       </div>
 
       {authError ? (
-        <p className="mt-5 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <p className="mt-5 rounded-lg bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-300">
           {authError}
         </p>
       ) : null}
       {error ? (
-        <p className="mt-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="mt-5 rounded-lg bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-300">
           {error}
         </p>
       ) : null}
       {success ? (
-        <div className="mt-5 rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+        <div className="mt-5 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
           <p className="flex items-center gap-2 font-semibold">
             <CheckCircle2 size={17} />
             {success}
@@ -426,7 +426,7 @@ export function UploadMaterialForm() {
           {createdMaterialId ? (
             <Link
               href="/meus-materiais"
-              className="mt-2 inline-flex font-semibold text-emerald-800"
+              className="mt-2 inline-flex font-semibold text-emerald-800 dark:text-emerald-300"
             >
               Ver meus materiais
             </Link>
@@ -437,13 +437,13 @@ export function UploadMaterialForm() {
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link
           href="/meus-materiais"
-          className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+          className="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
         >
           Meus materiais
         </Link>
         <button
           disabled={isSubmitting || isLoading}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 dark:bg-white px-5 py-3 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-70"
         >
           <UploadCloud size={18} />
           {isSubmitting ? "Enviando..." : "Enviar para aprovação"}

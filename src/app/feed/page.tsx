@@ -16,7 +16,7 @@ export default async function FeedPage() {
           title="Feed"
           description="Publique dúvidas, compartilhe estratégias e anexe materiais úteis para outros vestibulandos de Medicina."
         />
-        <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-800 shadow-sm">
+        <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-800 shadow-sm dark:border-sky-500/30 dark:bg-slate-900 dark:text-sky-300">
           <GraduationCap size={17} />
           Rede de estudos
         </div>
@@ -27,7 +27,7 @@ export default async function FeedPage() {
           <CreatePost />
 
           {error ? (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/15 dark:text-amber-300">
               {error}
             </div>
           ) : null}
@@ -39,12 +39,12 @@ export default async function FeedPage() {
               ))}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
-              <MessageCircle className="mx-auto text-sky-700" size={32} />
-              <h2 className="mt-3 text-lg font-semibold text-slate-950">
+            <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-900">
+              <MessageCircle className="mx-auto text-sky-700 dark:text-sky-400" size={32} />
+              <h2 className="mt-3 text-lg font-semibold text-slate-950 dark:text-white">
                 Nenhuma publicação ainda
               </h2>
-              <p className="mt-2 text-slate-600">
+              <p className="mt-2 text-slate-600 dark:text-slate-300">
                 Seja a primeira pessoa a compartilhar uma dica, dúvida ou
                 material com a comunidade.
               </p>
@@ -52,11 +52,11 @@ export default async function FeedPage() {
           )}
         </section>
 
-        <aside className="h-fit rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-950">
+        <aside className="h-fit rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
             Boas práticas
           </h2>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-slate-600">
+          <div className="mt-4 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
             <p>Use tags para facilitar buscas por matéria, banca e fase.</p>
             <p>Anexe materiais aprovados quando a publicação depender deles.</p>
             <p>Mantenha comentários focados em estudo e revisão.</p>

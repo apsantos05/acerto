@@ -63,20 +63,20 @@ export default async function BibliotecaPage({
           description="Encontre provas, gabaritos, simulados, resumos, listas e mapas mentais organizados por vestibular, faculdade, ano e matéria."
         />
         <div className="flex flex-wrap gap-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white px-4 py-2 text-sm font-semibold text-sky-800 shadow-sm">
+          <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2 text-sm font-semibold text-sky-800 dark:text-sky-400 shadow-sm">
             <BookOpenCheck size={17} />
             {total.toLocaleString("pt-BR")} materiais
           </div>
           <Link
             href="/biblioteca/enviar"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 dark:bg-white px-4 py-2 text-sm font-semibold text-white dark:text-slate-950 transition hover:bg-slate-800 dark:hover:bg-slate-200"
           >
             <Plus size={17} />
             Enviar material
           </Link>
           <Link
             href="/meus-materiais"
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            className="inline-flex items-center justify-center rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
           >
             Meus materiais
           </Link>
@@ -84,7 +84,7 @@ export default async function BibliotecaPage({
       </div>
 
       {isMock ? (
-        <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+        <div className="mb-5 rounded-xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm font-medium text-amber-800 dark:text-amber-300">
           Exibindo dados temporários. Configure o Supabase e execute o schema
           para carregar materiais reais.
         </div>
@@ -108,7 +108,7 @@ export default async function BibliotecaPage({
               {page > 1 ? (
                 <Link
                   href={pageHref(filters, page - 1)}
-                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
                   <ChevronLeft size={16} />
                   Anterior
@@ -116,13 +116,13 @@ export default async function BibliotecaPage({
               ) : (
                 <span />
               )}
-              <span className="text-sm font-medium text-slate-500">
+              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
                 Página {page} de {totalPages}
               </span>
               {page < totalPages ? (
                 <Link
                   href={pageHref(filters, page + 1)}
-                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                 >
                   Próxima
                   <ChevronRight size={16} />
@@ -134,11 +134,11 @@ export default async function BibliotecaPage({
           ) : null}
         </>
       ) : (
-        <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center">
-          <h2 className="text-lg font-semibold text-slate-950">
+        <div className="mt-6 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-8 text-center">
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
             Nenhum material encontrado
           </h2>
-          <p className="mt-2 text-slate-600">
+          <p className="mt-2 text-slate-600 dark:text-slate-300">
             Ajuste os filtros ou busque por outro vestibular, matéria ou tipo de
             material.
           </p>

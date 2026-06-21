@@ -62,7 +62,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           title="Moderação"
           description="Aprove, rejeite, edite ou exclua materiais e posts da comunidade."
         />
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800">
+        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/15 dark:text-emerald-300">
           <ShieldCheck size={17} />
           {counts.pending} pendente{counts.pending === 1 ? "" : "s"}
         </div>
