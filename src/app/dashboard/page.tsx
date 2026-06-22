@@ -7,12 +7,14 @@ import { WeeklyPlan } from "@/components/dashboard/weekly-plan";
 import { WeeklyGoalCard } from "@/components/dashboard/weekly-goal-card";
 import { getDashboardData } from "@/lib/dashboard";
 import { getStudyPlanner } from "@/lib/study-planner";
-import { getSimuladoStats } from "@/lib/simulados";
+import { getSimuladoStats, getSimuladoHistory } from "@/lib/simulados";
+import { SimuladoCharts } from "@/components/dashboard/simulado-charts";
 
 export default async function DashboardPage() {
   const { stats, recentMaterials } = await getDashboardData();
   const { tasks, goal } = await getStudyPlanner();
   const simStats = await getSimuladoStats();
+  const simHistory = await getSimuladoHistory();
 
   const statCards = [
     { label: "Materiais disponíveis", value: stats.materialsAvailable },
@@ -73,6 +75,10 @@ export default async function DashboardPage() {
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="mt-8">
+        <SimuladoCharts history={simHistory} />
       </section>
 
       <div className="mt-8 flex items-center justify-between">

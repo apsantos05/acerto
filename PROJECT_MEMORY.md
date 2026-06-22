@@ -147,7 +147,8 @@ archived_at. RLS own-only.
 21. **`plans_fixed.sql`** → 22. **`admin_material_edit.sql`** →
 23. **`plan_gating.sql`** (limite de simulados na RPC + trigger de favoritos) →
 24. **`study_tracks.sql`** (trilhas + cronograma + progresso + seed de 11 trilhas) →
-25. **`payments.sql`** (subscriptions + payment_events + trigger anti-tamper de plano).
+25. **`payments.sql`** (subscriptions + payment_events + trigger anti-tamper de plano) →
+26. **`simulados_oficiais.sql`** (categoria oficial + auto-save/flags + TRI + ranking + seed das 9 provas).
 Seeds: `seed_materials.sql`, `seed_feed.sql`, `seed_simulados.sql`.
 Auditoria documentada em `supabase/database_audit.md`.
 
@@ -314,8 +315,31 @@ Telegram via `CURATED_PATH`/`CACHE_DIR`.
   (sobrevive a reload). Correção 100% no servidor (`start_simulado`/`finish_simulado`);
   gabarito não vai ao cliente antes de finalizar.
 - Runner: `src/components/simulados/simulado-runner.tsx`. Lib: `src/lib/simulados.ts`.
-- **Limites por plano (a implementar):** Free 2/mês; Premium ilimitado; Premium
-  Medicina + oficiais por banca.
+### Simulados Oficiais (IMPLEMENTADO — `supabase/simulados_oficiais.sql`)
+Categoria que reproduz os vestibulares. Em vez de tabelas novas, estende as existentes:
+- `simulados`: +`kind` (rapido|oficial), `exam_slug`, `exam_day`, `plan_required`
+  (free|premium|premium_med), `official_subjects`, `tri_weights`.
+- `simulado_attempts`: +`draft_answers`, `flagged`, `time_remaining`, `ends_at`,
+  `subject_scores`, `tri_scores` (auto-save + resultado).
+- RPCs: `start_simulado` (gating por tipo/plano + `ends_at`), `autosave_attempt`
+  (respostas/flags/tempo a cada 30s), `finish_simulado` (calcula desempenho por
+  matéria + **TRI estimado** 300–1000 ponderado por dificuldade), `get_simulado_ranking(category)`.
+- **Seed das 9 provas** (ENEM 1º/2º dia, FUVEST, UNICAMP, UNESP, UFSC, FAMERP,
+  Einstein, Santa Casa, SLMandic) com estrutura oficial aproximada (configurável no
+  admin) + **questões representativas autorais** (5/prova) para rodar fim-a-fim. As
+  questões REAIS devem ser importadas/cadastradas depois.
+- **Gating** (`gating.ts`): rápidos ilimitados p/ todos; oficiais "premium" → Premium
+  ilimitado, Free **2/mês**; oficiais "premium_med" (FAMERP/Einstein/Santa Casa/
+  SLMandic) → só Premium Medicina. Admin total. `canStartSimulado()` espelha a RPC.
+- **Runner** (`simulado-runner.tsx`): cronômetro **HH:MM:SS**, ⭐ "Revisar depois",
+  auto-save 30s, restauração do rascunho ao recarregar, resultado com % por matéria + TRI.
+- **Páginas:** `/simulados` (Oficiais + Rápidos), `/simulados/exames` + `/exames/[slug]`
+  (hubs SEO, no sitemap), `/simulados/historico` (gate: free vê 3, premium completo),
+  `/simulados/ranking` (categorias geral/enem/medicina/fuvest/unicamp; free top 5,
+  premium top 20). Dashboard: `simulado-charts.tsx` (evolução, por matéria, média).
+- Lib: `src/lib/simulados.ts` (`getOfficialSimulados`, `getQuickSimulados`,
+  `getSimuladosByExam`, `getSimuladoHistory`, `getSimuladoRanking`, `OFFICIAL_EXAMS`).
+- ⚠️ Rota SEO: usamos `/simulados/exames/[slug]` para não colidir com `/simulados/[id]`.
 
 ---
 

@@ -5,6 +5,7 @@ import {
   SUBJECTS,
   VESTIBULARES,
 } from "@/lib/catalog";
+import { OFFICIAL_EXAMS } from "@/lib/simulados";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -14,6 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/biblioteca",
     "/trilhas",
     "/simulados",
+    "/simulados/exames",
+    "/simulados/ranking",
     "/ranking",
     "/feed",
     "/planos",
@@ -32,6 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...UNIVERSITIES.map((u) => `/universidades/${u.slug}`),
     ...SUBJECTS.map((s) => `/materias/${s.slug}`),
     ...VESTIBULARES.map((v) => `/vestibulares/${v.slug}`),
+    ...OFFICIAL_EXAMS.map((e) => `/simulados/exames/${e.slug}`),
   ].map((path) => ({
     url: `${SITE_URL}${path}`,
     lastModified,

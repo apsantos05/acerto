@@ -8,7 +8,7 @@ import {
   getSimulado,
   getSimuladoQuestions,
 } from "@/lib/simulados";
-import { canTakeSimulado } from "@/lib/gating";
+import { canStartSimulado } from "@/lib/gating";
 
 type SimuladoPageProps = {
   params: Promise<{ id: string }>;
@@ -25,7 +25,7 @@ export default async function SimuladoPage({ params }: SimuladoPageProps) {
   const [questions, activeAttempt, canStart] = await Promise.all([
     getSimuladoQuestions(id),
     getActiveAttempt(id),
-    canTakeSimulado(),
+    canStartSimulado({ kind: simulado.kind, planRequired: simulado.planRequired }),
   ]);
 
   return (

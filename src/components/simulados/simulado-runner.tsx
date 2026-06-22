@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, Clock, Flag, Play, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Clock, Flag, Play, Star, X } from "lucide-react";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
 import { UpgradeButton, UpgradeModal } from "@/components/plan/upgrade-modal";
@@ -23,11 +23,15 @@ type ResultItem = {
   explanation: string | null;
 };
 
+type SubjectScore = { correct: number; total: number; percent: number };
+
 type SubmitResult = {
   score: number;
   total: number;
   results: ResultItem[];
   expired?: boolean;
+  subject_scores?: Record<string, SubjectScore>;
+  tri_scores?: Record<string, number>;
 };
 
 const LETTERS = ["A", "B", "C", "D", "E"];
@@ -37,6 +41,15 @@ function fmt(totalSeconds: number) {
   const m = Math.floor(s / 60);
   const sec = s % 60;
   return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+}
+
+// Cronômetro oficial HH:MM:SS (ex.: 05:30:00).
+function fmtClock(totalSeconds: number) {
+  const s = Math.max(0, Math.floor(totalSeconds));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
 }
 
 export function SimuladoRunner({
@@ -67,12 +80,26 @@ export function SimuladoRunner({
     (activeAttempt?.durationMinutes ?? simulado.durationMinutes) * 60000,
   );
   const [remaining, setRemaining] = useState(0);
+  const remainingRef = useRef(0);
+  useEffect(() => {
+    remainingRef.current = remaining;
+  }, [remaining]);
   const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  // Restaura rascunho salvo (auto-save) ao retomar uma tentativa em andamento.
+  const [answers, setAnswers] = useState<Record<string, string>>(
+    () => activeAttempt?.draftAnswers ?? {},
+  );
   const answersRef = useRef(answers);
   useEffect(() => {
     answersRef.current = answers;
   }, [answers]);
+  const [flagged, setFlagged] = useState<Set<string>>(
+    () => new Set(activeAttempt?.flagged ?? []),
+  );
+  const flaggedRef = useRef(flagged);
+  useEffect(() => {
+    flaggedRef.current = flagged;
+  }, [flagged]);
   const finishedRef = useRef(false);
   const [usedSeconds, setUsedSeconds] = useState(0);
   const [result, setResult] = useState<SubmitResult | null>(null);
@@ -126,6 +153,33 @@ export function SimuladoRunner({
     return () => clearInterval(id);
   }, [phase, attemptId, finish]);
 
+  // Auto-save a cada 30s: respostas + questões marcadas + tempo restante.
+  useEffect(() => {
+    if (phase !== "running" || !attemptId || !supabase) return;
+    const id = setInterval(() => {
+      supabase
+        .rpc("autosave_attempt", {
+          p_attempt_id: attemptId,
+          p_answers: answersRef.current,
+          p_flagged: Array.from(flaggedRef.current),
+          p_time_remaining: Math.max(0, remainingRef.current),
+        })
+        .then(({ error: saveError }) => {
+          if (saveError) console.error("[simulado] autosave:", saveError);
+        });
+    }, 30000);
+    return () => clearInterval(id);
+  }, [phase, attemptId, supabase]);
+
+  const toggleFlag = useCallback((questionId: string) => {
+    setFlagged((prev) => {
+      const next = new Set(prev);
+      if (next.has(questionId)) next.delete(questionId);
+      else next.add(questionId);
+      return next;
+    });
+  }, []);
+
   async function start() {
     setError("");
     if (!supabase || !user) {
@@ -154,8 +208,8 @@ export function SimuladoRunner({
         startError,
         "Não foi possível iniciar.",
       );
-      // Limite mensal (RPC no banco): abre o modal de upgrade.
-      if (/limite de 2 simulados/i.test(message)) {
+      // Limite mensal ou prova premium (RPC no banco): abre o modal de upgrade.
+      if (/limite de 2 simulados|exclusiva do plano|premium/i.test(message)) {
         setShowUpgrade(true);
       } else {
         setError(message);
@@ -208,6 +262,53 @@ export function SimuladoRunner({
             Voltar aos simulados
           </Link>
         </div>
+
+        {result.subject_scores && Object.keys(result.subject_scores).length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                Desempenho por matéria
+              </h3>
+              <div className="mt-4 space-y-3">
+                {Object.entries(result.subject_scores).map(([subject, s]) => (
+                  <div key={subject}>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-slate-700 dark:text-slate-200">{subject}</span>
+                      <span className="font-semibold text-slate-950 dark:text-white">
+                        {s.percent}% <span className="text-xs font-normal text-slate-400">({s.correct}/{s.total})</span>
+                      </span>
+                    </div>
+                    <div className="mt-1 h-2 rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div
+                        className={`h-2 rounded-full ${s.percent >= 70 ? "bg-emerald-500" : s.percent >= 50 ? "bg-amber-500" : "bg-red-500"}`}
+                        style={{ width: `${s.percent}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {result.tri_scores && Object.keys(result.tri_scores).length > 0 ? (
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  Nota TRI estimada
+                </h3>
+                <div className="mt-4 space-y-2">
+                  {Object.entries(result.tri_scores).map(([area, tri]) => (
+                    <div key={area} className="flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2 dark:bg-slate-800/50">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{area}</span>
+                      <span className="text-lg font-bold text-sky-700 dark:text-sky-400">{tri}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
+                  Estimativa não-oficial baseada em acertos e dificuldade das questões.
+                </p>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
         <div className="space-y-4">
           {result.results.map((item, i) => (
@@ -274,14 +375,19 @@ export function SimuladoRunner({
         ) : (
           <>
             <div className="mt-6 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-300">
-              Você já usou seus 2 simulados deste mês no plano Gratuito. Assine o
-              Premium para simulados ilimitados.
+              {simulado.planRequired === "premium_med"
+                ? "Esta prova oficial é exclusiva do plano Premium Medicina."
+                : "Você atingiu o limite de simulados oficiais do plano Gratuito (2/mês). Assine o Premium para ilimitado."}
             </div>
             <div className="mt-4">
               <UpgradeButton
-                label="Liberar simulados ilimitados"
-                title="Limite de simulados atingido"
-                message="O plano Gratuito inclui 2 simulados por mês. Assine o Premium para simulados ilimitados e correção no servidor."
+                label={simulado.planRequired === "premium_med" ? "Liberar com Premium Medicina" : "Liberar simulados ilimitados"}
+                title={simulado.planRequired === "premium_med" ? "Prova Premium Medicina" : "Limite de simulados atingido"}
+                message={
+                  simulado.planRequired === "premium_med"
+                    ? "Os simulados oficiais de FAMERP, Einstein, Santa Casa e SLMandic fazem parte do Premium Medicina."
+                    : "O plano Gratuito inclui 2 simulados oficiais por mês. Assine o Premium para ilimitado e correção no servidor."
+                }
                 className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
               />
             </div>
@@ -311,16 +417,33 @@ export function SimuladoRunner({
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:p-8 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="text-sm text-slate-500 dark:text-slate-400">Questão {index + 1} de {questions.length} · {answered} respondidas</span>
-        <span className={`inline-flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-bold ${timeUp ? "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300" : remaining < 60 ? "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300" : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"}`}>
-          <Clock size={15} /> {fmt(remaining)}
+        <span className="text-sm text-slate-500 dark:text-slate-400">
+          Questão {index + 1} de {questions.length} · {answered} respondidas
+          {flagged.size > 0 ? ` · ${flagged.size} marcada${flagged.size === 1 ? "" : "s"}` : ""}
+        </span>
+        <span className={`inline-flex items-center gap-2 rounded-lg px-3 py-1 text-sm font-bold tabular-nums ${timeUp ? "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300" : remaining < 60 ? "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300" : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"}`}>
+          <Clock size={15} /> {fmtClock(remaining)}
         </span>
       </div>
       <div className="mt-2 h-2 rounded-full bg-slate-100 dark:bg-slate-800">
         <div className="h-2 rounded-full bg-cyan-400 transition-all" style={{ width: `${progress}%` }} />
       </div>
 
-      <p className="mt-6 text-xs font-semibold uppercase text-sky-700 dark:text-sky-400">{question.subject}</p>
+      <div className="mt-6 flex items-center justify-between gap-2">
+        <p className="text-xs font-semibold uppercase text-sky-700 dark:text-sky-400">{question.subject}</p>
+        <button
+          type="button"
+          onClick={() => toggleFlag(question.id)}
+          className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition ${
+            flagged.has(question.id)
+              ? "border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-500/40 dark:bg-amber-500/15 dark:text-amber-300"
+              : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+          }`}
+        >
+          <Star size={14} fill={flagged.has(question.id) ? "currentColor" : "none"} />
+          {flagged.has(question.id) ? "Marcada" : "Revisar depois"}
+        </button>
+      </div>
       <p className="mt-2 text-lg font-medium leading-7 text-slate-950 dark:text-white">{question.questionText}</p>
 
       <div className="mt-5 space-y-2">

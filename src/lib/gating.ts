@@ -127,6 +127,51 @@ export async function canTakeSimulado(viewer?: Viewer): Promise<boolean> {
   }
 }
 
+export const FREE_OFFICIAL_SIMULADOS_PER_MONTH = 2;
+
+/** Quantos simulados OFICIAIS o usuário iniciou no mês. */
+export async function officialSimuladosUsedThisMonth(
+  viewer?: Viewer,
+): Promise<number> {
+  const v = viewer ?? (await getViewer());
+  if (!v.userId) return 0;
+  try {
+    const supabase = await createClient();
+    const monthStart = new Date();
+    monthStart.setUTCDate(1);
+    monthStart.setUTCHours(0, 0, 0, 0);
+    const { count } = await supabase
+      .from("simulado_attempts")
+      .select("simulado:simulados!inner(kind)", { count: "exact", head: true })
+      .eq("user_id", v.userId)
+      .eq("simulado.kind", "oficial")
+      .gte("started_at", monthStart.toISOString());
+    return count ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * Pode iniciar este simulado? Espelha o gating da RPC start_simulado:
+ * - rápido: livre para todos;
+ * - oficial premium_med (FAMERP/Einstein/Santa Casa/SLMandic): só Premium Medicina;
+ * - oficial premium (ENEM/Fuvest/...): Premium+ ilimitado; Free até 2/mês.
+ * Admin: sempre.
+ */
+export async function canStartSimulado(
+  simulado: { kind: "rapido" | "oficial"; planRequired: Plan },
+  viewer?: Viewer,
+): Promise<boolean> {
+  const v = viewer ?? (await getViewer());
+  if (v.isAdmin) return true;
+  if (simulado.planRequired === "premium_med") return viewerIsPremiumMed(v);
+  if (simulado.kind !== "oficial") return true;
+  if (viewerIsPremium(v)) return true;
+  if (!v.userId) return false;
+  return (await officialSimuladosUsedThisMonth(v)) < FREE_OFFICIAL_SIMULADOS_PER_MONTH;
+}
+
 /** Pode favoritar mais um material? (Free: 20; demais: ilimitado) */
 export async function canFavoriteMaterial(viewer?: Viewer): Promise<boolean> {
   const v = viewer ?? (await getViewer());
