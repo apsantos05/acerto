@@ -12,9 +12,13 @@ import {
 import { Navbar } from "@/components/layout/navbar";
 import { FeatureCard } from "@/components/ui/feature-card";
 import { StatCard } from "@/components/ui/stat-card";
-import { materials, stats } from "@/lib/mock-data";
+import { getHomeMedicinaStats } from "@/lib/home-medicina-stats";
 
-export default function Home() {
+export const revalidate = 300;
+
+export default async function Home() {
+  const homeStats = await getHomeMedicinaStats();
+
   return (
     <main className="min-h-screen bg-[#f7fbff] dark:bg-slate-950">
       <Navbar />
@@ -59,7 +63,7 @@ export default function Home() {
               <Trophy className="text-cyan-300" size={30} />
             </div>
             <div className="mt-8 grid grid-cols-3 gap-3">
-              {stats.slice(0, 3).map((stat) => (
+              {homeStats.metrics.map((stat) => (
                 <div key={stat.label} className="rounded-lg bg-white/10 p-3">
                   <p className="text-xl font-semibold">{stat.value}</p>
                   <p className="mt-1 text-xs text-slate-300">{stat.label}</p>
@@ -68,34 +72,47 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-5 space-y-3">
-            {materials.slice(0, 3).map((material) => (
-              <div
-                key={material.title}
-                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-cyan-100 p-2 text-cyan-800 dark:bg-cyan-500/15 dark:text-cyan-300">
-                    <FileText size={18} />
+            {homeStats.recentMaterials.length > 0 ? (
+              homeStats.recentMaterials.map((material) => (
+                <div
+                  key={material.id}
+                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-lg bg-cyan-100 p-2 text-cyan-800 dark:bg-cyan-500/15 dark:text-cyan-300">
+                      <FileText size={18} />
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-950 dark:text-white">
+                        {material.title}
+                      </p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        {material.subject}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium text-slate-950 dark:text-white">
-                      {material.title}
-                    </p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">{material.subject}</p>
-                  </div>
+                  <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                    {material.materialType}
+                  </span>
                 </div>
-                <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                  {material.score}
-                </span>
+              ))
+            ) : (
+              <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-800/50">
+                <p className="font-medium text-slate-950 dark:text-white">
+                  Nenhum material aprovado ainda
+                </p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  Os materiais recentes aparecerão aqui quando forem publicados.
+                </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
 
       <section className="border-y border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-        <div className="mx-auto grid max-w-7xl gap-4 px-6 py-8 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
-          {stats.map((stat) => (
+        <div className="mx-auto grid max-w-7xl gap-4 px-6 py-8 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
+          {homeStats.metrics.map((stat) => (
             <StatCard key={stat.label} label={stat.label} value={stat.value} />
           ))}
         </div>
