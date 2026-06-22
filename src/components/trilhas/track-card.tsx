@@ -3,14 +3,36 @@ import { ArrowRight, Crown, GraduationCap, Gauge, Sparkles } from "lucide-react"
 import type { StudyTrack } from "@/lib/tracks";
 
 const difficultyStyles: Record<string, string> = {
-  fácil: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300",
-  médio: "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300",
-  difícil: "bg-rose-100 text-rose-800 dark:bg-rose-500/15 dark:text-rose-300",
+  facil: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300",
+  medio: "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300",
+  dificil: "bg-rose-100 text-rose-800 dark:bg-rose-500/15 dark:text-rose-300",
 };
+
+const difficultyLabels: Record<string, string> = {
+  facil: "F\u00e1cil",
+  medio: "M\u00e9dio",
+  dificil: "Dif\u00edcil",
+};
+
+const legacyDifficultyAliases: Record<string, string> = {
+  "f\u00c3\u00a1cil": "facil",
+  "m\u00c3\u00a9dio": "medio",
+  "dif\u00c3\u00adcil": "dificil",
+};
+
+function normalizeDifficulty(value: string) {
+  const lowerValue = value.toLowerCase();
+  return (
+    legacyDifficultyAliases[lowerValue] ??
+    lowerValue.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  );
+}
 
 export function TrackCard({ track }: { track: StudyTrack }) {
   const isMed = track.planRequired === "premium_med";
-  const diff = difficultyStyles[track.difficulty] ?? difficultyStyles["médio"];
+  const normalizedDifficulty = normalizeDifficulty(track.difficulty);
+  const diff = difficultyStyles[normalizedDifficulty] ?? difficultyStyles.medio;
+  const difficultyLabel = difficultyLabels[normalizedDifficulty] ?? track.difficulty;
 
   return (
     <article className="flex h-full flex-col justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-sky-500/40">
@@ -43,9 +65,9 @@ export function TrackCard({ track }: { track: StudyTrack }) {
         <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
           <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 font-semibold ${diff}`}>
             <Gauge size={13} />
-            {track.difficulty}
+            {difficultyLabel}
           </span>
-          <span className="text-slate-400 dark:text-slate-500">·</span>
+          <span className="text-slate-400 dark:text-slate-500">{"\u00b7"}</span>
           <span className="font-semibold text-slate-500 dark:text-slate-400">
             {track.university}
           </span>
@@ -54,7 +76,7 @@ export function TrackCard({ track }: { track: StudyTrack }) {
         {track.prioritySubjects.length > 0 ? (
           <div className="mt-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
-              Matérias prioritárias
+              {"Mat\u00e9rias priorit\u00e1rias"}
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
               {track.prioritySubjects.map((subject) => (

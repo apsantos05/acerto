@@ -21,6 +21,8 @@ type TrackScheduleProps = {
   fullAccess: boolean;
 };
 
+const milestones = [25, 50, 75, 100];
+
 export function TrackSchedule({
   trackId,
   weeks,
@@ -48,6 +50,12 @@ export function TrackSchedule({
 
   const completedCount = completed.size;
   const percent = totalTasks ? Math.round((completedCount / totalTasks) * 100) : 0;
+  const totalWeeks = weeks.length;
+  const currentWeek =
+    weeks.find((week) => week.tasks.some((task) => !completed.has(task.id)))
+      ?.weekNumber ??
+    weeks[weeks.length - 1]?.weekNumber ??
+    0;
 
   function weekUnlocked(weekNumber: number) {
     return fullAccess || weekNumber <= 1;
@@ -144,9 +152,14 @@ export function TrackSchedule({
       {/* Barra de progresso */}
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
-            <ListChecks size={18} className="text-sky-700 dark:text-sky-400" />
-            Progresso: {completedCount}/{totalTasks} tarefas ({percent}%)
+          <div>
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+              <ListChecks size={18} className="text-sky-700 dark:text-sky-400" />
+              Progresso: {completedCount}/{totalTasks} tarefas ({percent}%)
+            </div>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              Semana {currentWeek} de {totalWeeks}
+            </p>
           </div>
           {user ? (
             <button
@@ -160,11 +173,33 @@ export function TrackSchedule({
             </button>
           ) : null}
         </div>
-        <div className="mt-3 h-2 rounded-full bg-slate-100 dark:bg-slate-800">
+        <div className="relative mt-4 h-2 rounded-full bg-slate-100 dark:bg-slate-800">
           <div
             className="h-2 rounded-full bg-gradient-to-r from-sky-500 to-cyan-400 transition-all"
             style={{ width: `${percent}%` }}
           />
+          {milestones.map((milestone) => (
+            <span
+              key={milestone}
+              className={`absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 ${
+                percent >= milestone
+                  ? "border-cyan-300 bg-slate-950 dark:bg-white"
+                  : "border-white bg-slate-300 dark:border-slate-900 dark:bg-slate-600"
+              }`}
+              style={{ left: `${milestone}%` }}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
+        <div className="mt-3 grid grid-cols-4 gap-2 text-center text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          {milestones.map((milestone) => (
+            <span
+              key={milestone}
+              className={percent >= milestone ? "text-sky-700 dark:text-sky-300" : ""}
+            >
+              {milestone}%
+            </span>
+          ))}
         </div>
         {!user ? (
           <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
