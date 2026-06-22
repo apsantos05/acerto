@@ -255,7 +255,7 @@ insert into public.simulados
   (title, description, vestibular, faculty, duration_minutes, official_minutes, official_questions,
    difficulty, subjects, question_count, status, kind, exam_slug, exam_day, plan_required, official_subjects, rules)
 select v.title, v.description, v.vestibular, v.faculty, v.dur, v.dur, v.qn,
-       'difícil', v.subjects, 0, 'published', 'oficial', v.slug, v.day, v.plan, v.subjects, v.rules
+       'difícil', v.subjects, 0, 'published', 'oficial', v.slug, v.day, v.plan, to_jsonb(v.subjects), v.rules
 from (values
   ('Simulado Oficial ENEM — 1º dia', 'Reprodução do 1º dia do ENEM: Linguagens e Ciências Humanas.', 'ENEM', 'Geral', 330, 90, 'enem', 1, 'premium', array['Linguagens','Ciências Humanas'], 'Linguagens (45) + Humanas (45). 5h30 de prova.'),
   ('Simulado Oficial ENEM — 2º dia', 'Reprodução do 2º dia do ENEM: Matemática e Ciências da Natureza.', 'ENEM', 'Geral', 300, 90, 'enem', 2, 'premium', array['Matemática','Ciências da Natureza'], 'Matemática (45) + Natureza (45). 5h de prova.'),
