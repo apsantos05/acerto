@@ -1,5 +1,5 @@
 /**
- * Acerte — Limpeza de prefixos numéricos artificiais nos títulos de materiais.
+ * AcertaVest — Limpeza de prefixos numéricos artificiais nos títulos de materiais.
  *
  * Os títulos vieram do nome do arquivo na importação e alguns ficaram com um
  * contador no começo (ex.: "999 13.7 ÁREAS..."). Este script remove esse

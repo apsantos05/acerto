@@ -1,5 +1,5 @@
 /**
- * Acerte — Builder do seed de materiais oficiais (import por LINK, não re-hospeda PDFs).
+ * AcertaVest — Builder do seed de materiais oficiais (import por LINK, não re-hospeda PDFs).
  *
  * Gera:
  *   - content/materials.json        (metadados estruturados)
@@ -181,7 +181,7 @@ writeFileSync("content/materials.json", JSON.stringify(items, null, 2), "utf8");
 const esc = (s) => s.replace(/'/g, "''");
 const arr = (a) => "ARRAY[" + a.map((t) => `'${esc(t)}'`).join(",") + "]::text[]";
 const sql = [];
-sql.push("-- ACERTE — Seed de materiais oficiais (import por LINK). Idempotente (dedup por external_url).");
+sql.push("-- ACERTAVEST — Seed de materiais oficiais (import por LINK). Idempotente (dedup por external_url).");
 sql.push("-- Pré-requisito: supabase/material_types.sql (tipos + índice único external_url).");
 sql.push("");
 for (const it of items) {

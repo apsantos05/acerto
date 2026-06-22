@@ -1,4 +1,4 @@
-# ACERTO — MEMÓRIA COMPLETA DO PROJETO
+# ACERTAVEST — MEMÓRIA COMPLETA DO PROJETO
 
 > Documento de handoff para futuras sessões. Resume arquitetura, banco, scripts,
 > decisões e histórico. Mantenha atualizado ao concluir mudanças relevantes.
@@ -8,7 +8,7 @@
 
 ## Visão Geral
 
-- **O que é:** AcerteVest (marca "Acerte") — plataforma SaaS para **vestibulandos de
+- **O que é:** AcertaVest — plataforma SaaS para **vestibulandos de
   Medicina**. Posicionamento: "o LinkedIn + GitHub do futuro médico". Slogan:
   **"Estude junto. Passe junto."**
 - **Público-alvo:** estudantes que vão prestar Medicina (Fuvest/USP, Comvest/Unicamp,
@@ -31,7 +31,7 @@
     `node_modules/next/dist/docs/` antes de usar APIs do Next.
 - **Banco / Auth / Storage:** **Supabase** (PostgreSQL + Auth + Storage).
 - **Hospedagem:** **Vercel** (deploy automático no push para `main`).
-- **Repositório:** `github.com/apsantos05/acerto` · branch principal **`main`**.
+- **Repositório:** `github.com/apsantos05/acertavest` · branch principal **`main`**.
 - **Serviços externos:** Anthropic API (Claude **Haiku 4.5**) para classificação/
   títulos por IA; Telegram (MTProto via gramjs) para ingestão; Tesseract + Poppler
   (OCR, binários de sistema).

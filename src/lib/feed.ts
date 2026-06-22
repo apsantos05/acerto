@@ -54,7 +54,7 @@ function firstRelation<T>(value: T | T[] | null): T | null {
 function normalizeAuthor(profile: ProfileRow | ProfileRow[] | null): FeedAuthor {
   const author = firstRelation(profile);
   const name =
-    author?.full_name || author?.email?.split("@")[0] || "Estudante Acerte";
+    author?.full_name || author?.email?.split("@")[0] || "Estudante AcertaVest";
 
   return {
     id: author?.id ?? "",

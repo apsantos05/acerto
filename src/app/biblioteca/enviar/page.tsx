@@ -8,7 +8,7 @@ export default function EnviarMaterialPage() {
       <PageHeader
         eyebrow="Biblioteca"
         title="Enviar material"
-        description="Compartilhe PDFs, imagens ou links externos com a comunidade do Acerte."
+        description="Compartilhe PDFs, imagens ou links externos com a comunidade do AcertaVest."
       />
       <UploadMaterialForm />
     </AppShell>

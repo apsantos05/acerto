@@ -24,10 +24,10 @@ const CHECKOUT_HREF = "/api/checkout/premium-med";
 export const metadata: Metadata = {
   title: "Premium Medicina — aprove na faculdade dos seus sonhos",
   description:
-    "Acervo completo, simulados oficiais por banca, correção de redação, trilhas por universidade e cronograma personalizado. O plano do AcerteVest feito para quem vai cursar Medicina.",
+    "Acervo completo, simulados oficiais por banca, correção de redação, trilhas por universidade e cronograma personalizado. O plano do AcertaVest feito para quem vai cursar Medicina.",
   alternates: { canonical: "/premium-medicina" },
   openGraph: {
-    title: "AcerteVest Premium Medicina",
+    title: "AcertaVest Premium Medicina",
     description:
       "Acervo completo, simulados oficiais, correção de redação e trilhas por universidade para passar em Medicina.",
     url: `${SITE_URL}/premium-medicina`,
@@ -420,7 +420,7 @@ export default function PremiumMedicinaPage() {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
           <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl dark:text-white">
-            Quem estuda com o AcerteVest
+            Quem estuda com o AcertaVest
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
             A comunidade que estuda junto para passar junto.

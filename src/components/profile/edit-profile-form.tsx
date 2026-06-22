@@ -394,7 +394,7 @@ export function EditProfileForm({ profile }: EditProfileFormProps) {
 
       <p className="mt-5 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:bg-slate-800/50 dark:text-slate-300">
         Suas conquistas e badges são concedidos automaticamente conforme sua
-        participação no Acerte — materiais, posts, simulados, reputação e
+        participação no AcertaVest — materiais, posts, simulados, reputação e
         sequência de estudos.
       </p>
 

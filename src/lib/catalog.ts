@@ -4,10 +4,10 @@
 // consulta da biblioteca.
 
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://acertevest.com.br"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://acertavest.com.br"
 ).replace(/\/$/, "");
 
-export const SITE_NAME = "AcerteVest";
+export const SITE_NAME = "AcertaVest";
 
 export type CatalogEntry = {
   slug: string;

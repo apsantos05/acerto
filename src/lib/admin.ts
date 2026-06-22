@@ -69,7 +69,7 @@ function toAuthor(value: OwnerRow | OwnerRow[] | null): AdminAuthor | null {
   return {
     id: owner.id,
     username: owner.username,
-    fullName: owner.full_name || "Estudante Acerte",
+    fullName: owner.full_name || "Estudante AcertaVest",
     avatarUrl: owner.avatar_url,
   };
 }

@@ -12,7 +12,7 @@ export default async function ConfiguracoesPerfilPage() {
       <PageHeader
         eyebrow="Configurações"
         title="Editar perfil"
-        description="Atualize as informações públicas que aparecem para outros estudantes no Acerte."
+        description="Atualize as informações públicas que aparecem para outros estudantes no AcertaVest."
       />
 
       {profile ? (

@@ -1,5 +1,5 @@
 /**
- * Acerte — Etapa 2.5 (opcional): OCR de PDFs escaneados.
+ * AcertaVest — Etapa 2.5 (opcional): OCR de PDFs escaneados.
  *
  * Detecta PDFs sem camada de texto (needsOcr=true ou cache de texto vazio),
  * roda OCR e reclassifica esses itens. Marca needsOcr=false ao terminar.

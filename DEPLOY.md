@@ -1,6 +1,6 @@
-# 🚀 Deploy do Acerte na Vercel
+# 🚀 Deploy do AcertaVest na Vercel
 
-Guia completo para publicar o Acerte (Next.js 16 + Supabase) em produção.
+Guia completo para publicar o AcertaVest (Next.js 16 + Supabase) em produção.
 
 ---
 
@@ -8,7 +8,7 @@ Guia completo para publicar o Acerte (Next.js 16 + Supabase) em produção.
 
 - [x] Build local passando (`npm run build` → exit 0).
 - [x] `.env.local` **não** versionado (já coberto pelo `.gitignore`).
-- [x] Repositório no GitHub: `https://github.com/apsantos05/acerto`.
+- [x] Repositório no GitHub: `https://github.com/apsantos05/acertavest`.
 - [ ] Últimas alterações **commitadas e enviadas** para a branch `main` (a Vercel faz build a partir do que está no GitHub).
 - [ ] Conta na Vercel conectada ao GitHub.
 
@@ -34,13 +34,13 @@ Apenas duas — ambas públicas (prefixo `NEXT_PUBLIC_`, embutidas no bundle no 
 ## 3. Deploy via Dashboard da Vercel (recomendado)
 
 1. Acesse https://vercel.com/new
-2. **Import Git Repository** → selecione `apsantos05/acerto`.
+2. **Import Git Repository** → selecione `apsantos05/acertavest`.
 3. A Vercel detecta **Next.js** automaticamente (não mude Build Command nem Output).
    - Framework Preset: `Next.js`
    - Build Command: `next build` (padrão)
    - Install Command: `npm install` (padrão)
 4. Abra **Environment Variables** e adicione as duas variáveis da seção 2 (marque os 3 ambientes).
-5. Clique **Deploy**. Ao terminar, você recebe uma URL `https://acerto-xxxx.vercel.app`.
+5. Clique **Deploy**. Ao terminar, você recebe uma URL `https://acertavest-xxxx.vercel.app`.
 
 ---
 
@@ -61,12 +61,12 @@ vercel --prod          # deploy de produção
 
 ## 5. Configuração no Supabase APÓS o deploy (CRÍTICO para o Auth)
 
-Com a URL de produção em mãos (ex.: `https://acerto.vercel.app`):
+Com a URL de produção em mãos (ex.: `https://acertavest.vercel.app`):
 
 1. Supabase → **Authentication → URL Configuration**:
-   - **Site URL**: `https://acerto.vercel.app`
+   - **Site URL**: `https://acertavest.vercel.app`
    - **Redirect URLs**: adicione
-     - `https://acerto.vercel.app/**`
+     - `https://acertavest.vercel.app/**`
      - `https://*.vercel.app/**` (para deploys de preview)
      - `http://localhost:3000/**` (para desenvolvimento)
 2. **Authentication → Providers → Email**:

@@ -68,7 +68,7 @@ export function PostModerationCard({ post }: PostModerationCardProps) {
     );
   }
 
-  const authorName = post.author?.fullName ?? "Estudante Acerte";
+  const authorName = post.author?.fullName ?? "Estudante AcertaVest";
 
   return (
     <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">

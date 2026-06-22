@@ -1,5 +1,5 @@
 /**
- * Acerte — Curadoria de títulos inválidos (lê o PDF e gera um título real).
+ * AcertaVest — Curadoria de títulos inválidos (lê o PDF e gera um título real).
  *
  * Detecta materiais cujo título parece UUID/hash/ID de arquivo ou é genérico,
  * baixa o PDF do Storage, extrai o texto das primeiras páginas (pdf-parse e,

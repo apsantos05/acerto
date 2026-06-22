@@ -1,5 +1,5 @@
 /**
- * Acerte — Etapa 2: classificar e organizar os PDFs do manifesto.
+ * AcertaVest — Etapa 2: classificar e organizar os PDFs do manifesto.
  *
  * Heurísticas (nome do arquivo + legenda + texto extraído do PDF) inferem
  * universidade, vestibular, matéria, ano, tipo, editora, dificuldade,

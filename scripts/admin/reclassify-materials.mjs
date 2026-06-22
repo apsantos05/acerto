@@ -1,5 +1,5 @@
 /**
- * Acerte — Reclassificação em massa de materiais (curadoria).
+ * AcertaVest — Reclassificação em massa de materiais (curadoria).
  *
  * Lê materiais do Supabase, reclassifica os METADADOS por heurística
  * conservadora (só altera quando há detecção confiante; nunca rebaixa para

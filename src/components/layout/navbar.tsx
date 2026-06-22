@@ -50,7 +50,7 @@ export function Navbar() {
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-cyan-300 dark:bg-sky-500 dark:text-slate-950">
             <BookOpenCheck size={21} />
           </span>
-          <span className="text-lg font-semibold">Acerte</span>
+          <span className="text-lg font-semibold">AcertaVest</span>
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">

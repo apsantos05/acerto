@@ -247,7 +247,7 @@ function normalizeOwner(value: OwnerRow | OwnerRow[] | null): MaterialAuthor | n
   return {
     id: owner.id,
     username: owner.username,
-    fullName: owner.full_name || "Estudante Acerte",
+    fullName: owner.full_name || "Estudante AcertaVest",
     avatarUrl: owner.avatar_url,
     plan: normalizePlan(owner.plan),
   };

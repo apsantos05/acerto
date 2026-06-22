@@ -1,5 +1,5 @@
 /**
- * Autoteste da integração Acerte <-> Supabase.
+ * Autoteste da integração AcertaVest <-> Supabase.
  *
  * Uso:
  *   node scripts/supabase-selftest.mjs
@@ -72,7 +72,7 @@ const log = (step, status, detail = "") => {
 };
 
 async function main() {
-  console.log("== Autoteste Supabase — Acerte ==\n");
+  console.log("== Autoteste Supabase — AcertaVest ==\n");
 
   // 1. ENV
   const { env, error } = loadEnv();
@@ -133,7 +133,7 @@ async function main() {
     const { data, error: e } = await supabase.auth.signUp({
       email: testEmail,
       password: testPass,
-      options: { data: { full_name: "Selftest Acerte" } },
+      options: { data: { full_name: "Selftest AcertaVest" } },
     });
     if (e) {
       log("4. Cadastro (signUp)", "FAIL", e.message);

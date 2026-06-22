@@ -11,7 +11,7 @@ export default function LoginPage() {
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-cyan-300">
               <BookOpenCheck size={21} />
             </span>
-            <span className="text-lg font-semibold">Acerte</span>
+            <span className="text-lg font-semibold">AcertaVest</span>
           </Link>
           <h1 className="text-3xl font-semibold text-slate-950 dark:text-white">Entrar</h1>
           <p className="mt-2 text-slate-600 dark:text-slate-300">

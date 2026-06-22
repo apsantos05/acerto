@@ -4,8 +4,8 @@ import type { Plan } from "@/lib/plan";
 
 // Planos pagos e seus valores mensais (BRL).
 export const PAID_PLANS = {
-  premium: { amount: 19, reason: "Acerte Premium" },
-  premium_med: { amount: 39, reason: "Acerte Premium Medicina" },
+  premium: { amount: 19, reason: "AcertaVest Premium" },
+  premium_med: { amount: 39, reason: "AcertaVest Premium Medicina" },
 } as const;
 
 export type PaidPlan = keyof typeof PAID_PLANS;
@@ -25,7 +25,7 @@ function accessToken(): string {
 }
 
 export function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL || "https://acertevest.com.br").replace(
+  return (process.env.NEXT_PUBLIC_SITE_URL || "https://acertavest.com.br").replace(
     /\/$/,
     "",
   );

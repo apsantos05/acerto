@@ -46,7 +46,7 @@ function normalizeRanking(row: RankingRow): RankingEntry {
     position: Number(row.rank_position),
     profileId: row.profile_id,
     username: row.username ?? row.profile_id,
-    fullName: row.full_name || "Estudante Acerte",
+    fullName: row.full_name || "Estudante AcertaVest",
     avatarUrl: row.avatar_url,
     city: row.city ?? "",
     state: row.state ?? "",

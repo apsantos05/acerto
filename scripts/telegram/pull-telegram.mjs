@@ -1,5 +1,5 @@
 /**
- * Acerte — Etapa 1: baixar PDFs do Telegram (cliente MTProto via gramjs).
+ * AcertaVest — Etapa 1: baixar PDFs do Telegram (cliente MTProto via gramjs).
  *
  * Pré-requisitos:
  *   npm i -D telegram input

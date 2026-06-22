@@ -1,5 +1,5 @@
 /**
- * Acerte — Etapa 3: importar os PDFs classificados para a biblioteca.
+ * AcertaVest — Etapa 3: importar os PDFs classificados para a biblioteca.
  *
  * Sobe cada PDF para o bucket "materials" e grava em public.materials com a
  * classificação completa (universidade, vestibular, matéria, tipo, editora,

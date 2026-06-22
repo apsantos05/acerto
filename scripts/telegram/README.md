@@ -3,7 +3,7 @@
 Pipeline para baixar PDFs de canais/grupos do Telegram, **classificá-los**
 (universidade, vestibular, matéria, ano, tipo, editora, dificuldade,
 prioridade), opcionalmente **rodar OCR** em PDFs escaneados e **enriquecer com
-IA** (resumo, descrição, tags), e publicar na biblioteca do Acerte — sem
+IA** (resumo, descrição, tags), e publicar na biblioteca do AcertaVest — sem
 duplicações e pendentes para moderação.
 
 > ⚠️ Tudo roda **localmente, na sua máquina**, com as suas credenciais. O login

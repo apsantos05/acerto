@@ -1,4 +1,4 @@
-# Monetização — AcerteVest
+# Monetização — AcertaVest
 
 Estratégia freemium: o gratuito constrói hábito e SEO (acervo público
 indexável); o Premium converte quem está perto da prova e quer vantagem.

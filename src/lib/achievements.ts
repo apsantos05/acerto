@@ -1,4 +1,4 @@
-// Catálogo de conquistas/badges do Acerte.
+// Catálogo de conquistas/badges do AcertaVest.
 // Os códigos e limites espelham public.sync_user_badges em
 // supabase/profile_revamp.sql — mantenha os dois lados em sincronia.
 

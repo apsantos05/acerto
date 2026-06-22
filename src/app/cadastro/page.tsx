@@ -10,7 +10,7 @@ export default function CadastroPage() {
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-300 text-slate-950">
             <BookOpenCheck size={21} />
           </span>
-          <span className="text-lg font-semibold">Acerte</span>
+          <span className="text-lg font-semibold">AcertaVest</span>
         </Link>
         <div>
           <p className="text-sm font-semibold uppercase text-cyan-300">

@@ -1,5 +1,5 @@
 /**
- * Acerte — Builder do seed de simulados (questões autorais + regras oficiais).
+ * AcertaVest — Builder do seed de simulados (questões autorais + regras oficiais).
  * Lê content/simulados.json e gera supabase/seed_simulados.sql.
  * Idempotente: ATUALIZA metadados (regras, tempos) de simulados existentes e
  * INSERE os novos (com suas questões) por título.
@@ -12,7 +12,7 @@ const jsonbLit = (obj) => `'${esc(JSON.stringify(obj))}'::jsonb`;
 const arrLit = (a) => "ARRAY[" + a.map((s) => `'${esc(s)}'`).join(",") + "]::text[]";
 
 const out = [];
-out.push("-- ACERTE — Seed de simulados (questões AUTORAIS + regras oficiais).");
+out.push("-- ACERTAVEST — Seed de simulados (questões AUTORAIS + regras oficiais).");
 out.push("-- Pré-requisitos: supabase/simulados.sql e supabase/simulado_timer.sql.");
 out.push("");
 

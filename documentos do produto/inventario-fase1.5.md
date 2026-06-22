@@ -1,4 +1,4 @@
-# Acerte — Inventário de Fontes Oficiais (Fase 1.5)
+# AcertaVest — Inventário de Fontes Oficiais (Fase 1.5)
 
 > URLs **reais e verificadas** via crawl dos repositórios oficiais (2010–2025).
 > Regra: nada inventado. Onde a fonte bloqueou acesso automatizado (403), está marcado.

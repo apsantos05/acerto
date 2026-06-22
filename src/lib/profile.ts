@@ -124,13 +124,13 @@ function normalizeProfile(row: ProfileRow): StudentProfile {
   return {
     id: row.id,
     username: row.username ?? row.id,
-    fullName: row.full_name || "Estudante Acerte",
+    fullName: row.full_name || "Estudante AcertaVest",
     email: row.email,
     avatarUrl: row.avatar_url,
     coverUrl: row.cover_url,
     bio:
       row.bio ??
-      "Vestibulando de Medicina organizando estudos, materiais e evolução no Acerte.",
+      "Vestibulando de Medicina organizando estudos, materiais e evolução no AcertaVest.",
     objective: row.objective ?? "Medicina",
     dreamFaculty: row.dream_faculty ?? "Medicina",
     targetExams: row.target_exams ?? [],

@@ -1,4 +1,4 @@
-# Acerte
+# AcertaVest
 
 Plataforma web para vestibulandos de Medicina compartilharem provas, simulados,
 resumos e materiais de estudo.

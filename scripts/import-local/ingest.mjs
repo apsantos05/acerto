@@ -1,5 +1,5 @@
 /**
- * Acerte — Ingestão LOCAL (sem API do Telegram).
+ * AcertaVest — Ingestão LOCAL (sem API do Telegram).
  *
  * Lê PDFs de uma pasta local (recursivo), extrai texto, classifica e
  * deduplica por sha256 — gerando content/import-local/curated.json, no mesmo

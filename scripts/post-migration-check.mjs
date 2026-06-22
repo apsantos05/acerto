@@ -1,5 +1,5 @@
 /**
- * Verificação pós-migração (lado aplicação) — Acerte x Supabase.
+ * Verificação pós-migração (lado aplicação) — AcertaVest x Supabase.
  *
  * Uso:  node scripts/post-migration-check.mjs
  *

@@ -59,7 +59,7 @@ export const log = (status, msg) => {
   console.log(`${icon} ${msg}`);
 };
 
-// Namespace fixo do Acerte para gerar IDs determinísticos (idempotência).
+// Namespace fixo do AcertaVest para gerar IDs determinísticos (idempotência).
 const NAMESPACE = "9b1f6d2e-6a3c-5e7b-8c4d-acer7e000001";
 
 function parseUuid(uuid) {

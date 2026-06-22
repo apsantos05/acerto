@@ -1,5 +1,5 @@
 /**
- * Acerte — Etapa 2.7 (opcional): classificação/resumo por IA (Claude Haiku).
+ * AcertaVest — Etapa 2.7 (opcional): classificação/resumo por IA (Claude Haiku).
  *
  * Para cada material ainda pendente (não importado, não skip), gera com IA:
  * resumo curto, descrição, tags, dificuldade, matéria, vestibular e

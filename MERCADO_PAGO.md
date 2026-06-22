@@ -1,4 +1,4 @@
-# 💳 Checkout do Acerte — Mercado Pago Assinaturas
+# 💳 Checkout do AcertaVest — Mercado Pago Assinaturas
 
 Integração de pagamento recorrente para os planos **Premium (R$ 19/mês)** e
 **Premium Medicina (R$ 39/mês)**, usando a API de **Preapproval (Assinaturas)**
@@ -21,7 +21,7 @@ Rode no **SQL Editor do Supabase** (idempotente):
 
 | Variável | Onde usar | Descrição |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Front + servidor | URL pública (ex.: `https://acerto.vercel.app`). Usada nos redirects e no `notification_url`. |
+| `NEXT_PUBLIC_SITE_URL` | Front + servidor | URL pública (ex.: `https://acertavest.vercel.app`). Usada nos redirects e no `notification_url`. |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Servidor** | Supabase → Settings → API → `service_role`. Só o webhook usa. **Nunca** `NEXT_PUBLIC_`. |
 | `MERCADO_PAGO_ACCESS_TOKEN` | **Servidor** | Mercado Pago → Suas integrações → sua aplicação → Credenciais (Teste ou Produção). |
 | `MERCADO_PAGO_WEBHOOK_SECRET` | **Servidor** | Mercado Pago → Webhooks → "Assinatura secreta". Valida o `x-signature`. |
@@ -81,7 +81,7 @@ Retornos do usuário: `/checkout/success`, `/checkout/pending`, `/checkout/failu
 3. Suba o site num domínio público (preview da Vercel) — o webhook precisa ser
    acessível pela internet. (Para localhost, use um túnel tipo `ngrok` e ajuste o
    `NEXT_PUBLIC_SITE_URL`.)
-4. Logue no Acerte, vá em `/planos`, clique em **Assinar Premium**.
+4. Logue no AcertaVest, vá em `/planos`, clique em **Assinar Premium**.
 5. No checkout do MP, pague com o **comprador de teste** e os
    **cartões de teste** do MP (ex.: aprovado `APRO`, recusado `OTHE`).
 6. Confira:
