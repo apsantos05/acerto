@@ -35,6 +35,19 @@ export default async function TrilhasPage() {
         </span>
       </div>
 
+      <div className="mt-3 flex flex-col items-start justify-between gap-3 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm sm:flex-row sm:items-center dark:border-sky-500/30 dark:bg-sky-500/10">
+        <span className="text-slate-700 dark:text-slate-200">
+          <strong className="text-slate-950 dark:text-white">Não sabe qual trilha seguir?</strong>{" "}
+          O Diagnóstico de Aprovação recomenda a ideal para você.
+        </span>
+        <Link
+          href="/diagnostico"
+          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-sky-300 bg-white px-4 py-2 font-semibold text-sky-800 transition hover:bg-sky-50 dark:border-sky-500/40 dark:bg-slate-900 dark:text-sky-300 dark:hover:bg-slate-800"
+        >
+          Fazer diagnóstico
+        </Link>
+      </div>
+
       {tracks.length > 0 ? (
         <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {tracks.map((track) => (

@@ -21,6 +21,7 @@ const navItems = [
 
 const mobileNavItems = [
   { href: "/", label: "Início" },
+  { href: "/diagnostico", label: "Diagnóstico" },
   { href: "/biblioteca", label: "Biblioteca" },
   { href: "/trilhas", label: "Trilhas" },
   { href: "/universidades", label: "Universidades" },

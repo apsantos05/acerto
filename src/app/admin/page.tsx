@@ -13,8 +13,21 @@ import {
   isCurrentUserAdmin,
 } from "@/lib/admin";
 import { getTracks } from "@/lib/tracks";
+import {
+  getAdminDiagnostics,
+  type AdminDiagnosticData,
+} from "@/lib/diagnostico-data";
 
-type AdminTab = "pending" | "all" | "posts" | "simulados" | "trilhas";
+type AdminTab = "pending" | "all" | "posts" | "simulados" | "trilhas" | "diagnosticos";
+
+const EMPTY_DIAGNOSTICS: AdminDiagnosticData = {
+  items: [],
+  total: 0,
+  avgScore: 0,
+  leadsThisWeek: 0,
+  byPlan: {},
+  universities: [],
+};
 
 type AdminPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -37,24 +50,30 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const sp = (await searchParams) ?? {};
   const tabParam = getParam(sp, "tab") ?? "pending";
   const tab: AdminTab = (
-    ["pending", "all", "posts", "simulados", "trilhas"] as const
+    ["pending", "all", "posts", "simulados", "trilhas", "diagnosticos"] as const
   ).includes(tabParam as AdminTab)
     ? (tabParam as AdminTab)
     : "pending";
   const page = Math.max(1, Number(getParam(sp, "page")) || 1);
   const search = (getParam(sp, "q") ?? "").trim();
+  const diagUniversity = (getParam(sp, "uni") ?? "").trim();
+  const diagPlan = (getParam(sp, "plan") ?? "").trim();
   const isMaterialTab = tab === "pending" || tab === "all";
 
-  const [counts, materialsRes, posts, simulados, tracks, facets] = await Promise.all([
-    getAdminCounts(),
-    isMaterialTab
-      ? getAdminMaterials(tab, page, ADMIN_PAGE_SIZE, search)
-      : Promise.resolve({ materials: [], total: 0 }),
-    tab === "posts" ? getRecentPosts() : Promise.resolve([]),
-    tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
-    tab === "trilhas" ? getTracks(true) : Promise.resolve([]),
-    getAdminFacets(),
-  ]);
+  const [counts, materialsRes, posts, simulados, tracks, diagnostics, facets] =
+    await Promise.all([
+      getAdminCounts(),
+      isMaterialTab
+        ? getAdminMaterials(tab, page, ADMIN_PAGE_SIZE, search)
+        : Promise.resolve({ materials: [], total: 0 }),
+      tab === "posts" ? getRecentPosts() : Promise.resolve([]),
+      tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
+      tab === "trilhas" ? getTracks(true) : Promise.resolve([]),
+      tab === "diagnosticos"
+        ? getAdminDiagnostics({ university: diagUniversity, plan: diagPlan })
+        : Promise.resolve(EMPTY_DIAGNOSTICS),
+      getAdminFacets(),
+    ]);
 
   return (
     <AppShell>
@@ -82,6 +101,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           posts={posts}
           simulados={simulados}
           tracks={tracks}
+          diagnostics={diagnostics}
+          diagUniversity={diagUniversity}
+          diagPlan={diagPlan}
           facets={facets}
         />
       </div>

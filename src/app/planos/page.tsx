@@ -109,6 +109,19 @@ export default async function PlanosPage({ searchParams }: PlanosPageProps) {
         </p>
       </div>
 
+      <div className="mx-auto mt-6 flex max-w-2xl flex-col items-center justify-between gap-3 rounded-xl border border-sky-200 bg-sky-50 px-5 py-4 text-center sm:flex-row sm:text-left dark:border-sky-500/30 dark:bg-sky-500/10">
+        <p className="text-sm text-slate-700 dark:text-slate-200">
+          <strong className="text-slate-950 dark:text-white">Não sabe qual plano escolher?</strong>{" "}
+          Faça o Diagnóstico de Aprovação e receba uma recomendação personalizada.
+        </p>
+        <Link
+          href="/diagnostico"
+          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-sky-300 bg-white px-4 py-2 text-sm font-semibold text-sky-800 transition hover:bg-sky-50 dark:border-sky-500/40 dark:bg-slate-900 dark:text-sky-300 dark:hover:bg-slate-800"
+        >
+          Fazer diagnóstico
+        </Link>
+      </div>
+
       <div className="mt-10 grid gap-6 lg:grid-cols-3">
         {plans.map((plan) => {
           const Icon = plan.icon;

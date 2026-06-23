@@ -148,7 +148,8 @@ archived_at. RLS own-only.
 23. **`plan_gating.sql`** (limite de simulados na RPC + trigger de favoritos) →
 24. **`study_tracks.sql`** (trilhas + cronograma + progresso + seed de 11 trilhas) →
 25. **`payments.sql`** (subscriptions + payment_events + trigger anti-tamper de plano) →
-26. **`simulados_oficiais.sql`** (categoria oficial + auto-save/flags + TRI + ranking + seed das 9 provas).
+26. **`simulados_oficiais.sql`** (categoria oficial + auto-save/flags + TRI + ranking + seed das 9 provas) →
+27. **`diagnostico_aprovacao.sql`** (approval_diagnostics + RLS; insert só via service role).
 Seeds: `seed_materials.sql`, `seed_feed.sql`, `seed_simulados.sql`.
 Auditoria documentada em `supabase/database_audit.md`.
 
@@ -387,6 +388,32 @@ Categoria que reproduz os vestibulares. Em vez de tabelas novas, estende as exis
   trilha, ativar/desativar, definir plano exigido, gerenciar semanas e tarefas
   (vincular material/simulado por id). `getAdminCounts` agora inclui `tracks`.
 - **UX:** componentes já nascem com dark mode; cabeçalho premium em gradiente.
+
+## Diagnóstico de Aprovação (IMPLEMENTADO — `supabase/diagnostico_aprovacao.sql`)
+
+Ferramenta de captação/onboarding: avalia o aluno e recomenda trilha + plano.
+- **Rotas:** `/diagnostico` (landing + form 10 etapas), `/diagnostico/resultado?id=`
+  (resultado), `POST /api/diagnostico` (calcula no servidor e grava).
+- **Banco:** tabela `approval_diagnostics` (campos do spec + `result jsonb`). RLS:
+  **select** dono/admin; **sem policy de insert** → só service role grava (via API).
+  Índices em user_id/created_at/university/plan.
+- **Lógica (pura, `src/lib/diagnostico.ts`):** catálogo das perguntas + `sanitizeAnswers`
+  (defesa no servidor) + `computeDiagnostic` (score 0–100, perfil, chance, riscos,
+  trilha, plano, próximas ações). Score = horas + média + simulados/mês, com
+  penalidade (falta de constância −10) e bônus (>4h + simulados +10), normalizado /85.
+  Mapa universidade→slug bate com as trilhas (`TRACK_MAP`). ENEM/SISU → fallback `/trilhas`.
+- **Plano recomendado:** Medicina → `premium_med` (pitch varia: cronograma se baixa
+  constância, simulados oficiais se avançado); não-Medicina → `free` (<40) ou `premium`.
+- **Dados server (`src/lib/diagnostico-data.ts`):** `saveDiagnostic` (service role),
+  `getDiagnostico(id)` (capability URL via service role — id é UUID), `getAdminDiagnostics`.
+- **Form:** `src/components/diagnostico/diagnostic-form.tsx` (multi-step, mobile-first,
+  email opcional p/ anônimo). POST → redireciona a `/resultado?id=`.
+- **Admin:** aba "Diagnósticos" (`diagnostics-admin.tsx`) — total, score médio, leads/7d,
+  por plano, filtros por universidade/plano, lista (email/uni/score/plano/data). Read-only.
+- **Marketing:** CTAs em home, `/planos`, `/trilhas`; `/diagnostico` no menu mobile e no
+  sitemap; title/description de SEO no spec.
+- **Segurança:** score só no servidor; cliente não grava (sem RLS insert); resultado por
+  id não-adivinhável; admin lê tudo (RLS).
 
 ## Feed Social
 

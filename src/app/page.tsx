@@ -110,6 +110,30 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="mx-auto w-full max-w-7xl px-6 lg:px-8">
+        <div className="flex flex-col items-start justify-between gap-4 overflow-hidden rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-cyan-50 p-6 shadow-sm sm:flex-row sm:items-center lg:p-8 dark:border-sky-500/30 dark:from-sky-950/40 dark:to-cyan-950/40">
+          <div>
+            <p className="inline-flex items-center gap-2 rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800 dark:bg-sky-500/15 dark:text-sky-300">
+              <Sparkles size={14} /> Gratuito · 2 minutos
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold text-slate-950 dark:text-white">
+              Faça seu Diagnóstico de Aprovação
+            </h2>
+            <p className="mt-1 max-w-xl text-sm text-slate-600 dark:text-slate-300">
+              Descubra seu nível de preparação para Medicina e receba uma trilha
+              personalizada para a sua universidade-alvo.
+            </p>
+          </div>
+          <Link
+            href="/diagnostico"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          >
+            Começar diagnóstico
+            <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
+
       <section className="border-y border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto grid max-w-7xl gap-4 px-6 py-8 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
           {homeStats.metrics.map((stat) => (

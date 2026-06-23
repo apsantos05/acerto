@@ -12,7 +12,9 @@ import {
   type BulkField,
 } from "@/components/admin/bulk-action-bar";
 import { TrackAdminManager } from "@/components/admin/track-admin-manager";
+import { DiagnosticsAdmin } from "@/components/admin/diagnostics-admin";
 import type { StudyTrack } from "@/lib/tracks";
+import type { AdminDiagnosticData } from "@/lib/diagnostico-data";
 import { ToastProvider, useToast } from "@/components/ui/toast";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
@@ -26,7 +28,7 @@ import type {
   AdminSimulado,
 } from "@/lib/admin";
 
-type Tab = "pending" | "all" | "posts" | "simulados" | "trilhas";
+type Tab = "pending" | "all" | "posts" | "simulados" | "trilhas" | "diagnosticos";
 
 type AdminPanelProps = {
   tab: Tab;
@@ -39,6 +41,9 @@ type AdminPanelProps = {
   posts: AdminPost[];
   simulados: AdminSimulado[];
   tracks: StudyTrack[];
+  diagnostics: AdminDiagnosticData;
+  diagUniversity: string;
+  diagPlan: string;
   facets: AdminFacets;
 };
 
@@ -76,6 +81,9 @@ function AdminPanelInner({
   posts,
   simulados,
   tracks,
+  diagnostics,
+  diagUniversity,
+  diagPlan,
   facets,
 }: AdminPanelProps) {
   const router = useRouter();
@@ -97,6 +105,7 @@ function AdminPanelInner({
     { id: "posts", label: "Posts", count: counts.posts },
     { id: "simulados", label: "Simulados", count: counts.simulados },
     { id: "trilhas", label: "Trilhas", count: counts.tracks },
+    { id: "diagnosticos", label: "Diagnósticos", count: counts.diagnostics },
   ];
 
   const qParam = search ? `&q=${encodeURIComponent(search)}` : "";
@@ -482,6 +491,14 @@ function AdminPanelInner({
         ) : null}
 
         {tab === "trilhas" ? <TrackAdminManager tracks={tracks} /> : null}
+
+        {tab === "diagnosticos" ? (
+          <DiagnosticsAdmin
+            data={diagnostics}
+            activeUniversity={diagUniversity}
+            activePlan={diagPlan}
+          />
+        ) : null}
 
         {/* Paginação (abas de material) */}
         {isMaterialTab && totalPages > 1 ? (
