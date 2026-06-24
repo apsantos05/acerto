@@ -58,6 +58,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const search = (getParam(sp, "q") ?? "").trim();
   const diagUniversity = (getParam(sp, "uni") ?? "").trim();
   const diagPlan = (getParam(sp, "plan") ?? "").trim();
+  const diagPeriodRaw = (getParam(sp, "period") ?? "").trim();
+  const diagPeriod = ["7d", "30d"].includes(diagPeriodRaw) ? diagPeriodRaw : "";
   const isMaterialTab = tab === "pending" || tab === "all";
 
   const [counts, materialsRes, posts, simulados, tracks, diagnostics, facets] =
@@ -70,7 +72,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
       tab === "trilhas" ? getTracks(true) : Promise.resolve([]),
       tab === "diagnosticos"
-        ? getAdminDiagnostics({ university: diagUniversity, plan: diagPlan })
+        ? getAdminDiagnostics({ university: diagUniversity, plan: diagPlan, period: diagPeriod })
         : Promise.resolve(EMPTY_DIAGNOSTICS),
       getAdminFacets(),
     ]);
@@ -104,6 +106,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           diagnostics={diagnostics}
           diagUniversity={diagUniversity}
           diagPlan={diagPlan}
+          diagPeriod={diagPeriod}
           facets={facets}
         />
       </div>

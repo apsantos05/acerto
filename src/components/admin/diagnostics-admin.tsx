@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Filter, Users } from "lucide-react";
+import { Download, Filter, Users } from "lucide-react";
 import type { AdminDiagnosticData } from "@/lib/diagnostico-data";
 
 const PLAN_LABELS: Record<string, string> = {
@@ -10,23 +10,43 @@ const PLAN_LABELS: Record<string, string> = {
   premium_med: "Premium Medicina",
 };
 
+const PERIODS: { value: string; label: string }[] = [
+  { value: "", label: "Todos" },
+  { value: "7d", label: "Últimos 7 dias" },
+  { value: "30d", label: "Últimos 30 dias" },
+];
+
 export function DiagnosticsAdmin({
   data,
   activeUniversity,
   activePlan,
+  activePeriod,
 }: {
   data: AdminDiagnosticData;
   activeUniversity: string;
   activePlan: string;
+  activePeriod: string;
 }) {
-  const hrefWith = (params: { uni?: string; plan?: string }) => {
+  const hrefWith = (params: { uni?: string; plan?: string; period?: string }) => {
     const uni = params.uni ?? activeUniversity;
     const plan = params.plan ?? activePlan;
+    const period = params.period ?? activePeriod;
     const q = new URLSearchParams({ tab: "diagnosticos" });
     if (uni) q.set("uni", uni);
     if (plan) q.set("plan", plan);
+    if (period) q.set("period", period);
     return `/admin?${q.toString()}`;
   };
+
+  // Export respeita os filtros ativos.
+  const exportHref = (() => {
+    const q = new URLSearchParams();
+    if (activeUniversity) q.set("uni", activeUniversity);
+    if (activePlan) q.set("plan", activePlan);
+    if (activePeriod) q.set("period", activePeriod);
+    const qs = q.toString();
+    return `/api/admin/diagnosticos/export.csv${qs ? `?${qs}` : ""}`;
+  })();
 
   const chip = (active: boolean) =>
     `rounded-full px-3 py-1 text-xs font-semibold transition ${
@@ -93,6 +113,28 @@ export function DiagnosticsAdmin({
               {PLAN_LABELS[p]}
             </Link>
           ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-400">
+            <Filter size={14} /> Período:
+          </span>
+          {PERIODS.map((p) => (
+            <Link key={p.value} href={hrefWith({ period: p.value })} className={chip(activePeriod === p.value)}>
+              {p.label}
+            </Link>
+          ))}
+        </div>
+        <div className="flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800">
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            {data.total} registro{data.total === 1 ? "" : "s"} no filtro atual
+          </span>
+          <a
+            href={exportHref}
+            className="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+          >
+            <Download size={16} />
+            Exportar CSV
+          </a>
         </div>
       </div>
 

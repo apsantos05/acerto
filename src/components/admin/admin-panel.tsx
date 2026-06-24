@@ -44,6 +44,7 @@ type AdminPanelProps = {
   diagnostics: AdminDiagnosticData;
   diagUniversity: string;
   diagPlan: string;
+  diagPeriod: string;
   facets: AdminFacets;
 };
 
@@ -84,6 +85,7 @@ function AdminPanelInner({
   diagnostics,
   diagUniversity,
   diagPlan,
+  diagPeriod,
   facets,
 }: AdminPanelProps) {
   const router = useRouter();
@@ -497,6 +499,7 @@ function AdminPanelInner({
             data={diagnostics}
             activeUniversity={diagUniversity}
             activePlan={diagPlan}
+            activePeriod={diagPeriod}
           />
         ) : null}
 
