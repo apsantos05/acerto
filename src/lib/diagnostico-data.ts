@@ -253,6 +253,11 @@ export type DiagnosticExportRow = {
   studentProfile: string | null;
   recommendedTrackSlug: string | null;
   recommendedPlan: string | null;
+  // Enriquecido com profiles (conversão real):
+  signupDate: string | null;
+  currentPlan: string | null;
+  isPremium: boolean;
+  isPremiumMed: boolean;
 };
 
 const EXPORT_COLS =
@@ -279,51 +284,175 @@ export async function getDiagnosticsForExport(
       console.error("[diagnostico] export falhou:", error);
       return [];
     }
-    return (
-      (data ?? []) as Array<{
-        created_at: string;
-        email: string | null;
-        user_id: string | null;
-        target_university: string | null;
-        target_vestibular: string | null;
-        target_course: string | null;
-        study_hours_range: string | null;
-        student_phase: string | null;
-        mock_exam_average: string | null;
-        strong_subjects: string[] | null;
-        weak_subjects: string[] | null;
-        mock_exams_per_month: string | null;
-        main_difficulty: string | null;
-        exam_timeline: string | null;
-        preparation_score: number | null;
-        approval_chance: string | null;
-        student_profile: string | null;
-        recommended_track_slug: string | null;
-        recommended_plan: string | null;
-      }>
-    ).map((r) => ({
-      createdAt: r.created_at,
-      email: r.email,
-      userId: r.user_id,
-      targetUniversity: r.target_university,
-      targetVestibular: r.target_vestibular,
-      targetCourse: r.target_course,
-      studyHours: r.study_hours_range,
-      studentPhase: r.student_phase,
-      mockAverage: r.mock_exam_average,
-      strongSubjects: r.strong_subjects ?? [],
-      weakSubjects: r.weak_subjects ?? [],
-      mocksPerMonth: r.mock_exams_per_month,
-      mainDifficulty: r.main_difficulty,
-      examTimeline: r.exam_timeline,
-      preparationScore: r.preparation_score,
-      approvalChance: r.approval_chance,
-      studentProfile: r.student_profile,
-      recommendedTrackSlug: r.recommended_track_slug,
-      recommendedPlan: r.recommended_plan,
-    }));
+    const rows = (data ?? []) as Array<{
+      created_at: string;
+      email: string | null;
+      user_id: string | null;
+      target_university: string | null;
+      target_vestibular: string | null;
+      target_course: string | null;
+      study_hours_range: string | null;
+      student_phase: string | null;
+      mock_exam_average: string | null;
+      strong_subjects: string[] | null;
+      weak_subjects: string[] | null;
+      mock_exams_per_month: string | null;
+      main_difficulty: string | null;
+      exam_timeline: string | null;
+      preparation_score: number | null;
+      approval_chance: string | null;
+      student_profile: string | null;
+      recommended_track_slug: string | null;
+      recommended_plan: string | null;
+    }>;
+
+    // Enriquecimento com profiles (1 query extra, sem N+1): plano atual + data de cadastro.
+    const userIds = Array.from(
+      new Set(rows.map((r) => r.user_id).filter((id): id is string => Boolean(id))),
+    );
+    const profileById = new Map<string, { plan: string | null; created_at: string }>();
+    if (userIds.length > 0) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("id,plan,created_at")
+        .in("id", userIds);
+      for (const p of (profs ?? []) as Array<{ id: string; plan: string | null; created_at: string }>) {
+        profileById.set(p.id, { plan: p.plan, created_at: p.created_at });
+      }
+    }
+
+    return rows.map((r) => {
+      const prof = r.user_id ? profileById.get(r.user_id) : undefined;
+      const plan = prof?.plan ?? null;
+      return {
+        createdAt: r.created_at,
+        email: r.email,
+        userId: r.user_id,
+        targetUniversity: r.target_university,
+        targetVestibular: r.target_vestibular,
+        targetCourse: r.target_course,
+        studyHours: r.study_hours_range,
+        studentPhase: r.student_phase,
+        mockAverage: r.mock_exam_average,
+        strongSubjects: r.strong_subjects ?? [],
+        weakSubjects: r.weak_subjects ?? [],
+        mocksPerMonth: r.mock_exams_per_month,
+        mainDifficulty: r.main_difficulty,
+        examTimeline: r.exam_timeline,
+        preparationScore: r.preparation_score,
+        approvalChance: r.approval_chance,
+        studentProfile: r.student_profile,
+        recommendedTrackSlug: r.recommended_track_slug,
+        recommendedPlan: r.recommended_plan,
+        signupDate: prof?.created_at ?? null,
+        currentPlan: plan,
+        isPremium: plan === "premium" || plan === "premium_med",
+        isPremiumMed: plan === "premium_med",
+      } satisfies DiagnosticExportRow;
+    });
   } catch (exportError) {
     console.error("[diagnostico] export exceção:", exportError);
     return [];
+  }
+}
+
+// ---------------- Dashboard de conversão (RPC agregado) ----------------
+export type DashboardCount = { name: string; count: number };
+
+export type DiagnosticsDashboard = {
+  total: number;
+  last7: number;
+  last30: number;
+  avgScore: number;
+  registered: number;
+  premium: number;
+  premiumMed: number;
+  signupRate: number; // %
+  premiumRate: number; // %
+  premiumMedRate: number; // %
+  scoreDist: { bucket: string; count: number }[];
+  byRecommended: { free: number; premium: number; premium_med: number };
+  conversionReal: {
+    recPremiumTotal: number;
+    recPremiumConverted: number;
+    recPremiumMedTotal: number;
+    recPremiumMedConverted: number;
+  };
+  evolution: { day: string; count: number }[];
+  topUniversities: DashboardCount[];
+  topVestibulares: DashboardCount[];
+  topDifficulties: DashboardCount[];
+};
+
+export const EMPTY_DASHBOARD: DiagnosticsDashboard = {
+  total: 0, last7: 0, last30: 0, avgScore: 0, registered: 0, premium: 0, premiumMed: 0,
+  signupRate: 0, premiumRate: 0, premiumMedRate: 0,
+  scoreDist: [], byRecommended: { free: 0, premium: 0, premium_med: 0 },
+  conversionReal: { recPremiumTotal: 0, recPremiumConverted: 0, recPremiumMedTotal: 0, recPremiumMedConverted: 0 },
+  evolution: [], topUniversities: [], topVestibulares: [], topDifficulties: [],
+};
+
+const pct = (num: number, den: number) => (den > 0 ? Math.round((num / den) * 1000) / 10 : 0);
+
+/** Métricas agregadas do dashboard (1 RPC, sem N+1). Admin-only (checado no RPC). */
+export async function getDiagnosticsDashboard(): Promise<DiagnosticsDashboard> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("get_diagnostics_dashboard");
+    if (error || !data) {
+      if (error) console.error("[diagnostico] dashboard falhou:", error);
+      return EMPTY_DASHBOARD;
+    }
+    const d = data as Record<string, unknown>;
+    const n = (v: unknown) => Number(v ?? 0);
+    const total = n(d.total);
+    const registered = n(d.registered);
+    const premium = n(d.premium);
+    const premiumMed = n(d.premium_med);
+    const byRec = (d.by_recommended ?? {}) as Record<string, unknown>;
+    const conv = (d.conversion_real ?? {}) as Record<string, unknown>;
+    const list = (key: string): DashboardCount[] =>
+      ((d[key] ?? []) as Array<{ name: string; count: number }>).map((r) => ({
+        name: r.name,
+        count: Number(r.count ?? 0),
+      }));
+
+    return {
+      total,
+      last7: n(d.last7),
+      last30: n(d.last30),
+      avgScore: n(d.avg_score),
+      registered,
+      premium,
+      premiumMed,
+      signupRate: pct(registered, total),
+      premiumRate: pct(premium, total),
+      premiumMedRate: pct(premiumMed, total),
+      scoreDist: ((d.score_dist ?? []) as Array<{ bucket: string; count: number }>).map((r) => ({
+        bucket: r.bucket,
+        count: Number(r.count ?? 0),
+      })),
+      byRecommended: {
+        free: n(byRec.free),
+        premium: n(byRec.premium),
+        premium_med: n(byRec.premium_med),
+      },
+      conversionReal: {
+        recPremiumTotal: n(conv.rec_premium_total),
+        recPremiumConverted: n(conv.rec_premium_converted),
+        recPremiumMedTotal: n(conv.rec_premium_med_total),
+        recPremiumMedConverted: n(conv.rec_premium_med_converted),
+      },
+      evolution: ((d.evolution ?? []) as Array<{ day: string; count: number }>).map((r) => ({
+        day: r.day,
+        count: Number(r.count ?? 0),
+      })),
+      topUniversities: list("top_universities"),
+      topVestibulares: list("top_vestibulares"),
+      topDifficulties: list("top_difficulties"),
+    };
+  } catch (dashError) {
+    console.error("[diagnostico] dashboard exceção:", dashError);
+    return EMPTY_DASHBOARD;
   }
 }

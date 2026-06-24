@@ -14,7 +14,9 @@ import {
 } from "@/lib/admin";
 import { getTracks } from "@/lib/tracks";
 import {
+  EMPTY_DASHBOARD,
   getAdminDiagnostics,
+  getDiagnosticsDashboard,
   type AdminDiagnosticData,
 } from "@/lib/diagnostico-data";
 
@@ -62,7 +64,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const diagPeriod = ["7d", "30d"].includes(diagPeriodRaw) ? diagPeriodRaw : "";
   const isMaterialTab = tab === "pending" || tab === "all";
 
-  const [counts, materialsRes, posts, simulados, tracks, diagnostics, facets] =
+  const isDiag = tab === "diagnosticos";
+  const [counts, materialsRes, posts, simulados, tracks, diagnostics, diagDashboard, facets] =
     await Promise.all([
       getAdminCounts(),
       isMaterialTab
@@ -71,9 +74,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       tab === "posts" ? getRecentPosts() : Promise.resolve([]),
       tab === "simulados" ? getAdminSimulados() : Promise.resolve([]),
       tab === "trilhas" ? getTracks(true) : Promise.resolve([]),
-      tab === "diagnosticos"
+      isDiag
         ? getAdminDiagnostics({ university: diagUniversity, plan: diagPlan, period: diagPeriod })
         : Promise.resolve(EMPTY_DIAGNOSTICS),
+      isDiag ? getDiagnosticsDashboard() : Promise.resolve(EMPTY_DASHBOARD),
       getAdminFacets(),
     ]);
 
@@ -104,6 +108,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           simulados={simulados}
           tracks={tracks}
           diagnostics={diagnostics}
+          diagDashboard={diagDashboard}
           diagUniversity={diagUniversity}
           diagPlan={diagPlan}
           diagPeriod={diagPeriod}

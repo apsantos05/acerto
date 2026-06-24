@@ -14,7 +14,7 @@ import {
 import { TrackAdminManager } from "@/components/admin/track-admin-manager";
 import { DiagnosticsAdmin } from "@/components/admin/diagnostics-admin";
 import type { StudyTrack } from "@/lib/tracks";
-import type { AdminDiagnosticData } from "@/lib/diagnostico-data";
+import type { AdminDiagnosticData, DiagnosticsDashboard } from "@/lib/diagnostico-data";
 import { ToastProvider, useToast } from "@/components/ui/toast";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
@@ -42,6 +42,7 @@ type AdminPanelProps = {
   simulados: AdminSimulado[];
   tracks: StudyTrack[];
   diagnostics: AdminDiagnosticData;
+  diagDashboard: DiagnosticsDashboard;
   diagUniversity: string;
   diagPlan: string;
   diagPeriod: string;
@@ -83,6 +84,7 @@ function AdminPanelInner({
   simulados,
   tracks,
   diagnostics,
+  diagDashboard,
   diagUniversity,
   diagPlan,
   diagPeriod,
@@ -497,6 +499,7 @@ function AdminPanelInner({
         {tab === "diagnosticos" ? (
           <DiagnosticsAdmin
             data={diagnostics}
+            dashboard={diagDashboard}
             activeUniversity={diagUniversity}
             activePlan={diagPlan}
             activePeriod={diagPeriod}

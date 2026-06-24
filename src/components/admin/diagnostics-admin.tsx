@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Download, Filter, Users } from "lucide-react";
-import type { AdminDiagnosticData } from "@/lib/diagnostico-data";
+import { Download, Filter } from "lucide-react";
+import type { AdminDiagnosticData, DiagnosticsDashboard } from "@/lib/diagnostico-data";
+import { DiagnosticsDashboardView } from "@/components/admin/diagnostics-dashboard";
 
 const PLAN_LABELS: Record<string, string> = {
   free: "Gratuito",
@@ -18,11 +19,13 @@ const PERIODS: { value: string; label: string }[] = [
 
 export function DiagnosticsAdmin({
   data,
+  dashboard,
   activeUniversity,
   activePlan,
   activePeriod,
 }: {
   data: AdminDiagnosticData;
+  dashboard: DiagnosticsDashboard;
   activeUniversity: string;
   activePlan: string;
   activePeriod: string;
@@ -57,40 +60,10 @@ export function DiagnosticsAdmin({
 
   return (
     <div className="space-y-6">
-      {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-2xl font-semibold text-slate-950 dark:text-white">{data.total}</p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Diagnósticos</p>
-        </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-2xl font-semibold text-sky-700 dark:text-sky-400">{data.avgScore}</p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Score médio</p>
-        </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p className="inline-flex items-center gap-2 text-2xl font-semibold text-emerald-600 dark:text-emerald-400">
-            <Users size={20} /> {data.leadsThisWeek}
-          </p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Leads (7 dias)</p>
-        </div>
-        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-sm font-semibold text-slate-950 dark:text-white">Por plano recomendado</p>
-          <div className="mt-2 space-y-1 text-xs text-slate-600 dark:text-slate-300">
-            {Object.entries(data.byPlan).length > 0 ? (
-              Object.entries(data.byPlan).map(([plan, count]) => (
-                <div key={plan} className="flex justify-between">
-                  <span>{PLAN_LABELS[plan] ?? plan}</span>
-                  <span className="font-semibold">{count}</span>
-                </div>
-              ))
-            ) : (
-              <span className="text-slate-400">—</span>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* Dashboard de conversão (métricas globais) */}
+      <DiagnosticsDashboardView data={dashboard} />
 
-      {/* Filtros */}
+      {/* Filtros + lista (respeitam universidade/plano/período) */}
       <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 dark:text-slate-400">

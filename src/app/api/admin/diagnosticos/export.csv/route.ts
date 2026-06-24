@@ -43,6 +43,10 @@ const HEADERS = [
   "Perfil do aluno",
   "Trilha recomendada",
   "Plano recomendado",
+  "Data cadastro",
+  "Plano atual",
+  "Status Premium",
+  "Status Premium Medicina",
 ];
 
 export async function GET(request: NextRequest) {
@@ -84,6 +88,10 @@ export async function GET(request: NextRequest) {
         r.studentProfile ?? "",
         r.recommendedTrackSlug ?? "",
         r.recommendedPlan ?? "",
+        r.signupDate ? fmtDate(r.signupDate) : "",
+        r.currentPlan ?? "",
+        r.isPremium ? "sim" : "não",
+        r.isPremiumMed ? "sim" : "não",
       ]
         .map(cell)
         .join(SEP),
