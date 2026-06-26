@@ -30,18 +30,18 @@ export default async function Home() {
             Comunidade focada em Medicina
           </div>
           <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-slate-950 sm:text-5xl lg:text-6xl dark:text-white">
-            Acerte sua preparação com materiais de quem está na mesma jornada.
+            Acerte sua preparação com provas, simulados e materiais de Medicina.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-            Uma plataforma para vestibulandos organizarem provas, simulados,
-            resumos, rankings e discussões em um único lugar.
+            Provas comentadas, simulados no formato de cada banca e materiais
+            organizados por matéria, faculdade e vestibular — reunidos num lugar só.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/cadastro"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
             >
-              Começar agora
+              Criar conta grátis
               <ArrowRight size={18} />
             </Link>
             <Link
@@ -120,7 +120,7 @@ export default async function Home() {
               Faça seu Diagnóstico de Aprovação
             </h2>
             <p className="mt-1 max-w-xl text-sm text-slate-600 dark:text-slate-300">
-              Descubra seu nível de preparação para Medicina e receba uma trilha
+              Saiba seu nível de preparação para Medicina e receba uma trilha
               personalizada para a sua universidade-alvo.
             </p>
           </div>
@@ -145,27 +145,27 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase text-sky-700 dark:text-sky-400">
-            Tudo no mesmo fluxo
+            O que você encontra aqui
           </p>
           <h2 className="mt-3 text-3xl font-semibold text-slate-950 dark:text-white">
-            Estudo colaborativo, organizado e mensurável.
+            Material de verdade, simulado no formato da prova e gente estudando junto.
           </h2>
         </div>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           <FeatureCard
             icon={BookOpen}
-            title="Biblioteca inteligente"
-            description="Centralize provas, listas, resumos e simulados por matéria, banca e vestibular."
+            title="Biblioteca organizada"
+            description="Provas, listas, resumos e simulados separados por matéria, banca e vestibular."
           />
           <FeatureCard
             icon={Users}
-            title="Feed de comunidade"
-            description="Compartilhe achados, tire dúvidas e acompanhe materiais recomendados por outros estudantes."
+            title="Comunidade que ajuda"
+            description="Tire dúvidas, compartilhe materiais e veja o que outros vestibulandos estão usando."
           />
           <FeatureCard
             icon={GraduationCap}
-            title="Evolução visível"
-            description="Acompanhe pontuação, contribuições, ranking e metas semanais em um dashboard simples."
+            title="Progresso acompanhado"
+            description="Ranking, metas semanais e desempenho nos simulados num painel direto."
           />
         </div>
       </section>
@@ -174,11 +174,11 @@ export default async function Home() {
         <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-3xl font-semibold">
-              Pronto para organizar seus estudos?
+              Tudo o que você precisa para passar em Medicina.
             </h2>
             <p className="mt-2 max-w-2xl text-slate-300">
-              Crie uma conta, salve materiais e acompanhe sua preparação para
-              Medicina com mais clareza.
+              Crie sua conta gratuita e tenha acesso ao acervo, aos simulados e à
+              comunidade.
             </p>
           </div>
           <Link

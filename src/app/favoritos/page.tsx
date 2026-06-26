@@ -28,7 +28,7 @@ export default async function FavoritosPage() {
   return (
     <AppShell>
       <PageHeader
-        eyebrow="Sua estante"
+        eyebrow="Salvos por você"
         title="Favoritos"
         description="Os materiais que você salvou para estudar depois, reunidos em um só lugar."
       />

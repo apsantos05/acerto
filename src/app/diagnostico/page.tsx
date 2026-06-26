@@ -6,7 +6,7 @@ import { DiagnosticForm } from "@/components/diagnostico/diagnostic-form";
 export const metadata: Metadata = {
   title: { absolute: "Diagnóstico de Aprovação em Medicina | AcertaVest" },
   description:
-    "Descubra seu nível de preparação para Medicina e receba uma trilha personalizada para vestibulares como USP, UNICAMP, FAMERP, UFSC e Einstein.",
+    "Saiba seu nível de preparação para Medicina e receba uma trilha personalizada para vestibulares como USP, UNICAMP, FAMERP, UFSC e Einstein.",
   alternates: { canonical: "/diagnostico" },
   openGraph: {
     title: "Diagnóstico de Aprovação em Medicina | AcertaVest",
@@ -24,7 +24,7 @@ export default function DiagnosticoPage() {
           Diagnóstico gratuito
         </span>
         <h1 className="mt-4 max-w-3xl text-3xl font-semibold leading-tight sm:text-4xl">
-          Descubra sua chance de aprovação em Medicina
+          Veja sua chance de aprovação em Medicina
         </h1>
         <p className="mt-3 max-w-2xl leading-7 text-sky-50/90">
           Responda 10 perguntas rápidas e receba um <strong>score de preparação</strong>,

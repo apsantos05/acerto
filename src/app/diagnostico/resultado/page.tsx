@@ -152,7 +152,7 @@ export default async function DiagnosticoResultadoPage({ searchParams }: ResultP
           {track ? (
             <>Com base nas suas respostas, a melhor trilha é a <strong className="text-slate-950 dark:text-white">{track.title}</strong>.</>
           ) : (
-            <>Explore as trilhas por universidade para escolher seu caminho.</>
+            <>Veja as trilhas por universidade para escolher seu caminho.</>
           )}
         </p>
         <Link

@@ -19,7 +19,7 @@ export default async function TrilhasPage() {
   return (
     <AppShell>
       <PageHeader
-        eyebrow="Estude com direção"
+        eyebrow="Trilhas por universidade"
         title="Trilhas por universidade"
         description="Cronogramas guiados para a sua universidade-alvo de Medicina: matérias prioritárias, materiais e simulados recomendados, semana a semana."
       />
