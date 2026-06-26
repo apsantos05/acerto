@@ -13,8 +13,10 @@ import {
 } from "@/components/admin/bulk-action-bar";
 import { TrackAdminManager } from "@/components/admin/track-admin-manager";
 import { DiagnosticsAdmin } from "@/components/admin/diagnostics-admin";
+import { EssaysAdmin } from "@/components/admin/essays-admin";
 import type { StudyTrack } from "@/lib/tracks";
 import type { AdminDiagnosticData, DiagnosticsDashboard } from "@/lib/diagnostico-data";
+import type { AdminEssayData } from "@/lib/redacoes-data";
 import { ToastProvider, useToast } from "@/components/ui/toast";
 import { useAuth } from "@/components/auth/auth-provider";
 import { getSupabaseErrorMessage } from "@/lib/supabase-errors";
@@ -28,7 +30,7 @@ import type {
   AdminSimulado,
 } from "@/lib/admin";
 
-type Tab = "pending" | "all" | "posts" | "simulados" | "trilhas" | "diagnosticos";
+type Tab = "pending" | "all" | "posts" | "simulados" | "trilhas" | "diagnosticos" | "redacoes";
 
 type AdminPanelProps = {
   tab: Tab;
@@ -46,6 +48,10 @@ type AdminPanelProps = {
   diagUniversity: string;
   diagPlan: string;
   diagPeriod: string;
+  essays: AdminEssayData;
+  essExam: string;
+  essStatus: string;
+  essPlan: string;
   facets: AdminFacets;
 };
 
@@ -88,6 +94,10 @@ function AdminPanelInner({
   diagUniversity,
   diagPlan,
   diagPeriod,
+  essays,
+  essExam,
+  essStatus,
+  essPlan,
   facets,
 }: AdminPanelProps) {
   const router = useRouter();
@@ -110,6 +120,7 @@ function AdminPanelInner({
     { id: "simulados", label: "Simulados", count: counts.simulados },
     { id: "trilhas", label: "Trilhas", count: counts.tracks },
     { id: "diagnosticos", label: "Diagnósticos", count: counts.diagnostics },
+    { id: "redacoes", label: "Redações", count: counts.essays },
   ];
 
   const qParam = search ? `&q=${encodeURIComponent(search)}` : "";
@@ -503,6 +514,15 @@ function AdminPanelInner({
             activeUniversity={diagUniversity}
             activePlan={diagPlan}
             activePeriod={diagPeriod}
+          />
+        ) : null}
+
+        {tab === "redacoes" ? (
+          <EssaysAdmin
+            data={essays}
+            activeExam={essExam}
+            activeStatus={essStatus}
+            activePlan={essPlan}
           />
         ) : null}
 

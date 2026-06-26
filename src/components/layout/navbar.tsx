@@ -24,6 +24,7 @@ const mobileNavItems = [
   { href: "/diagnostico", label: "Diagnóstico" },
   { href: "/biblioteca", label: "Biblioteca" },
   { href: "/trilhas", label: "Trilhas" },
+  { href: "/redacoes", label: "Redações" },
   { href: "/universidades", label: "Universidades" },
   { href: "/simulados", label: "Simulados" },
   { href: "/planos", label: "Planos" },

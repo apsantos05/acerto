@@ -415,6 +415,33 @@ Ferramenta de captação/onboarding: avalia o aluno e recomenda trilha + plano.
 - **Segurança:** score só no servidor; cliente não grava (sem RLS insert); resultado por
   id não-adivinhável; admin lê tudo (RLS).
 
+## Correção de Redação por IA (IMPLEMENTADO — `supabase/redacoes_ai.sql`)
+
+- **Rotas:** `/redacoes` (lista + cota), `/redacoes/nova` (form), `/redacoes/[id]`
+  (resultado, prévia limitada p/ Free), `POST /api/redacoes/corrigir`.
+- **Banco:** `essay_submissions` (todos os campos do spec + `ai_raw_response jsonb`).
+  RLS: **select** dono/admin; **sem insert/update do cliente** → só service role grava
+  (a correção é feita no servidor; cliente não burla limite nem forja nota).
+- **IA modular** (`src/lib/essay-ai.ts`): via **fetch REST** (sem SDK). `ESSAY_AI_PROVIDER`
+  = `anthropic` (default, `ANTHROPIC_API_KEY`, modelo `claude-sonnet-4-6`) ou `openai`
+  (`OPENAI_API_KEY`, `gpt-4o-mini`); `ESSAY_AI_MODEL` sobrescreve. Retorna JSON estruturado:
+  ENEM por 5 competências (0–200, total 0–1000); demais 0–100 + feedbacks. Disclaimer
+  fixo "Esta é uma estimativa automática e não substitui correção oficial."
+- **Gating** (`gating.ts`): `canSubmitEssay` — Free 1/mês, Premium 5/mês, Premium Med 30/mês,
+  admin ilimitado (validado no servidor + UI). Prévia limitada do resultado p/ Free
+  (`viewerIsPremium` libera feedback completo).
+- **Dados** (`src/lib/redacoes-data.ts`): create/apply/markFailed (service role),
+  getMySubmissions, getSubmission (RLS), getEssayDashboard, getAdminEssays.
+- **Admin:** aba "Redações" (`essays-admin.tsx`) — total, score médio, por tipo, top
+  usuários, filtros (tipo/status/plano), lista. `getAdminCounts` inclui `essays`.
+- **Dashboard:** `essay-dashboard.tsx` (total, média, evolução SVG, ponto fraco, CTA).
+- **Fluxo:** valida usuário+limite → insere `processing` → chama IA → `completed`/`failed`
+  → redireciona a `/redacoes/[id]`. Falha não consome cota.
+- **Segurança:** chave da IA só no servidor; texto sanitizado (≥50 palavras, ≤8000 chars);
+  resposta bruta salva p/ auditoria; status `failed` com mensagem amigável.
+- **Risco:** a correção roda síncrona na rota (IA pode levar ~10–30s) → atenção ao
+  timeout do serverless; futuro: processar em background/fila.
+
 ## Feed Social
 
 - `/feed` (requer auth). Posts com avatar/nome/@username clicáveis, **curtir**,

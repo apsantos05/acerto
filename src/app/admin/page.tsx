@@ -19,8 +19,24 @@ import {
   getDiagnosticsDashboard,
   type AdminDiagnosticData,
 } from "@/lib/diagnostico-data";
+import { getAdminEssays, type AdminEssayData } from "@/lib/redacoes-data";
 
-type AdminTab = "pending" | "all" | "posts" | "simulados" | "trilhas" | "diagnosticos";
+type AdminTab =
+  | "pending"
+  | "all"
+  | "posts"
+  | "simulados"
+  | "trilhas"
+  | "diagnosticos"
+  | "redacoes";
+
+const EMPTY_ESSAYS: AdminEssayData = {
+  total: 0,
+  byType: {},
+  avgScore: 0,
+  topSubmitters: [],
+  items: [],
+};
 
 const EMPTY_DIAGNOSTICS: AdminDiagnosticData = {
   items: [],
@@ -52,7 +68,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const sp = (await searchParams) ?? {};
   const tabParam = getParam(sp, "tab") ?? "pending";
   const tab: AdminTab = (
-    ["pending", "all", "posts", "simulados", "trilhas", "diagnosticos"] as const
+    ["pending", "all", "posts", "simulados", "trilhas", "diagnosticos", "redacoes"] as const
   ).includes(tabParam as AdminTab)
     ? (tabParam as AdminTab)
     : "pending";
@@ -62,10 +78,17 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const diagPlan = (getParam(sp, "plan") ?? "").trim();
   const diagPeriodRaw = (getParam(sp, "period") ?? "").trim();
   const diagPeriod = ["7d", "30d"].includes(diagPeriodRaw) ? diagPeriodRaw : "";
+  const essExam = (getParam(sp, "exam") ?? "").trim();
+  const essStatusRaw = (getParam(sp, "status") ?? "").trim();
+  const essStatus = ["processing", "completed", "failed"].includes(essStatusRaw)
+    ? essStatusRaw
+    : "";
+  const essPlan = diagPlan; // mesmo parâmetro 'plan' (escopo da aba ativa)
   const isMaterialTab = tab === "pending" || tab === "all";
 
   const isDiag = tab === "diagnosticos";
-  const [counts, materialsRes, posts, simulados, tracks, diagnostics, diagDashboard, facets] =
+  const isEss = tab === "redacoes";
+  const [counts, materialsRes, posts, simulados, tracks, diagnostics, diagDashboard, essays, facets] =
     await Promise.all([
       getAdminCounts(),
       isMaterialTab
@@ -78,6 +101,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         ? getAdminDiagnostics({ university: diagUniversity, plan: diagPlan, period: diagPeriod })
         : Promise.resolve(EMPTY_DIAGNOSTICS),
       isDiag ? getDiagnosticsDashboard() : Promise.resolve(EMPTY_DASHBOARD),
+      isEss
+        ? getAdminEssays({ examType: essExam, status: essStatus, plan: essPlan })
+        : Promise.resolve(EMPTY_ESSAYS),
       getAdminFacets(),
     ]);
 
@@ -112,6 +138,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           diagUniversity={diagUniversity}
           diagPlan={diagPlan}
           diagPeriod={diagPeriod}
+          essays={essays}
+          essExam={essExam}
+          essStatus={essStatus}
+          essPlan={essPlan}
           facets={facets}
         />
       </div>

@@ -259,3 +259,44 @@ export async function favoritesUsed(viewer?: Viewer): Promise<number> {
     return 0;
   }
 }
+
+// -------- Correção de redação por IA --------
+
+// Correções por mês: Free 1, Premium 5, Premium Medicina 30. Admin: ilimitado.
+export const ESSAY_LIMITS: Record<Plan, number> = {
+  free: 1,
+  premium: 5,
+  premium_med: 30,
+};
+
+export async function essaysUsedThisMonth(viewer?: Viewer): Promise<number> {
+  const v = viewer ?? (await getViewer());
+  if (!v.userId) return 0;
+  try {
+    const supabase = await createClient();
+    const monthStart = new Date();
+    monthStart.setUTCDate(1);
+    monthStart.setUTCHours(0, 0, 0, 0);
+    // Falhas não consomem cota.
+    const { count } = await supabase
+      .from("essay_submissions")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", v.userId)
+      .neq("status", "failed")
+      .gte("created_at", monthStart.toISOString());
+    return count ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+export type EssayQuota = { allowed: boolean; used: number; limit: number };
+
+/** Pode enviar mais uma redação este mês? (server-side, espelha o limite por plano) */
+export async function canSubmitEssay(viewer?: Viewer): Promise<EssayQuota> {
+  const v = viewer ?? (await getViewer());
+  const used = await essaysUsedThisMonth(v);
+  if (v.isAdmin) return { allowed: true, used, limit: 9999 };
+  const limit = ESSAY_LIMITS[v.plan];
+  return { allowed: used < limit, used, limit };
+}
